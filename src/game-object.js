@@ -36,10 +36,6 @@ export class GameObject {
     }
 
     publish(event, data){
-        //if (this.subscribers["all"]){
-        //    this.subscribers["all"].forEach(callback => callback({event: event, data: data}));
-        //}
-
         if (!this.subscribers[event]) return;
         this.subscribers[event].forEach(callback => callback(data));
     }

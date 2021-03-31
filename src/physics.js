@@ -27,9 +27,11 @@ export class Physics extends Component {
                 this.gameObject.velocity.setZ(0)
             }
         });
+        
     }
 
 	update(dt){
+        //console.log(dt)
 		this.gameObject.position.add(this.gameObject.velocity.clone().multiplyScalar(dt))
         this.gameObject.velocity.y -= this._gravity * dt; // gravity
 	}

@@ -10,7 +10,7 @@ export class Box extends Component {
         let size            = params.size           ? params.size : new THREE.Vector3(1,1,1);
         let castShadow      = params.castShadow     ? params.castShadow : false;
         let receiveShadow   = params.receiveShadow  ? params.receiveShadow : false;
-        let color           = params.color          ? params.color : 0xD9D9D9;
+        let color           = params.color          ? params.color : 0x00ff00;
 
 		let geometry 	= new THREE.BoxBufferGeometry(size.x, size.y, size.z)
 		let material 	= new THREE.MeshStandardMaterial({ 
@@ -21,6 +21,7 @@ export class Box extends Component {
 			roughness: 1.0
 		});
         
+        /*
         const loader = new THREE.TextureLoader();
         let texture = loader.load('./assets/textures/tile3.jpg')
         texture.wrapS = THREE.RepeatWrapping;
@@ -32,12 +33,12 @@ export class Box extends Component {
         let material2 = new THREE.MeshStandardMaterial({ 
             map: texture
         });
+        */
 
 
-
-		this.model 		= new THREE.Mesh(geometry, material2)
+		this.model 		= new THREE.Mesh(geometry, material)
 		
-        this.model.castShadow 	= castShadow
+        this.model.castShadow 	= true
 		this.model.receiveShadow = receiveShadow
         
         this.model.rotateX(rotation.x);
