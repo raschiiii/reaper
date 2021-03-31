@@ -4,16 +4,30 @@ import { GameObject } from './game-object.js';
 import { Box } from './shapes.js';
 import { Physics } from './physics.js';
 import { OrbitCamera } from './input.js';
+import { Ground } from './ground.js';
+import { AABB } from './collision.js';
 
 export class Factory {
-    constructor(scene, goa, camera){
+    constructor(scene, goa, camera, grid){
         this.scene = scene;
         this.goa = goa;
         this.camera = camera;
+        this.grid = grid;
     }
 
     createAircraft(pos){
 
+    }
+
+    createGround(){
+        const obj = new GameObject(this.scene);
+        obj.position.set(0,-2.5, 0);
+        obj.addComponent(new Ground(obj));
+        obj.addComponent(new AABB(obj, new THREE.Vector3(50, 5, 50)));
+        let aabb = obj.addComponent(new AABB(obj, new THREE.Vector3(50, 5, 50)))
+        this.grid.insert(aabb)
+
+        return obj;
     }
 
     createTestCube(pos){
@@ -23,8 +37,8 @@ export class Factory {
             castShadow: true
         }));
 
+        obj.addComponent(new AABB(obj));
         obj.addComponent(new Physics(obj));
-        obj.addComponent(new OrbitCamera(obj, this.camera))
 
         this.goa.add(obj);
         return obj;

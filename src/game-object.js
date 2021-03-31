@@ -47,8 +47,9 @@ export class GameObject {
 
     removeComponent(name){
         let component = this.getComponent(name);
+        console.log(`remove ${name}`)
 
-        this.components = this.components.filter( c => { c.name != name});
+        this.components = this.components.filter( c => { c.name == name});
 
         if (component){
             component.destroy();

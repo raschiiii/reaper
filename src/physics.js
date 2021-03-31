@@ -7,10 +7,10 @@ export class Physics extends Component {
         this._gravity = 9.81;
         
         this.gameObject.subscribe("collision", (event) => {
-
-            let x = event.depth[0] * 1.2;
-            let y = event.depth[1] * 1.2;
-            let z = event.depth[2] * 1.2;
+            //console.log("collision")
+            let x = event.depth[0];
+            let y = event.depth[1];
+            let z = event.depth[2];
 
             if (Math.abs(x) > Math.abs(y) && Math.abs(z) > Math.abs(y)){
                 this.gameObject.position.setY(this.gameObject.position.y-y)
@@ -31,10 +31,11 @@ export class Physics extends Component {
     }
 
 	update(dt){
-        //console.log(dt)
 		this.gameObject.position.add(this.gameObject.velocity.clone().multiplyScalar(dt))
         this.gameObject.velocity.y -= this._gravity * dt; // gravity
 	}
+
+    
 }
 
 // https://gamedevelopment.tutsplus.com/tutorials/how-to-create-a-custom-2d-physics-engine-the-basics-and-impulse-resolution--gamedev-6331 
@@ -44,7 +45,6 @@ export class ImprovedPhysics extends Component {
         this._gravity = 9.81;
         
         this.gameObject.subscribe("collision", (event) => {
-
             let x = event.depth[0] * 1.2;
             let y = event.depth[1] * 1.2;
             let z = event.depth[2] * 1.2;

@@ -2,7 +2,7 @@ import * as THREE from './three/build/three.module.js';
 import { Component } from './components.js';
 
 export class AABB extends Component {
-    constructor(gameObject, size){
+    constructor(gameObject, size = new THREE.Vector3(1,1,1)){
         super(gameObject);
         
         this.box = new THREE.Box3(

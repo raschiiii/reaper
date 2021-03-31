@@ -1,8 +1,14 @@
 import * as THREE from './three/build/three.module.js';
+import Stats from './three/examples/jsm/libs/stats.module.js'
+
 
 import { Factory } from './factory.js';
 import { GameObjectArray } from './game-object-array.js';
 import { Ground } from './ground.js';
+import { GameObject } from './game-object.js';
+import { AABB } from './collision.js';
+import { HashGrid } from './hashgrid.js';
+import { ViewManager } from './input.js';
 
 const width  = 640;
 const height = 480;
@@ -17,13 +23,20 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.BasicShadowMap;
 renderer.physicallyCorrectLights = true;
 
+const stats = new Stats();
+document.body.appendChild(stats.dom);
 
 //const controls = new OrbitControls(camera, canvas);
 const goa = new GameObjectArray()
-const factory = new Factory(scene, goa, camera);
-const ground = new Ground(scene);
+const grid = new HashGrid(2);
+const factory = new Factory(scene, goa, camera, grid);
+const viewManager = new ViewManager(goa, camera);
 
-let cube = factory.createTestCube(new THREE.Vector3(0, 20, 0));
+factory.createGround();
+let cube1 = factory.createTestCube(new THREE.Vector3(0, 20, 0));
+let cube2 = factory.createTestCube(new THREE.Vector3(5, 20, 0));
+goa._addQueued();
+viewManager.setActive(0)
 
 // Create lights
 {
@@ -47,7 +60,6 @@ let cube = factory.createTestCube(new THREE.Vector3(0, 20, 0));
     scene.add(light);
 }
 
-camera.position.z = 5;
 
 let dt = 0, then = 0;
 const animate = function (now) {
@@ -62,8 +74,25 @@ const animate = function (now) {
     
     goa.forEach(gameObject => {
         gameObject.update(dt);
+
+        let aabb = gameObject.getComponent("AABB");
+        if (aabb){
+            for (let otherObject of grid.possible_aabb_collisions(aabb)){
+                if (otherObject != gameObject) aabb.collide(otherObject); 
+            }
+        }
+
+        if (gameObject.lifetime != undefined){
+            gameObject.lifetime -= dt;
+            if (gameObject.lifetime <= 0){
+                gameObjectArray.remove(gameObject);
+                gameObject.publish("destroy", {});
+                gameObject.destroy();
+            }
+        }
     });
 
+	stats.update()	
     renderer.render(scene, camera);
 };
 
