@@ -1,4 +1,5 @@
 import * as THREE from './three/build/three.module.js';
+
 import { Component } from './components.js';
 
 export class Physics extends Component {
@@ -8,9 +9,7 @@ export class Physics extends Component {
         
         this.gameObject.subscribe("collision", (event) => {
             //console.log("collision")
-            let x = event.depth[0];
-            let y = event.depth[1];
-            let z = event.depth[2];
+            let x = event.depth[0]; let y = event.depth[1]; let z = event.depth[2];
 
             if (Math.abs(x) > Math.abs(y) && Math.abs(z) > Math.abs(y)){
                 this.gameObject.position.setY(this.gameObject.position.y-y)

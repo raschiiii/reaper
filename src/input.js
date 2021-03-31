@@ -15,7 +15,7 @@ export class OrbitCamera extends Component {
         this.camera = camera;
 
         this.oldPos = new THREE.Vector3();
-        this.trans = new THREE.Vector3();
+        this.moved  = new THREE.Vector3();
         this.oldPos.copy(this.gameObject.position);
 
         this.camera.position.copy(this.gameObject.position)
@@ -25,26 +25,20 @@ export class OrbitCamera extends Component {
     }
 
     update(dt){
-
-        this.trans.subVectors(this.gameObject.position, this.oldPos);
+        this.moved.subVectors(this.gameObject.position, this.oldPos);
         this.oldPos.copy(this.gameObject.position);
-
-        if (this.trans.length() > 0.1) this.camera.position.add(this.trans);
+        this.camera.position.add(this.moved);
         this.controls.target.copy(this.gameObject.position);
-
         this.controls.update();
     }
 }
 
-export class ViewManager {
+export class OrbitViewManager {
     constructor(goa, camera){
         this.goa  = goa;
         this.activeObject = 0;
-
         this.camera = camera;
-
-        document.addEventListener('keydown',   (e) => this._onKeyDown(e),     false);
-        document.addEventListener('keyup',     (e) => this._onKeyUp(e),       false);
+        document.addEventListener('keydown', (e) => this._onKeyDown(e), false);
     }
 
     _onKeyDown(event){
@@ -69,10 +63,6 @@ export class ViewManager {
                 break;
             }
     }   
-
-    _onKeyUp(event){
-
-    }
 
     setActive(n){
         let gameObject = this.goa.array[n];

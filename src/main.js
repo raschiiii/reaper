@@ -8,7 +8,7 @@ import { Ground } from './ground.js';
 import { GameObject } from './game-object.js';
 import { AABB } from './collision.js';
 import { HashGrid } from './hashgrid.js';
-import { ViewManager } from './input.js';
+import { OrbitViewManager } from './input.js';
 
 const width  = 640;
 const height = 480;
@@ -30,11 +30,11 @@ document.body.appendChild(stats.dom);
 const goa = new GameObjectArray()
 const grid = new HashGrid(2);
 const factory = new Factory(scene, goa, camera, grid);
-const viewManager = new ViewManager(goa, camera);
+const viewManager = new OrbitViewManager(goa, camera);
 
 factory.createGround();
 let cube1 = factory.createTestCube(new THREE.Vector3(0, 20, 0));
-let cube2 = factory.createTestCube(new THREE.Vector3(5, 20, 0));
+let cube2 = factory.createTestCube(new THREE.Vector3(20, 20, 20));
 goa._addQueued();
 viewManager.setActive(0)
 
@@ -43,8 +43,8 @@ viewManager.setActive(0)
     const light = new THREE.DirectionalLight(0x404040, 3);
     light.position.set(1000, 10000, 1000)
     light.castShadow 			=  true; 
-    light.shadow.mapSize.width 	=  1024; 
-    light.shadow.mapSize.height =  1024; 
+    light.shadow.mapSize.width 	=  2048; 
+    light.shadow.mapSize.height =  2048; 
     light.shadow.camera.near 	=  0.5; 
     light.shadow.camera.far 	=  20000;
     light.shadow.camera.left 	= -50;
