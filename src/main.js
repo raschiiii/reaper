@@ -37,7 +37,7 @@ let aircraft = factory.createAircraft(new THREE.Vector3(0, 0, 0));
 factory.createTestCube(new THREE.Vector3(-20, 20, -20));
 factory.createTestCube(new THREE.Vector3(20, 20, 20));
 aircraft.position.set(0, 500, 0);
-aircraft.velocity.set(60, 0, 0);
+aircraft.velocity.set(0, 0, 0);
 
 goa._addQueued();
 viewManager.setActive(0)

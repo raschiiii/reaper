@@ -26,7 +26,8 @@ export class Factory {
 
         obj.addComponent(new AABB(obj));
         
-        obj.addComponent(new FlightModel_PfGD(obj));
+        //obj.addComponent(new FlightModel_PfGD(obj));
+        
         obj.addComponent(new Physics(obj));
         
         this.goa.add(obj);
