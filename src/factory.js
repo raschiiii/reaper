@@ -7,6 +7,7 @@ import { OrbitCamera } from './orbit-camera.js';
 import { Ground } from './ground.js';
 import { AABB } from './collision.js';
 import { SimpleGLTFModel } from './components.js';
+import { FlightModel } from './flightmodel.js';
 
 export class Factory {
     constructor(scene, goa, camera, grid){
@@ -22,6 +23,8 @@ export class Factory {
             position: pos,
             scale: new THREE.Vector3(0.5, 0.5, 0.5)
         }));
+
+        obj.addComponent(new FlightModel(obj));
         this.goa.add(obj);
         return obj;
     }

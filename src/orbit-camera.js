@@ -55,16 +55,8 @@ export class OrbitViewManager {
                 this.ao = (this.ao + 1) % n; 
                 this.setActive(this.ao)
                 break;
-
-            case 83:{
-                const n = this.goa.array.length;
-                const old = this.goa.array[this.ao];
-                this.ao = (this.ao + 1) % n; 
-                console.log(this.ao)
-                break;
-            }
+            
         } 
-
     }   
 
     setActive(n){
