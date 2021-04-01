@@ -33,15 +33,17 @@ const factory = new Factory(scene, goa, camera, grid);
 const viewManager = new OrbitViewManager(goa, camera);
 
 factory.createGround();
-let cube1 = factory.createTestCube(new THREE.Vector3(0, 20, 0));
-let cube2 = factory.createTestCube(new THREE.Vector3(20, 20, 20));
+let aircraft = factory.createAircraft(new THREE.Vector3(0, 0, 0));
+factory.createTestCube(new THREE.Vector3(-20, 20, -20));
+factory.createTestCube(new THREE.Vector3(20, 20, 20));
+aircraft.position.set(0, 5, 0);
 
 goa._addQueued();
-viewManager.setActive(1)
+viewManager.setActive(0)
 
 // Create lights
 {
-    const light = new THREE.DirectionalLight(0x404040, 3);
+    const light = new THREE.DirectionalLight(0x404040, 6);
     light.position.set(1000, 10000, 1000)
     light.castShadow 			=  true; 
     light.shadow.mapSize.width 	=  2048; 
@@ -60,7 +62,17 @@ viewManager.setActive(1)
     const light = new THREE.AmbientLight(0x404040, 1.0); 
     scene.add(light);
 }
-
+{
+    const axesHelper = new THREE.AxesHelper( 50 );
+    scene.add( axesHelper );
+}
+{
+  const near = 100;
+  const far = 200;
+  const color = 'lightblue';
+  scene.fog = new THREE.Fog(color, near, far);
+  scene.background = new THREE.Color(color);
+}
 
 let dt = 0, then = 0;
 const animate = function (now) {

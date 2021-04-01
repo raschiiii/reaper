@@ -1,5 +1,4 @@
 # Documentation
 
 ## Events
-* bla 
-* bla
+* input: `{}` 

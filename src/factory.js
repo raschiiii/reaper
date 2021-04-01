@@ -6,6 +6,7 @@ import { Physics } from './physics.js';
 import { OrbitCamera } from './orbit-camera.js';
 import { Ground } from './ground.js';
 import { AABB } from './collision.js';
+import { SimpleGLTFModel } from './components.js';
 
 export class Factory {
     constructor(scene, goa, camera, grid){
@@ -16,17 +17,23 @@ export class Factory {
     }
 
     createAircraft(pos){
-
+        const obj = new GameObject(this.scene);
+        obj.addComponent(new SimpleGLTFModel(obj, '../assets/objects/F-16.glb', {
+            position: pos,
+            scale: new THREE.Vector3(0.5, 0.5, 0.5)
+        }));
+        this.goa.add(obj);
+        return obj;
     }
 
     createGround(){
+        let size = 500;
         const obj = new GameObject(this.scene);
         obj.position.set(0,-2.5, 0);
-        obj.addComponent(new Ground(obj));
-        obj.addComponent(new AABB(obj, new THREE.Vector3(50, 5, 50)));
-        let aabb = obj.addComponent(new AABB(obj, new THREE.Vector3(50, 5, 50)))
+        obj.addComponent(new Ground(obj, size));
+        obj.addComponent(new AABB(obj, new THREE.Vector3(size, 5, size)));
+        let aabb = obj.addComponent(new AABB(obj, new THREE.Vector3(size, 5, size)))
         this.grid.insert(aabb)
-
         return obj;
     }
 

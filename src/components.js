@@ -44,7 +44,12 @@ export class SimpleGLTFModel extends Component {
             this.model.rotateX(rotation.x);
             this.model.rotateY(rotation.y);
             this.model.rotateZ(rotation.z);
-            this.model.scale.copy(scale)
+            this.model.scale.copy(scale);
+
+            this.model.traverse( function ( object ) {
+                if(object.isMesh) object.castShadow = true;
+            });
+
             this.gameObject.transform.add(this.model)
         })();
     }
