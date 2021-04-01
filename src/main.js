@@ -1,5 +1,6 @@
 import * as THREE from './three/build/three.module.js';
 import Stats from './three/examples/jsm/libs/stats.module.js'
+import { OrbitControls } from './three/examples/jsm/controls/OrbitControls.js';
 
 
 import { Factory } from './factory.js';
@@ -8,7 +9,7 @@ import { Ground } from './ground.js';
 import { GameObject } from './game-object.js';
 import { AABB } from './collision.js';
 import { HashGrid } from './hashgrid.js';
-import { OrbitViewManager } from './input.js';
+import { OrbitViewManager } from './orbit-camera.js';
 
 const width  = 640;
 const height = 480;
@@ -26,7 +27,6 @@ renderer.physicallyCorrectLights = true;
 const stats = new Stats();
 document.body.appendChild(stats.dom);
 
-//const controls = new OrbitControls(camera, canvas);
 const goa = new GameObjectArray()
 const grid = new HashGrid(2);
 const factory = new Factory(scene, goa, camera, grid);
@@ -35,8 +35,9 @@ const viewManager = new OrbitViewManager(goa, camera);
 factory.createGround();
 let cube1 = factory.createTestCube(new THREE.Vector3(0, 20, 0));
 let cube2 = factory.createTestCube(new THREE.Vector3(20, 20, 20));
+
 goa._addQueued();
-viewManager.setActive(0)
+viewManager.setActive(1)
 
 // Create lights
 {

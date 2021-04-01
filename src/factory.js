@@ -3,7 +3,7 @@ import * as THREE from './three/build/three.module.js';
 import { GameObject } from './game-object.js';
 import { Box } from './shapes.js';
 import { Physics } from './physics.js';
-import { OrbitCamera } from './input.js';
+import { OrbitCamera } from './orbit-camera.js';
 import { Ground } from './ground.js';
 import { AABB } from './collision.js';
 
