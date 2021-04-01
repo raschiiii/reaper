@@ -5,8 +5,8 @@ import { Component } from './components.js';
 // https://gamedevelopment.tutsplus.com/tutorials/how-to-create-a-custom-2d-physics-engine-the-basics-and-impulse-resolution--gamedev-6331 
 
 
-export class Physics extends Component {
-	constructor(gameObject){
+export class BasicPhysics extends Component {
+	constructor(gameObject, params){
 		super(gameObject);
         this._gravity = 9.81;
         

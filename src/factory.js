@@ -2,7 +2,7 @@ import * as THREE from './three/build/three.module.js';
 
 import { GameObject } from './game-object.js';
 import { Box } from './shapes.js';
-import { Physics } from './physics.js';
+import { BasicPhysics } from './physics.js';
 import { OrbitCamera } from './orbit-camera.js';
 import { Ground } from './ground.js';
 import { AABB } from './collision.js';
@@ -25,10 +25,7 @@ export class Factory {
         }));
 
         obj.addComponent(new AABB(obj));
-        
-        //obj.addComponent(new FlightModel_PfGD(obj));
-        
-        obj.addComponent(new Physics(obj));
+        obj.addComponent(new BasicPhysics(obj, {}));
         
         this.goa.add(obj);
         return obj;
@@ -53,7 +50,7 @@ export class Factory {
         }));
 
         obj.addComponent(new AABB(obj));
-        obj.addComponent(new Physics(obj));
+        obj.addComponent(new BasicPhysics(obj, {}));
 
         this.goa.add(obj);
         return obj;
