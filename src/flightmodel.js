@@ -1,28 +1,38 @@
 import * as THREE from './three/build/three.module.js';
-//import { MathUtils } from './0'
 
 import { Component } from './components.js';
 
-export class FlightModel extends Component {
+export class FlightModel_PfGD extends Component {
     constructor(gameObject){
         super(gameObject);
         this.elements = []
 
+
         this.Inertia = new THREE.Matrix3();
         this.InverseInertia = new THREE.Matrix3();
         this.Mass = 0;
-        this.Thrust = new THREE.Vector3();
         this.Speed = 0;
+        this.ThrustForce = 100;
         this.AngularVelocity = new THREE.Vector3();
+        this.Thrust = new THREE.Vector3();
         this.Forces = new THREE.Vector3();
         this.Moments = new THREE.Vector3();
-        this.ThrustForce = 100;
         this.VelocityBody = new THREE.Vector3();
+        this.Position = new THREE.Vector3();
+        this.Velocity = new THREE.Vector3();
         this.Orientation = new THREE.Quaternion();
 
+        this.debug = document.querySelector('#display1');
+        this.slider = document.querySelector('#slider1');
 
-        this._calcMassProperties();
+        this.slider.oninput = function() {
+            this.ThrustForce = this.value;
+            console.log(this.ThrustForce);
+        } 
+
+        this._init();
         this._calcLoads();
+        
         //console.log(this.elements)
     }
 
@@ -141,7 +151,6 @@ export class FlightModel extends Component {
             element.CGCoords.subVectors(element.DCoords, CG);
         }
         
-        
         let Ixx = 0, Iyy = 0, Izz = 0, Ixy = 0, Ixz = 0, Iyz = 0;
         for (const element of this.elements){
          	Ixx += element.LocalInertia.x + element.Mass * (element.CGCoords.y*element.CGCoords.y + element.CGCoords.z*element.CGCoords.z);
@@ -156,7 +165,6 @@ export class FlightModel extends Component {
                          -Ixy,  Iyy, -Iyz,
                          -Ixz, -Iyz,  Izz);
         
-
         this.InverseInertia.copy(this.Inertia);
         this.InverseInertia.invert();
         this.Mass = Mass;
@@ -164,10 +172,10 @@ export class FlightModel extends Component {
 
     _liftCoeff(angle, flaps){
 
-        clf0 = [ -0.54,-0.2, 0.2, 0.57, 0.92, 1.21, 1.43, 1.4, 1.0];
-        clfd = [  0.0,  0.45, 0.85, 1.02, 1.39, 1.65, 1.75, 1.38, 1.17];
-        clfu[9] = [ -0.74,-0.4, 0.0, 0.27, 0.63, 0.92, 1.03, 1.1, 0.78];
-        a[9]	  = [ -8.0, -4.0, 0.0, 4.0, 8.0, 12.0, 16.0, 20.0, 24.0];
+        let clf0 = [ -0.54,-0.2, 0.2, 0.57, 0.92, 1.21, 1.43, 1.4, 1.0];
+        let clfd = [  0.0,  0.45, 0.85, 1.02, 1.39, 1.65, 1.75, 1.38, 1.17];
+        let clfu = [ -0.74,-0.4, 0.0, 0.27, 0.63, 0.92, 1.03, 1.1, 0.78];
+        let a	  = [ -8.0, -4.0, 0.0, 4.0, 8.0, 12.0, 16.0, 20.0, 24.0];
 
         let cl = 0;
         for (let i=0; i<8; i++){
@@ -208,7 +216,7 @@ export class FlightModel extends Component {
                     cd = Math.lerp(no_flaps, flap_down, t);
                 } else {
                     let flap_up = cdfu[i] - (a[i] - angle) * (cdfu[i] - cdfu[i+1]) / (a[i] - a[i+1]);
-                    cd = Math.lerp(no_flaps, flap_up, t);
+                    cd = THREE.MathUtils.lerp(no_flaps, flap_up, t);
                 }
             }
         }
@@ -218,7 +226,7 @@ export class FlightModel extends Component {
 
     _rudderLiftCoeff(angle){
         let clf0 = [0.16, 0.456, 0.736, 0.968, 1.144, 1.12, 0.8 ];
-        let a	 = [0.0, 4.0, 8.0, 12.0, 16.0, 20.0, 24.0];
+        let a = [0.0, 4.0, 8.0, 12.0, 16.0, 20.0, 24.0];
         let aa = Math.abs(angle);
 
         let cl = 0;
@@ -233,22 +241,39 @@ export class FlightModel extends Component {
     }
 
     _rudderDragCoeff(angle){
-        let cdf0 = {0.0032f, 0.0072f, 0.0104f, 0.0184f, 0.04f, 0.096f, 0.168f};
-        let a[7]	 = {0.0f, 4.0f, 8.0f, 12.0f, 16.0f, 20.0f, 24.0f};
-        let cd;
-        let i;
-       	let aa = (float) fabs(angle);
+        let cdf0 = [0.0032, 0.0072, 0.0104, 0.0184, 0.04, 0.096, 0.168 ];
+        let a = [ 0.0, 4.0, 8.0, 12.0, 16.0, 20.0, 24.0 ];
+       	let aa = Math.abs(angle);
 
-        cd = 0.75;
-        for (i=0; i<6; i++)
-        {
-            if( (a[i] <= aa) && (a[i+1] > aa) )
-            {
+        let cd = 0.75;
+        for (let i=0; i<6; i++){
+            if( (a[i] <= aa) && (a[i+1] > aa) ){
                 cd = cdf0[i] - (a[i] - aa) * (cdf0[i] - cdf0[i+1]) / (a[i] - a[i+1]);
                 break;
             }
         }
         return cd;
+    }
+
+    _init(){
+        
+        this.Forces.set(500, 0, 0);
+        this.ThrustForce = 500;
+        this.Stalling = false;
+
+        this.Position.set(
+            this.gameObject.position.x,
+            this.gameObject.position.z,
+            this.gameObject.position.y
+        );
+
+        this.Velocity.set(
+            this.gameObject.velocity.x,
+            this.gameObject.velocity.z,
+            this.gameObject.velocity.y
+        );
+            
+        this._calcMassProperties();
     }
 
     _calcLoads(){
@@ -274,28 +299,35 @@ export class FlightModel extends Component {
         for (let i = 0; i < 7; i++){
             const element = this.elements[i];
 
-            if (i == 6){
+            if (i == 6){ // rudder
                 let In, Di;
-                In = THREE.MathUtils.degToRad(this.elements[i].Incidence);
-                Di = THREE.MathUtils.degToRad(this.elements[i].Dihedral);
-                this.elements[i].Normal.set(
+                In = THREE.MathUtils.degToRad(element.Incidence);
+                Di = THREE.MathUtils.degToRad(element.Dihedral);
+                element.Normal.set(
                     Math.sin(In),
                     Math.cos(In) * Math.sin(Di),
                     Math.cos(In) * Math.cos(Di)
                 );
-                this.elements[i].Normal.normalize();
+                element.Normal.normalize();
+                
+                //console.log(`In: ${In}, Di: ${Di}`)
             }
+
             
             vtmp.crossVectors(this.AngularVelocity, element.CGCoords);
             localVelocity.addVectors(this.VelocityBody, vtmp);
 
             localSpeed = localVelocity.length();
+            console.log(`speed ${localSpeed}`)
 
+            console.log(dragVector)
+            
             if (localSpeed > 1){
                 dragVector.copy(localVelocity);
                 dragVector.negate();
                 dragVector.divideScalar(localSpeed);
             }
+
 
             let c = new THREE.Vector3();
             c.crossVectors(dragVector, element.Normal);
@@ -309,6 +341,7 @@ export class FlightModel extends Component {
             if (tmp < -1) tmp = -1;
 
             attackAngle = THREE.MathUtils.radToDeg(Math.asin(tmp));
+            console.log(attackAngle)
             tmp = 0.5 * 0.001225 * localSpeed*localSpeed * element.Area;
 
             let t = new THREE.Vector3();
@@ -341,6 +374,8 @@ export class FlightModel extends Component {
                     Stalling = true;
             }
 
+            console.log(`Fb: ${Fb.x}, ${Fb.y}, ${Fb.z}`)
+
             Fb.add(Resultant);
             vtmp.crossVectors(element.CGCoords, Resultant);
             Mb.add(vtmp);
@@ -350,14 +385,65 @@ export class FlightModel extends Component {
         Fb.add(this.Thrust);
         this.Forces.copy(Fb);
         this.Forces.applyQuaternion(this.Orientation);
-        this.Forces.z += -9.81 * this.Mass;
         this.Moments.add(Mb);
         
 
     }
 
     update(dt){
+
+        this.Position.set(
+            this.gameObject.position.x,
+            this.gameObject.position.z,
+            this.gameObject.position.y
+        );
+
+        this.Velocity.set(
+            this.gameObject.velocity.x,
+            this.gameObject.velocity.z,
+            this.gameObject.velocity.y
+        );
+
         //this._calcLoads();
+        //this.debug.innerText = `${this.Forces.x},${this.Forces.y},${this.Forces.z}`;
+        
+        // caclulate translation
+        //let Ae = this.Forces.clone();
+        //Ae.divideScalar(this.Mass);
+        //Ae.multiplyScalar(dt);
+        //this.Velocity.add(Ae);
+        //let velo = this.Velocity.clone();
+        //velo.multiplyScalar(dt);
+        //this.Position.add(velo);
+        
+
+        //console.log(this.Position)
+
+        // calculate rotation
+        //let t1 = this.AngularVelocity.clone();
+        //t1.applyMatrix3(this.Inertia);
+        //let t2 = new THREE.Vector3();
+        //t2.crossVectors(this.AngularVelocity, t1);
+        //let t3 = this.Moments.clone();
+        //t3.sub(t2);
+        //t3.applyMatrix3(this.InverseInertia);
+        //t3.multiplyScalar(dt);
+        //this.AngularVelocity.add(t3);
+        //let rot = new THREE.Quaternion();
+
+        
+        this.gameObject.position.set(
+            this.Position.x,
+            this.Position.z,
+            this.Position.y
+        );
+
+        this.gameObject.velocity.set(
+            this.Velocity.x,
+            this.Velocity.z,
+            this.Velocity.y
+        );
+        
     }
 }
 
