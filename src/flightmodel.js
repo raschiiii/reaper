@@ -159,28 +159,96 @@ export class FlightModel extends Component {
 
         this.InverseInertia.copy(this.Inertia);
         this.InverseInertia.invert();
-        
-        console.log(this.Inertia);
-        
         this.Mass = Mass;
-
 	}
 
     _liftCoeff(angle, flaps){
-        return 0;
+
+        clf0 = [ -0.54,-0.2, 0.2, 0.57, 0.92, 1.21, 1.43, 1.4, 1.0];
+        clfd = [  0.0,  0.45, 0.85, 1.02, 1.39, 1.65, 1.75, 1.38, 1.17];
+        clfu[9] = [ -0.74,-0.4, 0.0, 0.27, 0.63, 0.92, 1.03, 1.1, 0.78];
+        a[9]	  = [ -8.0, -4.0, 0.0, 4.0, 8.0, 12.0, 16.0, 20.0, 24.0];
+
+        let cl = 0;
+        for (let i=0; i<8; i++){
+            if((a[i] <= angle) && (a[i+1] > angle)){
+                switch(flaps){
+                    case 0:// flaps not deflected
+                        cl = clf0[i] - (a[i] - angle) * (clf0[i] - clf0[i+1]) / (a[i] - a[i+1]);
+                        break;
+                    case -1: // flaps down
+                        cl = clfd[i] - (a[i] - angle) * (clfd[i] - clfd[i+1]) / (a[i] - a[i+1]);
+                        break;
+                    case 1: // flaps up
+                        cl = clfu[i] - (a[i] - angle) * (clfu[i] - clfu[i+1]) / (a[i] - a[i+1]);
+                        break;
+                }
+                break;
+            }
+        }
+        return cl;
     }
 
     _dragCoeff(angle, flaps){
-        return 0;
+
+        let cdf0 = [0.01, 0.0074, 0.004, 0.009, 0.013, 0.023, 0.05, 0.12, 0.21];
+        let cdfd = [0.0065, 0.0043, 0.0055, 0.0153, 0.0221, 0.0391, 0.1, 0.195, 0.3];
+        let cdfu = [0.005, 0.0043, 0.0055, 0.02601, 0.03757, 0.06647, 0.13, 0.18, 0.25];
+        let a	 = [-8.0, -4.0, 0.0, 4.0, 8.0, 12.0, 16.0, 20.0, 24.0];
+
+        let cd = 0.75;
+        for (let i = 0; i<8; i++)
+        {
+            if( (a[i] <= angle) && (a[i+1] > angle) ){
+                let no_flaps = cdf0[i] - (a[i] - angle) * (cdf0[i] - cdf0[i+1]) / (a[i] - a[i+1]);
+                let t = Math.abs(flaps);
+
+                if (flaps < 0){ // flaps down
+                    let flap_down = cdfd[i] - (a[i] - angle) * (cdfd[i] - cdfd[i+1]) / (a[i] - a[i+1]);
+                    cd = Math.lerp(no_flaps, flap_down, t);
+                } else {
+                    let flap_up = cdfu[i] - (a[i] - angle) * (cdfu[i] - cdfu[i+1]) / (a[i] - a[i+1]);
+                    cd = Math.lerp(no_flaps, flap_up, t);
+                }
+            }
+        }
+
+        return cd;
     }
 
     _rudderLiftCoeff(angle){
-        return 0;
+        let clf0 = [0.16, 0.456, 0.736, 0.968, 1.144, 1.12, 0.8 ];
+        let a	 = [0.0, 4.0, 8.0, 12.0, 16.0, 20.0, 24.0];
+        let aa = Math.abs(angle);
+
+        let cl = 0;
+        for (let i=0; i<6; i++){
+            if( (a[i] <= aa) && (a[i+1] > aa) ){
+                cl = clf0[i] - (a[i] - aa) * (clf0[i] - clf0[i+1]) / (a[i] - a[i+1]);
+                if (angle < 0) cl = -cl;
+                break;
+            }
+        }
+        return cl;
     }
 
     _rudderDragCoeff(angle){
+        let cdf0 = {0.0032f, 0.0072f, 0.0104f, 0.0184f, 0.04f, 0.096f, 0.168f};
+        let a[7]	 = {0.0f, 4.0f, 8.0f, 12.0f, 16.0f, 20.0f, 24.0f};
+        let cd;
+        let i;
+       	let aa = (float) fabs(angle);
 
-        return 0;
+        cd = 0.75;
+        for (i=0; i<6; i++)
+        {
+            if( (a[i] <= aa) && (a[i+1] > aa) )
+            {
+                cd = cdf0[i] - (a[i] - aa) * (cdf0[i] - cdf0[i+1]) / (a[i] - a[i+1]);
+                break;
+            }
+        }
+        return cd;
     }
 
     _calcLoads(){
@@ -236,7 +304,7 @@ export class FlightModel extends Component {
             tmp = liftVector.length();
             liftVector.normalize();
 
-            tmp.multiplyVectors(dragVector, element.Normal);
+            tmp = dragVector.dot(element.Normal)
             if (tmp >  1) tmp =  1;
             if (tmp < -1) tmp = -1;
 
@@ -278,13 +346,13 @@ export class FlightModel extends Component {
             Mb.add(vtmp);
         }
 
-        /*
+        
         Fb.add(this.Thrust);
         this.Forces.copy(Fb);
         this.Forces.applyQuaternion(this.Orientation);
         this.Forces.z += -9.81 * this.Mass;
         this.Moments.add(Mb);
-        */
+        
 
     }
 
