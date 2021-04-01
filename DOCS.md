@@ -2,6 +2,6 @@
 
 ## Events
 * input: `{}` 
-* collision : `"collision", {'depth': [x,y,z]`
+* collision : `"collision", {'depth': [x,y,z]}`
 
 
