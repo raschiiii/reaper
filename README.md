@@ -1,5 +1,7 @@
 # flight.js
 
+![alt text](https://upload.wikimedia.org/wikipedia/commons/a/a1/MQ-9_Reaper_during_Exercise_Northern_Strike_2019.png)
+
 ## Backstory
 
 You are part of the New York Air National Guard 174th Attack Wing, who transitioned from F-16 Falcon.
