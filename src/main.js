@@ -1,15 +1,11 @@
 import * as THREE from './three/build/three.module.js';
 import Stats from './three/examples/jsm/libs/stats.module.js'
-import { OrbitControls } from './three/examples/jsm/controls/OrbitControls.js';
-
 
 import { Factory } from './factory.js';
 import { GameObjectArray } from './game-object-array.js';
-import { Ground } from './ground.js';
-import { GameObject } from './game-object.js';
-import { AABB } from './collision.js';
 import { HashGrid } from './hashgrid.js';
 import { OrbitViewManager } from './orbit-camera.js';
+import { SpringODE } from './physics/spring-ode.js';
 
 const width  = 640;
 const height = 480;
@@ -34,10 +30,11 @@ const viewManager = new OrbitViewManager(goa, camera);
 
 factory.createGround();
 let aircraft = factory.createAircraft(new THREE.Vector3(0, 0, 0));
+aircraft.position.set(0, 0, 0);
+aircraft.velocity.set(0, 0, 0);
+
 factory.createTestCube(new THREE.Vector3(-20, 20, -20));
 factory.createTestCube(new THREE.Vector3(20, 20, 20));
-aircraft.position.set(0, 500, 0);
-aircraft.velocity.set(0, 0, 0);
 
 goa._addQueued();
 viewManager.setActive(0)
@@ -67,13 +64,8 @@ viewManager.setActive(0)
     const axesHelper = new THREE.AxesHelper( 50 );
     scene.add( axesHelper );
 }
-/*{
-  const near = 100;
-  const far = 200;
-  const color = 'lightblue';
-  scene.fog = new THREE.Fog(color, near, far);
-  scene.background = new THREE.Color(color);
-}*/
+
+//let spring = new SpringODE(1.0, 1.5, 20, -0.2);
 
 let dt = 0, then = 0;
 const animate = function (now) {
@@ -85,6 +77,8 @@ const animate = function (now) {
     if (dt > 0.1 || isNaN(dt)) dt = 0.1;
 
     //console.log(cube.position)
+
+    //spring.update(dt);
     
     goa.forEach(gameObject => {
         gameObject.update(dt);
