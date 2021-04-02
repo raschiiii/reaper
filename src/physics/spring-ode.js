@@ -2,8 +2,8 @@ import * as THREE from '../three/build/three.module.js';
 import { ODE, ODESolver } from "./physics.js";
 
 export class SpringODE extends ODE {
-    constructor(mass, mu, k, x0){
-        super(2);
+    constructor(gameObject, mass, mu, k, x0){
+        super(gameObject, 2);
         this.mass = mass;
         this.mu = mu;
         this.k = k;
@@ -12,7 +12,6 @@ export class SpringODE extends ODE {
 
         this.q[0] = 0.0;
         this.q[1] = x0;
-
     }
 
     getRightHandSide(s, q, deltaQ, ds, qScale){
@@ -29,7 +28,7 @@ export class SpringODE extends ODE {
         return dq;
     }
 
-    getPosition(){
+    get position(){
         return new THREE.Vector3(0, this.q[1], 0);
     }
 

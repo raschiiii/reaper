@@ -7,6 +7,9 @@ import { HashGrid } from './hashgrid.js';
 import { OrbitViewManager } from './orbit-camera.js';
 import { SpringODE } from './physics/spring-ode.js';
 
+// Debug
+const debug = document.querySelector('#display1');
+
 const width  = 640;
 const height = 480;
 
@@ -29,10 +32,7 @@ const factory = new Factory(scene, goa, camera, grid);
 const viewManager = new OrbitViewManager(goa, camera);
 
 factory.createGround();
-let aircraft = factory.createAircraft(new THREE.Vector3(0, 0, 0));
-aircraft.position.set(0, 0, 0);
-aircraft.velocity.set(0, 0, 0);
-
+const aircraft = factory.createAircraft(new THREE.Vector3(0, 10, 0), new THREE.Vector3(10,10,0));
 factory.createTestCube(new THREE.Vector3(-20, 20, -20));
 factory.createTestCube(new THREE.Vector3(20, 20, 20));
 
@@ -65,7 +65,6 @@ viewManager.setActive(0)
     scene.add( axesHelper );
 }
 
-//let spring = new SpringODE(1.0, 1.5, 20, -0.2);
 
 let dt = 0, then = 0;
 const animate = function (now) {
@@ -76,9 +75,7 @@ const animate = function (now) {
     then = now;
     if (dt > 0.1 || isNaN(dt)) dt = 0.1;
 
-    //console.log(cube.position)
-
-    //spring.update(dt);
+    debug.innerText = `${aircraft.position.x.toFixed(2)}, ${aircraft.position.y.toFixed(2)}, ${aircraft.position.z.toFixed(2)}`;
     
     goa.forEach(gameObject => {
         gameObject.update(dt);

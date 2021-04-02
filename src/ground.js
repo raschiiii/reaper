@@ -12,7 +12,7 @@ export class Ground extends Component{
         texture.wrapS = THREE.RepeatWrapping;
         texture.wrapT = THREE.RepeatWrapping;
         texture.magFilter = THREE.NearestFilter;
-        const repeats = planeSize / 2;
+        const repeats = planeSize / 50;
         texture.repeat.set(repeats, repeats);
 
         const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);

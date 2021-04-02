@@ -7,15 +7,19 @@ import * as THREE from '../three/build/three.module.js';
 
 // Abstract class for Ordinary Diferential Equations
 export class ODE {
-    constructor(numEqns){
+    constructor(gameObject, numEqns){
+        this.gameObject = gameObject;
         this.numEqns = numEqns;
         this.q = []; // dependant variables
         this.s = 0;  // independant variable
     }
 
+    // where all the calculation takes place
     getRightHandSide(s, q, deltaQ, ds, qScale){}
 
-    getPosition(){}
+    // TODO implement setters
+    get position(){ return new THREE.Vector3(); }
+    get velocity(){ return new THREE.Vector3(); }
 }
 
 export class ODESolver {
@@ -46,6 +50,7 @@ export class Physics extends Component {
 
     update(dt){
         this.ode.update(dt);
-        this.gameObject.position.copy(this.ode.getPosition())
+        this.gameObject.position.copy(this.ode.position);
+        this.gameObject.velocity.copy(this.ode.velocity);
     }
 }

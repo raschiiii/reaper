@@ -10,6 +10,7 @@ export class BasicPhysics extends Component {
 		super(gameObject);
         this._gravity = 9.81;
         
+        
         this.gameObject.subscribe("collision", (event) => {
             let x = event.depth[0]; let y = event.depth[1]; let z = event.depth[2];
 
@@ -28,6 +29,7 @@ export class BasicPhysics extends Component {
                 this.gameObject.velocity.setZ(0)
             }
         });
+        
     }
 
 	update(dt){
