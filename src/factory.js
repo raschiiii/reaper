@@ -10,6 +10,7 @@ import { SimpleGLTFModel } from './components.js';
 import { Physics } from './physics/physics.js';
 import { SpringODE } from './physics/spring-ode.js';
 import { GravityODE } from './physics/gravity-ode.js';
+import { Cessna } from './physics/cessna.js';
 
 export class Factory {
     constructor(scene, goa, camera, grid){
@@ -30,11 +31,7 @@ export class Factory {
 
         //obj.addComponent(new BasicPhysics(obj, {}));
         //obj.addComponent(new Physics(obj, new SpringODE(obj, 1.0, 1.5, 20, -2.7)));
-        obj.addComponent(new Physics(obj, new GravityODE(
-            obj,
-            pos.x, pos.z, pos.y,
-            vel.x, vel.z, vel.y
-        )));
+        obj.addComponent(new Physics(obj, new Cessna( obj, pos, vel )));
         
         obj.addComponent(new AABB(obj));
         

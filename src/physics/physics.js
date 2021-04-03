@@ -20,6 +20,11 @@ export class ODE {
     // TODO implement setters
     get position(){ return new THREE.Vector3(); }
     get velocity(){ return new THREE.Vector3(); }
+
+    update(dt){
+        ODESolver.rungeKutta4(this, dt);
+    }
+
 }
 
 export class ODESolver {

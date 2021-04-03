@@ -31,8 +31,4 @@ export class SpringODE extends ODE {
     get position(){
         return new THREE.Vector3(0, this.q[1], 0);
     }
-
-    update(dt){
-        ODESolver.rungeKutta4(this, dt);
-    }
 }

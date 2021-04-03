@@ -7,10 +7,19 @@
     </head>
 	<body>
         <canvas id="canvas" width="640" height="480"></canvas>
-
-        <input type="range" id="slider1"  min="1" max="1000" value="500">
-        <span id="display1"></span>
-
+        <br>
+        <input type="range" id="slider1"  min="-20" max="20" value="0">
+        <input type="range" id="slider2"  min="-20" max="20" value="0">
+        <input type="range" id="slider3"  min="0"   max="100" value="0">
+        <br>
+        <span id="display1">display1</span>
+        <br>
+        <span id="display2">display2</span>
+        <br>
+        <span>alpha=</span><span id="alpha"></span></span><br>
+        <span>bank=<span id="bank"></span> </span><br>
+        <span>throttle=<span id="throttle"></span></span><br> 
+        
         <script type="module" src="src/main.js"></script>
 	</body>
 </html>
