@@ -10,7 +10,7 @@ import { SimpleGLTFModel } from './components.js';
 import { Physics } from './physics/physics.js';
 import { SpringODE } from './physics/spring-ode.js';
 import { GravityODE } from './physics/gravity-ode.js';
-import { Cessna } from './physics/cessna.js';
+import { Cessna } from './physics/cessna-flightmodel.js';
 
 export class Factory {
     constructor(scene, goa, camera, grid){

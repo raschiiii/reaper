@@ -43,7 +43,7 @@ export class Cessna extends FlightmodelODE {
 
         let bankSlider = document.querySelector('#slider2');
         bankSlider.oninput = function() {
-            that.bank  = this.value
+            that.bank  = this.value 
             bank.innerText = that.bank
         } 
 

@@ -75,7 +75,7 @@ const animate = function (now) {
     then = now;
     if (dt > 0.1 || isNaN(dt)) dt = 0.1;
 
-    debug.innerText = `${aircraft.position.x.toFixed(2)}, ${aircraft.position.y.toFixed(2)}, ${aircraft.position.z.toFixed(2)}`;
+    debug.innerText = `pos: ${aircraft.position.x.toFixed(2)}, ${aircraft.position.y.toFixed(2)}, ${aircraft.position.z.toFixed(2)}`;
     
     goa.forEach(gameObject => {
         gameObject.update(dt);

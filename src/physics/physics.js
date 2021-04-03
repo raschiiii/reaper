@@ -20,6 +20,7 @@ export class ODE {
     // TODO implement setters
     get position(){ return new THREE.Vector3(); }
     get velocity(){ return new THREE.Vector3(); }
+    get rotation(){ return new THREE.Euler();   }
 
     update(dt){
         ODESolver.rungeKutta4(this, dt);
@@ -57,5 +58,7 @@ export class Physics extends Component {
         this.ode.update(dt);
         this.gameObject.position.copy(this.ode.position);
         this.gameObject.velocity.copy(this.ode.velocity);
+        //this.gameObject.transform.quaternion.setFromEuler(this.ode.rotation);
+        this.gameObject.transform.rotation.copy(this.ode.rotation);
     }
 }

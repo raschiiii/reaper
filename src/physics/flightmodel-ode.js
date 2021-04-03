@@ -57,6 +57,10 @@ export class FlightmodelODE extends ODE {
         this.throttle = 0;
         this.flap = 0;
 
+        this.roll = 0;
+        this.pitch = 0;
+        this.yaw = 0;
+
         console.log(this.q)
     }
 
@@ -66,6 +70,10 @@ export class FlightmodelODE extends ODE {
 
     get velocity(){
         return new THREE.Vector3(this.q[0], this.q[4], this.q[2]);
+    }
+
+    get rotation(){
+        return new THREE.Euler(this.roll, this.yaw, this.pitch);
     }
 
     getRightHandSide(s, q, deltaQ, ds, qScale){
@@ -119,35 +127,46 @@ export class FlightmodelODE extends ODE {
         let cd = this.cdp + cl*cl/(Math.PI*aspectRatio*this.eff);
         let drag = 0.5*cd*density*vtotal*vtotal*this.wingArea
 
-        let cosW = Math.cos(this.bank); 
-        let sinW = Math.sin(this.bank);
+        //this.bank = THREE.MathUtils.degToRad(this.bank)
+        let cosRoll = Math.cos(this.bank); 
+        let sinRoll = Math.sin(this.bank);
+        this.roll   = this.bank;
 
-        let cosP;      
-        let sinP;      
-        let cosT;      
-        let sinT; 
+        let cosPitch;      
+        let sinPitch;      
+        let cosYaw;      
+        let sinYaw; 
+
+        // pitch = phi
+        // yaw   = theta
+        // roll  = psi
 
         if ( vtotal == 0.0 ) {
-            cosP = 1.0;
-            sinP = 0.0;
+            cosPitch = 1.0;
+            sinPitch = 0.0;
         } else {
-            cosP = vh/vtotal;  
-            sinP = vz/vtotal;  
+            cosPitch = vh/vtotal;  
+            sinPitch = vz/vtotal;  
         }
+        
+        this.pitch = Math.asin(sinPitch);
 
         if ( vh == 0.0 ) {
-            cosT = 1.0;
-            sinT = 0.0;
+            cosYaw = 1.0;
+            sinYaw = 0.0;
         } else {
-            cosT = vx/vh;
-            sinT = vy/vh;
+            cosYaw = vx/vh;
+            sinYaw = vy/vh;
         }
 
-        let Fx = cosT*cosP*(thrust - drag) + ( sinT*sinW - cosT*sinP*cosW)*lift;
-        let Fy = sinT*cosP*(thrust - drag) + (-cosT*sinW - sinT*sinP*cosW)*lift;
-        let Fz = sinP*(thrust - drag) + cosP*cosW*lift;
+        this.yaw = Math.asin(sinYaw);
 
-        this.display2.innerText = `${Fx.toFixed(2)}, ${Fy.toFixed(2)}, ${Fz.toFixed(2)}`
+        let Fx = cosYaw*cosPitch*(thrust - drag) + ( sinYaw*sinRoll - cosYaw*sinPitch*cosRoll)*lift;
+        let Fy = sinYaw*cosPitch*(thrust - drag) + (-cosYaw*sinRoll - sinYaw*sinPitch*cosRoll)*lift;
+        let Fz = sinPitch*(thrust - drag) + cosPitch*cosRoll*lift;
+
+        //this.display2.innerText = `${Fx.toFixed(2)}, ${Fy.toFixed(2)}, ${Fz.toFixed(2)}`
+        this.display2.innerText = `rotation:\n roll=${this.roll},\n pitch=${this.pitch.toFixed(2)},\n yaw=${this.yaw.toFixed(2)}`
         
         Fz = Fz + this.mass * -9.81;
     
