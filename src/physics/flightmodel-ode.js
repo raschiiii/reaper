@@ -73,7 +73,7 @@ export class FlightmodelODE extends ODE {
     }
 
     get rotation(){
-        return new THREE.Euler(this.roll, this.yaw, this.pitch);
+        return new THREE.Euler(-this.roll, this.yaw, this.pitch);
     }
 
     getRightHandSide(s, q, deltaQ, ds, qScale){
@@ -127,46 +127,47 @@ export class FlightmodelODE extends ODE {
         let cd = this.cdp + cl*cl/(Math.PI*aspectRatio*this.eff);
         let drag = 0.5*cd*density*vtotal*vtotal*this.wingArea
 
-        //this.bank = THREE.MathUtils.degToRad(this.bank)
         let cosRoll = Math.cos(this.bank); 
         let sinRoll = Math.sin(this.bank);
-        this.roll   = this.bank;
-
+        this.roll = THREE.MathUtils.degToRad(this.bank)
+        
         let cosPitch;      
         let sinPitch;      
         let cosYaw;      
         let sinYaw; 
 
-        // pitch = phi
-        // yaw   = theta
-        // roll  = psi
-
         if ( vtotal == 0.0 ) {
             cosPitch = 1.0;
             sinPitch = 0.0;
+            this.pitch = 0;
+        
         } else {
-            cosPitch = vh/vtotal;  
-            sinPitch = vz/vtotal;  
+            this.pitch = Math.atan(vz / vh);
+            cosPitch = Math.cos(this.pitch)
+            sinPitch = Math.sin(this.pitch)
+            
+            //cosPitch = vh/vtotal;  
+            //sinPitch = vz/vtotal;  
         }
         
-        this.pitch = Math.asin(sinPitch);
-
         if ( vh == 0.0 ) {
             cosYaw = 1.0;
             sinYaw = 0.0;
+            this.yaw = 0;
+
         } else {
             cosYaw = vx/vh;
             sinYaw = vy/vh;
+            this.yaw = Math.acos(vx / vh);
         }
 
-        this.yaw = Math.asin(sinYaw);
 
         let Fx = cosYaw*cosPitch*(thrust - drag) + ( sinYaw*sinRoll - cosYaw*sinPitch*cosRoll)*lift;
         let Fy = sinYaw*cosPitch*(thrust - drag) + (-cosYaw*sinRoll - sinYaw*sinPitch*cosRoll)*lift;
         let Fz = sinPitch*(thrust - drag) + cosPitch*cosRoll*lift;
 
         //this.display2.innerText = `${Fx.toFixed(2)}, ${Fy.toFixed(2)}, ${Fz.toFixed(2)}`
-        this.display2.innerText = `rotation:\n roll=${this.roll},\n pitch=${this.pitch.toFixed(2)},\n yaw=${this.yaw.toFixed(2)}`
+        this.display2.innerText = `rotation:\n roll=${this.roll.toFixed(2)}, pitch=${this.pitch.toFixed(2)}, yaw=${this.yaw.toFixed(2)}`
         
         Fz = Fz + this.mass * -9.81;
     

@@ -32,7 +32,7 @@ const factory = new Factory(scene, goa, camera, grid);
 const viewManager = new OrbitViewManager(goa, camera);
 
 factory.createGround();
-const aircraft = factory.createAircraft(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0,0,0));
+const aircraft = factory.createAircraft(new THREE.Vector3(-250, 0, 0), new THREE.Vector3(0,0,0));
 factory.createTestCube(new THREE.Vector3(-20, 20, -20));
 factory.createTestCube(new THREE.Vector3(20, 20, 20));
 
