@@ -4,13 +4,16 @@ import { GameObject } from './game-object.js';
 import { Box } from './shapes.js';
 import { BasicPhysics } from './physics/basic-physics.js';
 import { OrbitCamera } from './orbit-camera.js';
-import { Ground } from './ground.js';
+import { Ground, Ground2 } from './ground.js';
 import { AABB } from './collision.js';
 import { SimpleGLTFModel } from './components.js';
 import { Physics } from './physics/physics.js';
 import { SpringODE } from './physics/spring-ode.js';
 import { GravityODE } from './physics/gravity-ode.js';
 import { Cessna } from './physics/cessna-flightmodel.js';
+import { TestODE } from './physics/test-ode.js';
+import { LocalAxis } from './testing.js';
+import { AirplaneModel } from './model.js';
 
 export class Factory {
     constructor(scene, goa, camera, grid){
@@ -24,15 +27,18 @@ export class Factory {
         const obj = new GameObject(this.scene);
         obj.position.copy(pos);
         obj.velocity.copy(vel);
-
-        obj.addComponent(new SimpleGLTFModel(obj, '../assets/objects/F-16.glb', {
-            scale: new THREE.Vector3(0.5, 0.5, 0.5)
+        
+        obj.addComponent(new AirplaneModel(obj, '../assets/objects/MQ-9.glb', {
+            scale: new THREE.Vector3(1, 1, 1),
+            rotation: new THREE.Vector3(0, Math.PI / 2, 0)
         }));
 
         //obj.addComponent(new BasicPhysics(obj, {}));
         //obj.addComponent(new Physics(obj, new SpringODE(obj, 1.0, 1.5, 20, -2.7)));
-        obj.addComponent(new Physics(obj, new Cessna( obj, pos, vel )));
+        obj.addComponent(new Physics(obj, new Cessna(obj, pos, vel)));
+        //obj.addComponent(new Physics(obj, new TestODE(obj)));
         
+        obj.addComponent(new LocalAxis(obj)); 
         obj.addComponent(new AABB(obj));
         
         this.goa.add(obj);
@@ -55,7 +61,7 @@ export class Factory {
     }
 
     createGround(){
-        let size = 500;
+        let size = 2000;
         const obj = new GameObject(this.scene);
         obj.position.set(0,-5, 0);
         obj.addComponent(new Ground(obj, size));

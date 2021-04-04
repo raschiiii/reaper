@@ -23,7 +23,7 @@ export class Cessna extends FlightmodelODE {
             eff: 0.77,
             mass: 1114.0,
             engineRps: 40.0,
-            enginePower: 119310.0,
+            enginePower: 11931.0,
             propDiameter: 1.905,
             a: 1.83,
             b: -1.32
@@ -43,8 +43,8 @@ export class Cessna extends FlightmodelODE {
 
         let bankSlider = document.querySelector('#slider2');
         bankSlider.oninput = function() {
-            that.bank  = this.value 
-            bank.innerText = that.bank
+            that.bank  = this.value / 10 
+            bank.innerText = that.bank / 10
         } 
 
         let aoaSlider = document.querySelector('#slider1');

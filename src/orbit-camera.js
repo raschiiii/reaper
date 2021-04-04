@@ -1,7 +1,7 @@
 import * as THREE from './three/build/three.module.js';
-import { OrbitControls } from './three/examples/jsm/controls/OrbitControls.js';
-
 import { Component } from './components.js';
+
+import { OrbitControls } from './three/examples/jsm/controls/OrbitControls.js';
 
 export class OrbitCamera extends Component {
     constructor(gameObject, camera){
@@ -13,9 +13,9 @@ export class OrbitCamera extends Component {
         
         this.oldPos.copy(this.gameObject.position);
         this.camera.position.set(
-            this.gameObject.position.x,
+            this.gameObject.position.x - 15,
             this.gameObject.position.y,
-            this.gameObject.position.z + 5
+            this.gameObject.position.z
         );
        
         this.controls = new OrbitControls(this.camera, document.querySelector('#canvas'));

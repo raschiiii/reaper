@@ -73,7 +73,7 @@ export class FlightmodelODE extends ODE {
     }
 
     get rotation(){
-        return new THREE.Euler(-this.roll, this.yaw, this.pitch);
+        return new THREE.Euler(-this.roll, this.yaw, this.pitch, "YZX");
     }
 
     getRightHandSide(s, q, deltaQ, ds, qScale){
@@ -129,7 +129,7 @@ export class FlightmodelODE extends ODE {
 
         let cosRoll = Math.cos(this.bank); 
         let sinRoll = Math.sin(this.bank);
-        this.roll = THREE.MathUtils.degToRad(this.bank)
+        this.roll = Number(this.bank);
         
         let cosPitch;      
         let sinPitch;      
@@ -148,6 +148,7 @@ export class FlightmodelODE extends ODE {
             
             //cosPitch = vh/vtotal;  
             //sinPitch = vz/vtotal;  
+            //this.pitch = Math.asin(sinPitch);
         }
         
         if ( vh == 0.0 ) {
@@ -158,6 +159,8 @@ export class FlightmodelODE extends ODE {
         } else {
             cosYaw = vx/vh;
             sinYaw = vy/vh;
+
+            //this.yaw = Math.asin(sinYaw)
             this.yaw = Math.acos(vx / vh);
         }
 
