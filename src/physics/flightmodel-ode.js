@@ -167,17 +167,11 @@ export class FlightmodelODE extends ODE {
         } else {
             cosYaw = vx/vh;
             sinYaw = vy/vh;
-
-            let v1 = new THREE.Vector2(1, 0);
-            let v2 = new THREE.Vector2(vx, vy);
-            v2.normalize();
-
-            this.display2.innerText = `x: ${v2.x}, y: ${v2.y}`
-            
-            this.yaw = Math.acos(v1.dot(v2))
-            
+                       
             //this.yaw = Math.acos(vx/vh);
             //this.yaw = -Math.asin(vy/vh);
+
+            this.yaw = Math.atan2(vx, vy) - Math.PI / 2
         }
 
         //this.display1.innerText = `vx/vh=${vx/vh},\n vy/vh=${vy/vh}}`

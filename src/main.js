@@ -67,8 +67,8 @@ viewManager.setActive(0)
     light.shadow.camera.top  	=  50;
     light.shadow.camera.right	=  50;
     scene.add(light)
-    const helper = new THREE.CameraHelper(light.shadow.camera);
-    scene.add( helper );
+    //const helper = new THREE.CameraHelper(light.shadow.camera);
+    //scene.add( helper );
 }
 {
     const light = new THREE.AmbientLight(0x404040, 1.0); 
