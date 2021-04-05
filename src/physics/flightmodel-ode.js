@@ -167,11 +167,20 @@ export class FlightmodelODE extends ODE {
         } else {
             cosYaw = vx/vh;
             sinYaw = vy/vh;
-            this.yaw = Math.acos(vx/vh);
+
+            let v1 = new THREE.Vector2(1, 0);
+            let v2 = new THREE.Vector2(vx, vy);
+            v2.normalize();
+
+            this.display2.innerText = `x: ${v2.x}, y: ${v2.y}`
+            
+            this.yaw = Math.acos(v1.dot(v2))
+            
+            //this.yaw = Math.acos(vx/vh);
             //this.yaw = -Math.asin(vy/vh);
         }
 
-        this.display1.innerText = `vx/vh=${vx/vh},\n vy/vh=${vy/vh}}`
+        //this.display1.innerText = `vx/vh=${vx/vh},\n vy/vh=${vy/vh}}`
 
 
         let Fx = cosYaw*cosPitch*(thrust - drag) + ( sinYaw*sinRoll - cosYaw*sinPitch*cosRoll)*lift;
@@ -179,7 +188,7 @@ export class FlightmodelODE extends ODE {
         let Fz = sinPitch*(thrust - drag) + cosPitch*cosRoll*lift;
 
         //this.display2.innerText = `${Fx.toFixed(2)}, ${Fy.toFixed(2)}, ${Fz.toFixed(2)}`
-        this.display2.innerText = `rotation:\n roll=${this.roll.toFixed(2)}, pitch=${this.pitch.toFixed(2)}, yaw=${this.yaw.toFixed(2)}`
+        //this.display2.innerText = `rotation:\n roll=${this.roll.toFixed(2)}, pitch=${this.pitch.toFixed(2)}, yaw=${this.yaw.toFixed(2)}`
         
         Fz = Fz + this.mass * -9.81;
     
