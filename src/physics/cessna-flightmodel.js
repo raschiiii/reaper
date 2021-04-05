@@ -31,7 +31,7 @@ export class Cessna extends FlightmodelODE {
 
         let alpha = document.querySelector('#alpha');
         let bank = document.querySelector('#bank');
-        let throttle = document.querySelector('#throttle');
+        //let throttle = document.querySelector('#throttle');
 
         let that = this;
         let thrustSlider = document.querySelector('#slider3');

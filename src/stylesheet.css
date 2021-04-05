@@ -1,0 +1,11 @@
+
+.hud-element {
+    position: absolute;
+    color: white;
+}
+
+#paused {
+    left: 320px;
+    top: 240px;
+    display: none;
+}

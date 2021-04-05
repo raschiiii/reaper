@@ -9,12 +9,13 @@ import { SpringODE } from './physics/spring-ode.js';
 
 // Debug
 const debug = document.querySelector('#display1');
+const pauseDisplay = document.querySelector('#paused')
 
 const width  = 640;
 const height = 480;
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 10000);
 const canvas = document.querySelector("#canvas");
 const renderer = new THREE.WebGLRenderer({canvas: canvas});
 renderer.setSize(width, height);
@@ -26,6 +27,19 @@ renderer.physicallyCorrectLights = true;
 const stats = new Stats();
 document.body.appendChild(stats.dom);
 
+let paused = false;
+document.addEventListener('keydown', (e) => {
+    if (e.keyCode == 80){
+        paused = !paused;
+
+        if (paused){
+            pauseDisplay.style.display = "block";
+        } else {
+            pauseDisplay.style.display = "none";
+        }
+    }
+}, false);
+
 const goa = new GameObjectArray()
 const grid = new HashGrid(2);
 const factory = new Factory(scene, goa, camera, grid);
@@ -33,8 +47,8 @@ const viewManager = new OrbitViewManager(goa, camera);
 
 factory.createGround();
 const aircraft = factory.createAircraft(new THREE.Vector3(0, 5, 0), new THREE.Vector3(0,0,0));
-factory.createTestCube(new THREE.Vector3(-20, 20, -20));
-factory.createTestCube(new THREE.Vector3(20, 20, 20));
+//factory.createTestCube(new THREE.Vector3(-20, 20, -20));
+//factory.createTestCube(new THREE.Vector3(20, 20, 20));
 
 goa._addQueued();
 viewManager.setActive(0)
@@ -76,26 +90,28 @@ const animate = function (now) {
     if (dt > 0.1 || isNaN(dt)) dt = 0.1;
 
     debug.innerText = `pos: ${aircraft.position.x.toFixed(2)}, ${aircraft.position.y.toFixed(2)}, ${aircraft.position.z.toFixed(2)}`;
-    
-    goa.forEach(gameObject => {
-        gameObject.update(dt);
 
-        let aabb = gameObject.getComponent("AABB");
-        if (aabb){
-            for (let otherObject of grid.possible_aabb_collisions(aabb)){
-                if (otherObject != gameObject) aabb.collide(otherObject); 
-            }
-        }
+    if (!paused){
+        goa.forEach(gameObject => {
+            gameObject.update(dt);
 
-        if (gameObject.lifetime != undefined){
-            gameObject.lifetime -= dt;
-            if (gameObject.lifetime <= 0){
-                gameObjectArray.remove(gameObject);
-                gameObject.publish("destroy", {});
-                gameObject.destroy();
+            let aabb = gameObject.getComponent("AABB");
+            if (aabb){
+                for (let otherObject of grid.possible_aabb_collisions(aabb)){
+                    if (otherObject != gameObject) aabb.collide(otherObject); 
+                }
             }
-        }
-    });
+
+            if (gameObject.lifetime != undefined){
+                gameObject.lifetime -= dt;
+                if (gameObject.lifetime <= 0){
+                    gameObjectArray.remove(gameObject);
+                    gameObject.publish("destroy", {});
+                    gameObject.destroy();
+                }
+            }
+        });
+    }
 
 	stats.update()	
     renderer.render(scene, camera);

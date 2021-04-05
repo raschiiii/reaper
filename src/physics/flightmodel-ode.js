@@ -6,6 +6,7 @@ export class FlightmodelODE extends ODE {
         super(gameObject, 6);
 
         this.display2 = document.querySelector('#display2')
+        this.display1 = document.querySelector('#throttle');
 
         let vx = params.vx;
         let vy = params.vy;
@@ -159,11 +160,12 @@ export class FlightmodelODE extends ODE {
         } else {
             cosYaw = vx/vh;
             sinYaw = vy/vh;
+            this.yaw = Math.acos(vx/vh);
+            //this.yaw = -Math.asin(vy/vh);
 
-            //this.yaw = Math.asin(sinYaw)
-            this.yaw = Math.acos(vx / vh);
         }
 
+        this.display1.innerText = `vx/vh=${vx/vh},\n vy/vh=${vy/vh}}`
 
         let Fx = cosYaw*cosPitch*(thrust - drag) + ( sinYaw*sinRoll - cosYaw*sinPitch*cosRoll)*lift;
         let Fy = sinYaw*cosPitch*(thrust - drag) + (-cosYaw*sinRoll - sinYaw*sinPitch*cosRoll)*lift;

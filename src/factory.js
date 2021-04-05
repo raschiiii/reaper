@@ -29,7 +29,6 @@ export class Factory {
         obj.velocity.copy(vel);
         
         obj.addComponent(new AirplaneModel(obj, '../assets/objects/MQ-9.glb', {
-            scale: new THREE.Vector3(1, 1, 1),
             rotation: new THREE.Vector3(0, Math.PI / 2, 0)
         }));
 
@@ -49,10 +48,7 @@ export class Factory {
         let obj = new GameObject(this.scene);
         obj.position.copy(pos);
 
-        obj.addComponent(new Box(obj, {
-            castShadow: true
-        }));
-
+        obj.addComponent(new Box(obj, { castShadow: true }));
         obj.addComponent(new AABB(obj));
         obj.addComponent(new BasicPhysics(obj, {}));
 
@@ -61,7 +57,7 @@ export class Factory {
     }
 
     createGround(){
-        let size = 2000;
+        let size = 1000;
         const obj = new GameObject(this.scene);
         obj.position.set(0,-5, 0);
         obj.addComponent(new Ground(obj, size));
