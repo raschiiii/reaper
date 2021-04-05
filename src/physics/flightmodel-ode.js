@@ -63,11 +63,11 @@ export class FlightmodelODE extends ODE {
         this.yaw = 0;
 
         // testing this
-        this.quat = new THREE.Quaternion();
-        this.velocity = new THREE.Vector3();
-        this.forward = new THREE.Vector3(1,0,0);
+        //this.quat = new THREE.Quaternion();
+        //this.velocity = new THREE.Vector3();
+        //this.forward = new THREE.Vector3(1,0,0);
 
-        console.log(this.q)
+        //console.log(this.q)
     }
 
     get position(){
@@ -173,8 +173,6 @@ export class FlightmodelODE extends ODE {
 
         this.display1.innerText = `vx/vh=${vx/vh},\n vy/vh=${vy/vh}}`
 
-        this.quat.setFromUnitVectors(this.forward, this.velocity.normalize())
-        let F = new THREE.Vector3(thrust - drag, 0, lift);
 
         let Fx = cosYaw*cosPitch*(thrust - drag) + ( sinYaw*sinRoll - cosYaw*sinPitch*cosRoll)*lift;
         let Fy = sinYaw*cosPitch*(thrust - drag) + (-cosYaw*sinRoll - sinYaw*sinPitch*cosRoll)*lift;
@@ -184,7 +182,6 @@ export class FlightmodelODE extends ODE {
         this.display2.innerText = `rotation:\n roll=${this.roll.toFixed(2)}, pitch=${this.pitch.toFixed(2)}, yaw=${this.yaw.toFixed(2)}`
         
         Fz = Fz + this.mass * -9.81;
-        F.z = F.z + this.mass * -9.81;
     
         if ( z <= 0.0 && Fz <= 0.0 ) {
             Fz = 0.0;
