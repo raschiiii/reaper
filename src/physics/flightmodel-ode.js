@@ -62,6 +62,11 @@ export class FlightmodelODE extends ODE {
         this.pitch = 0;
         this.yaw = 0;
 
+        // testing this
+        this.quat = new THREE.Quaternion();
+        this.velocity = new THREE.Vector3();
+        this.forward = new THREE.Vector3(1,0,0);
+
         console.log(this.q)
     }
 
@@ -91,6 +96,8 @@ export class FlightmodelODE extends ODE {
         let x  = newQ[1];
         let y  = newQ[3];
         let z  = newQ[5];
+
+        this.velocity.set(vx, vy, vz);
 
         let vh = Math.sqrt(vx*vx + vy*vy);
         let vtotal = Math.sqrt(vx*vx + vy*vy + vz*vz);
@@ -130,7 +137,7 @@ export class FlightmodelODE extends ODE {
 
         let cosRoll = Math.cos(this.bank); 
         let sinRoll = Math.sin(this.bank);
-        this.roll = Number(this.bank);
+        this.roll   = Number(this.bank);
         
         let cosPitch;      
         let sinPitch;      
@@ -162,10 +169,12 @@ export class FlightmodelODE extends ODE {
             sinYaw = vy/vh;
             this.yaw = Math.acos(vx/vh);
             //this.yaw = -Math.asin(vy/vh);
-
         }
 
         this.display1.innerText = `vx/vh=${vx/vh},\n vy/vh=${vy/vh}}`
+
+        this.quat.setFromUnitVectors(this.forward, this.velocity.normalize())
+        let F = new THREE.Vector3(thrust - drag, 0, lift);
 
         let Fx = cosYaw*cosPitch*(thrust - drag) + ( sinYaw*sinRoll - cosYaw*sinPitch*cosRoll)*lift;
         let Fy = sinYaw*cosPitch*(thrust - drag) + (-cosYaw*sinRoll - sinYaw*sinPitch*cosRoll)*lift;
@@ -175,6 +184,7 @@ export class FlightmodelODE extends ODE {
         this.display2.innerText = `rotation:\n roll=${this.roll.toFixed(2)}, pitch=${this.pitch.toFixed(2)}, yaw=${this.yaw.toFixed(2)}`
         
         Fz = Fz + this.mass * -9.81;
+        F.z = F.z + this.mass * -9.81;
     
         if ( z <= 0.0 && Fz <= 0.0 ) {
             Fz = 0.0;
