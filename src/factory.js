@@ -61,7 +61,6 @@ export class Factory {
         const obj = new GameObject(this.scene);
         obj.position.set(0,-5, 0);
         obj.addComponent(new Ground(obj, size));
-        obj.addComponent(new AABB(obj, new THREE.Vector3(size, 5, size)));
         let aabb = obj.addComponent(new AABB(obj, new THREE.Vector3(size, 5, size)))
         this.grid.insert(aabb)
         return obj;

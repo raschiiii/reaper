@@ -17,7 +17,10 @@ const height = 480;
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 10000);
 const canvas = document.querySelector("#canvas");
-const renderer = new THREE.WebGLRenderer({canvas: canvas});
+const renderer = new THREE.WebGLRenderer({
+    canvas: canvas,
+    logarithmicDepthBuffer: true
+});
 renderer.setSize(width, height);
 renderer.setClearColor("#87ceeb");
 renderer.shadowMap.enabled = true;
