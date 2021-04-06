@@ -55,7 +55,7 @@ export class Factory {
 
         obj.addComponent(new Box(obj, { castShadow: true }));
         obj.addComponent(new AABB(obj));
-        obj.addComponent(new BasicPhysics(obj, {}));
+        //obj.addComponent(new BasicPhysics(obj, {}));
 
         this.goa.add(obj);
         return obj;

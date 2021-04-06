@@ -5,25 +5,25 @@ import { Factory } from './factory.js';
 import { GameObjectArray } from './game-object-array.js';
 import { HashGrid } from './hashgrid.js';
 import { OrbitViewManager } from './orbit-camera.js';
-import { SpringODE } from './physics/spring-ode.js';
 
 // Debug
-const debug = document.querySelector('#display1');
-const pauseDisplay = document.querySelector('#paused')
+const debug         = document.querySelector('#display1');
+const pauseDisplay  = document.querySelector('#paused');
 
 const width  = 640;
 const height = 480;
-
-const scene = new THREE.Scene();
 
 const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 10000);
 const sensor = new THREE.PerspectiveCamera(75, width / height, 0.1, 10000);
 
 const canvas = document.querySelector("#canvas");
+
+const scene = new THREE.Scene();
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
     logarithmicDepthBuffer: true
 });
+
 renderer.setSize(width, height);
 renderer.setClearColor("#87ceeb");
 renderer.shadowMap.enabled = true;
@@ -34,47 +34,40 @@ const stats = new Stats();
 document.body.appendChild(stats.dom);
 
 let paused = false;
-let sensorEnabled = false;
+let sensorView = false;
 
+const goa           = new GameObjectArray()
+const grid          = new HashGrid(2);
+const factory       = new Factory(scene, goa, camera, grid, sensor);
+const viewManager   = new OrbitViewManager(goa, camera);
+
+
+const aircraft = factory.createAircraft(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0,0,0));
+const terrain = factory.createTerrain();
+factory.createTestCube(new THREE.Vector3(-20, 20, -20));
+factory.createTestCube(new THREE.Vector3(20, 20, 20));
+
+goa._addQueued();
+viewManager.setActive(0);
 
 document.addEventListener('keydown', (e) => {
     switch(e.keyCode){
-
         case 80: // p
             paused = !paused;
             pauseDisplay.style.display = paused ? "block" : "none";
             break;
-
-        case 49:
-            sensorEnabled = !sensorEnabled;
+        case 49: // 1
+            sensorView = !sensorView;
+            aircraft.publish("sensor", { enabled: sensorView })
             break;
+        case 50: // 2
+            viewManager.toggle();
+            break;            
     }
-
-    /*
-    if (e.keyCode == 80){
-        paused = !paused;
-        if (paused){
-            pauseDisplay.style.display = "block";
-        } else {
-            pauseDisplay.style.display = "none";
-        }
-    }
-    */
 }, false);
 
-const goa = new GameObjectArray()
-const grid = new HashGrid(2);
-const factory = new Factory(scene, goa, camera, grid, sensor);
-const viewManager = new OrbitViewManager(goa, camera);
 
-const aircraft = factory.createAircraft(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0,0,0));
 
-const terrain = factory.createTerrain();
-//factory.createTestCube(new THREE.Vector3(-20, 20, -20));
-//factory.createTestCube(new THREE.Vector3(20, 20, 20));
-
-goa._addQueued();
-viewManager.setActive(0)
 
 // Create lights
 {
@@ -102,7 +95,6 @@ viewManager.setActive(0)
     scene.add( axesHelper );
 }
 
-
 let dt = 0, then = 0;
 const animate = function (now) {
     requestAnimationFrame(animate);
@@ -129,17 +121,15 @@ const animate = function (now) {
                 gameObject.lifetime -= dt;
                 if (gameObject.lifetime <= 0){
                     gameObjectArray.remove(gameObject);
-                    gameObject.publish("destroy", {});
                     gameObject.destroy();
                 }
             }
         });
-
         terrain.update(dt);
     }
 
 	stats.update()	
-    renderer.render(scene, sensorEnabled ? sensor : camera);
+    renderer.render(scene, sensorView ? sensor : camera);
 };
 
 animate();

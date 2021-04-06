@@ -43,12 +43,12 @@ export class OrbitViewManager {
         this.goa  = goa;
         this.ao = 0;
         this.camera = camera;
-        document.addEventListener('keydown', (e) => this._onKeyDown(e), false);
+        //document.addEventListener('keydown', (e) => this._onKeyDown(e), false);
     }
 
     _onKeyDown(event){
         switch (event.keyCode) {
-            case 68:  // d
+            case 50:  // 2
                 const n = this.goa.array.length;
                 const old = this.goa.array[this.ao];
                 old.removeComponent("OrbitCamera");
@@ -58,6 +58,14 @@ export class OrbitViewManager {
             
         } 
     }   
+
+    toggle(){
+        const n = this.goa.array.length;
+        const old = this.goa.array[this.ao];
+        old.removeComponent("OrbitCamera");
+        this.ao = (this.ao + 1) % n; 
+        this.setActive(this.ao)
+    }
 
     setActive(n){
         let gameObject = this.goa.array[n];
