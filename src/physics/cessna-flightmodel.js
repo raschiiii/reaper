@@ -5,12 +5,14 @@ import { ODESolver } from './physics.js';
 export class Cessna extends FlightmodelODE {
     constructor(gameObject, pos, vel){
         super(gameObject, {
-            x: pos.x,
-            y: pos.y,
-            z: pos.z,
-            vx: vel.x,
-            vy: vel.y,
-            vz: vel.z,
+            x: pos.x * 10.0,
+            y: pos.z * 10.0,
+            z: pos.y * 10.0,
+
+            vx: vel.x * 10,
+            vy: vel.z * 10,
+            vz: vel.y * 10,
+
             wingArea: 16.2,
             wingSpan: 10.9,
             tailArea: 2.0,
@@ -31,12 +33,10 @@ export class Cessna extends FlightmodelODE {
 
         let alpha = document.querySelector('#alpha');
         let bank = document.querySelector('#bank');
-        //let throttle = document.querySelector('#throttle');
 
         let that = this;
         let thrustSlider = document.querySelector('#slider3');
         thrustSlider.oninput = function() {
-            //console.log(this.value);
             that.throttle = this.value;
             throttle.innerText = that.throttle
         } 
@@ -52,13 +52,5 @@ export class Cessna extends FlightmodelODE {
             that.alpha  = this.value / 10
             alpha.innerText = that.alpha
         } 
-
-
-
-
-        //ODESolver.rungeKutta4(this, 0.05);
-        //console.log(this)
     }
-
-    //update(dt){}
 }

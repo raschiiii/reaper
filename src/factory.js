@@ -14,15 +14,16 @@ import { TestODE } from './physics/test-ode.js';
 import { LocalAxis } from './testing.js';
 import { AirplaneModel } from './model.js';
 import { TerrainManager } from './terrain/terrain.js';
-import { Sensor } from './aircraft.js';
+import { Sensor, Sound } from './aircraft.js';
 
 export class Factory {
-    constructor(scene, goa, camera, grid, sensor){
+    constructor(scene, goa, camera, grid, sensor, listener){
         this.scene = scene;
         this.goa = goa;
         this.camera = camera;
         this.sensor = sensor;
         this.grid = grid;
+        this.listener = listener;
     }
 
     createAircraft(pos,vel){
@@ -34,6 +35,8 @@ export class Factory {
             rotation: new THREE.Vector3(0, Math.PI / 2, 0),
             scale: new THREE.Vector3(0.1,0.1,0.1)
         }));
+
+        obj.addComponent(new Sound(obj, this.listener, '../assets/audio/engine2.mp3'))
 
         //obj.addComponent(new BasicPhysics(obj, {}));
         //obj.addComponent(new Physics(obj, new SpringODE(obj, 1.0, 1.5, 20, -2.7)));
@@ -63,9 +66,7 @@ export class Factory {
 
     createTerrain(){
         const obj = new GameObject(this.scene);
-        obj.addComponent(new TerrainManager(obj, {
-            camera: this.camera
-        }))
+        obj.addComponent(new TerrainManager(obj, { camera: this.camera }));
         return obj;
     }
 }

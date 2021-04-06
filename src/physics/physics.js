@@ -24,6 +24,7 @@ export class ODE {
 
     update(dt){
         ODESolver.rungeKutta4(this, dt);
+        //console.log(this)
     }
 
 }

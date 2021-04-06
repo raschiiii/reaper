@@ -6,6 +6,16 @@ import { QuadTree } from './quadtree.js';
 const _MIN_CELL_SIZE    = 50;
 const _FIXED_GRID_SIZE  =  3;
 
+class FixedHeightMap {
+    constructor(){
+
+    }
+
+    get(x,y){
+        return 0;
+    }
+}
+
 class RandomHeightMap {
     constructor(){
         this._values = []
@@ -44,20 +54,29 @@ class TerrainChunk {
     constructor(root, material, offset, dimensions, heightmap){
         const geometry = new THREE.PlaneBufferGeometry(dimensions.x, dimensions.y, 10, 10);
 
-        this._hm = heightmap
+        this._heightmap = heightmap;
+
+        //let m = new THREE.MeshStandardMaterial({
+        //    color: 0x00ff00,
+        //    wireframe: false,
+        //    side: THREE.FrontSide,
+        //    flatShading: true
+        //});
+
         this._plane = new THREE.Mesh(geometry, material);
-        this._plane.rotation.x = Math.PI * -0.5;
-        this.offset = offset;
+        // this.offset = offset;
         
         let vertices = this._plane.geometry.attributes.position.array;
         
         for (let i = 0; i < vertices.length; i = i + 3) {
-            vertices[i + 2] = this._hm.get(vertices[i] + offset.x, -vertices[i + 1] + offset.y) * 100;
+            vertices[i+2] = this._heightmap.get(vertices[i] + offset.x, -vertices[i+1] + offset.y) * 50;
         } 
 
         this._plane.geometry.attributes.position.needsUpdate = true;
         this._plane.geometry.computeVertexNormals();
+
         this._plane.position.set(offset.x, 0, offset.y)
+        this._plane.rotation.x = Math.PI * -0.5;
         this._plane.receiveShadow = true;
 
         root.add(this._plane);
@@ -72,6 +91,7 @@ export class TerrainManager extends Component {
     constructor(gameObject, params){
         super(gameObject);
 
+        this._heightmap = new RandomHeightMap();
         this._camera = params.camera;
         this._chunks = {};
 
@@ -85,7 +105,6 @@ export class TerrainManager extends Component {
             flatShading: true
         });
 
-        this._heightmap = new RandomHeightMap();
         this.display2 = document.querySelector('#display2');
     }
 

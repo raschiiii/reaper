@@ -16,7 +16,7 @@ export class FlightmodelODE extends ODE {
         let y = params.y;
         let z = params.z;
 
-        this.s = 0; 
+        this.s    = 0; 
         this.q[0] = vx;
         this.q[1] = x;
 
@@ -44,9 +44,9 @@ export class FlightmodelODE extends ODE {
      
         this.mass = params.mass;
     
-        this.engineRps = params.engineRps;
-        this.enginePower = params.enginePower;
-        this.propDiameter = params.propDiameter;
+        this.engineRps      = params.engineRps;
+        this.enginePower    = params.enginePower;
+        this.propDiameter   = params.propDiameter;
    
         this.a = params.a;
         this.b = params.b;
