@@ -1,4 +1,5 @@
 import * as THREE from '../three/build/three.module.js';
+import { ImprovedNoise } from '../three/examples/jsm/math/ImprovedNoise.js';
 import { Component }  from '../components.js';
 import { QuadTree } from './quadtree.js';
 import { utils } from './utils.js'
@@ -7,12 +8,10 @@ const _MIN_CELL_SIZE = 50;
 const _FIXED_GRID_SIZE = 3;
 
 class TerrainChunk {
-    constructor(root, material, offset, dimensions = new THREE.Vector2(_MIN_CELL_SIZE, _MIN_CELL_SIZE)){
+    constructor(root, material, offset, dimensions, heightmap){
         const geometry = new THREE.PlaneGeometry(dimensions.x, dimensions.y, 5, 5);
         this.mesh = new THREE.Mesh(geometry, material);
 
-        //console.log(dimensions)
-        
         this.mesh.receiveShadow = true;
         this.mesh.rotation.x = Math.PI * -0.5;
         this.mesh.position.set(offset.x, 0, offset.y)
@@ -21,6 +20,71 @@ class TerrainChunk {
 
     destroy(){
 		this.mesh.geometry.dispose()
+    }
+}
+
+class HeightMap {
+    constructor(){
+        this._values = []
+    }
+
+    _rand(x,y){
+        const k = x + '.' + y;
+        if (!(k in this._values)){
+            this._values[k] = Math.random();
+        }
+        return this._values[k];
+    }   
+
+    get(x,y){
+        const x1 = Math.floor(x);
+        const y1 = Math.floor(y);
+        const x2 = x1 + 1;
+        const y2 = y1 + 1;
+        
+        const xp = x - x1;
+        const yp = y - y1;
+
+        const p11 = this._rand(x1, y1);
+        const p21 = this._rand(x2, y1);
+        const p12 = this._rand(x1, y2);
+        const p22 = this._rand(x2, y2);
+
+        const px1 = THREE.MathUtils.lerp(xp, p11, p21);
+        const px2 = THREE.MathUtils.lerp(xp, p12, p22);
+
+        return THREE.MathUtils.lerp(yp, px1, px2)
+    }
+}
+
+class TerrainChunk2 {
+
+    constructor(root, material, offset, dimensions, heightmap){
+        const geometry = new THREE.PlaneBufferGeometry(dimensions.x, dimensions.y, 10, 10);
+
+        this._hm = heightmap
+        this._plane = new THREE.Mesh(geometry, material);
+        this._plane.rotation.x = Math.PI * -0.5;
+        this.offset = offset;
+        
+        let vertices = this._plane.geometry.attributes.position.array;
+        
+        //console.log(`${vertices[0]}, ${vertices[1]}, ${offset.x}, ${offset.y}`)
+
+        for (let i = 0; i < vertices.length; i = i + 3) {
+            vertices[i + 2] = this._hm.get(vertices[i] + offset.x, -vertices[i + 1] + offset.y) * 100;
+        } 
+
+        this._plane.geometry.attributes.position.needsUpdate = true;
+        this._plane.geometry.computeVertexNormals();
+        this._plane.position.set(offset.x, 0, offset.y)
+        this._plane.receiveShadow = true;
+
+        root.add(this._plane);
+    }
+
+    destroy(){
+		this._plane.geometry.dispose()
     }
 }
 
@@ -35,10 +99,13 @@ export class TerrainManager extends Component {
         this.gameObject.transform.add(this._root);
 
         this._material = new THREE.MeshStandardMaterial({
-            color: 0x00ff00, 
-            wireframe: true
+            color: 0x00ff00,
+            wireframe: false,
+            side: THREE.FrontSide,
+            flatShading: true
         });
 
+        this.heightmap = new HeightMap();
         this.display2 = document.querySelector('#display2');
     }
 
@@ -82,89 +149,46 @@ export class TerrainManager extends Component {
 
         const children = quadtree.GetChildren();
 
-        let c = new THREE.Vector2();
-        let d = new THREE.Vector2();
+
+        let center = new THREE.Vector2();
+        let dimensions = new THREE.Vector2();
 
         let newChunks = {};
 
         for (const child of children){
 
-            child.bounds.getCenter(c);
-            child.bounds.getSize(d);
+            child.bounds.getCenter(center);
+            child.bounds.getSize(dimensions);
 
-            const key = this._key(c.x, c.y);
+            const key = this._key(center.x, center.y);
 
             if (key in this._chunks) {
                 newChunks[key] = this._chunks[key];
                 delete this._chunks[key];
                 continue;
             }
-            const offset = new THREE.Vector2(c.x, c.y);
+            const offset = new THREE.Vector2(center.x, center.y);
 
             newChunks[key] = {
-                position: [c.x, c.y],
-                chunk: this._createChunk(offset, d)
-            }
-
-            //newChunks[key] = {
-            //    position: [c.x, c.y],
-            //    dimensions: d
-            //}
-        }
-
-        for (const key in this._chunks){
-            this._chunks[key].chunk.destroy();
-        }
-
-        this._chunks = newChunks;
-
-        /*
-        const intersection = utils.DictIntersection(this._chunks, newChunks);
-        const difference = utils.DictDifference(newChunks, this._chunks);
-        //const recycle = Object.values(utils.DictDifference(this._chunks, newChunks));
-
-        newChunks = intersection;
-
-        for (const key in difference){
-
-            const offset = new THREE.Vector2(
-                difference[key].position.x,
-                difference[key].position.y
-            );
-            
-            newChunks[key] = {
-                position: difference[key].position,
-                chunk: this._createChunk(offset, difference[key].dimensions)
+                position: [center.x, center.y],
+                chunk: this._createChunk(offset, dimensions)
             }
         }
 
+        for (const key in this._chunks) this._chunks[key].chunk.destroy();
+
         this._chunks = newChunks;
-        */
 
         this.display2.innerText = `len: ${Object.keys(this._chunks).length}`
     }
 
 
     update(dt){
-        
         this.updateVisibleQuadtree();
-        //console.log(this._chunks)
-
-        /*
-        const newChunkKey = this._key(xc,zc);
-        if (newChunkKey in this._chunks){
-            return;
-        }
-        const offset = new THREE.Vector2(xc * _MIN_CELL_SIZE, zc * _MIN_CELL_SIZE);
-        this._chunks[newChunkKey] = {
-            position: [xc,zc],
-            chunk: this._createChunk(offset)
-        }
-        */
     }
 
     _createChunk(offset, dimensions){
-        const chunk = new TerrainChunk(this._root, this._material, offset, dimensions);
+        const chunk = new TerrainChunk2(this._root, this._material, offset, dimensions, this.heightmap);
         return chunk;
     }
 
