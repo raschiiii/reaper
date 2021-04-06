@@ -72,7 +72,7 @@ export class Factory {
         //this.grid.insert(aabb)
         //this.goa.add(obj);
 
-        this.goa.add(obj);
+        //this.goa.add(obj);
         return obj;
     }
 }

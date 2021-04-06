@@ -2,28 +2,11 @@ import * as THREE from '../three/build/three.module.js';
 import { ImprovedNoise } from '../three/examples/jsm/math/ImprovedNoise.js';
 import { Component }  from '../components.js';
 import { QuadTree } from './quadtree.js';
-import { utils } from './utils.js'
 
-const _MIN_CELL_SIZE = 50;
-const _FIXED_GRID_SIZE = 3;
+const _MIN_CELL_SIZE    = 50;
+const _FIXED_GRID_SIZE  =  3;
 
-class TerrainChunk {
-    constructor(root, material, offset, dimensions, heightmap){
-        const geometry = new THREE.PlaneGeometry(dimensions.x, dimensions.y, 5, 5);
-        this.mesh = new THREE.Mesh(geometry, material);
-
-        this.mesh.receiveShadow = true;
-        this.mesh.rotation.x = Math.PI * -0.5;
-        this.mesh.position.set(offset.x, 0, offset.y)
-        root.add(this.mesh);
-    }
-
-    destroy(){
-		this.mesh.geometry.dispose()
-    }
-}
-
-class HeightMap {
+class RandomHeightMap {
     constructor(){
         this._values = []
     }
@@ -57,8 +40,7 @@ class HeightMap {
     }
 }
 
-class TerrainChunk2 {
-
+class TerrainChunk {
     constructor(root, material, offset, dimensions, heightmap){
         const geometry = new THREE.PlaneBufferGeometry(dimensions.x, dimensions.y, 10, 10);
 
@@ -69,8 +51,6 @@ class TerrainChunk2 {
         
         let vertices = this._plane.geometry.attributes.position.array;
         
-        //console.log(`${vertices[0]}, ${vertices[1]}, ${offset.x}, ${offset.y}`)
-
         for (let i = 0; i < vertices.length; i = i + 3) {
             vertices[i + 2] = this._hm.get(vertices[i] + offset.x, -vertices[i + 1] + offset.y) * 100;
         } 
@@ -105,7 +85,7 @@ export class TerrainManager extends Component {
             flatShading: true
         });
 
-        this.heightmap = new HeightMap();
+        this._heightmap = new RandomHeightMap();
         this.display2 = document.querySelector('#display2');
     }
 
@@ -146,9 +126,7 @@ export class TerrainManager extends Component {
             max: new THREE.Vector2( 32000,  32000),
         });
         quadtree.Insert(this._camera.position);
-
         const children = quadtree.GetChildren();
-
 
         let center = new THREE.Vector2();
         let dimensions = new THREE.Vector2();
@@ -176,19 +154,15 @@ export class TerrainManager extends Component {
         }
 
         for (const key in this._chunks) this._chunks[key].chunk.destroy();
-
         this._chunks = newChunks;
-
-        this.display2.innerText = `len: ${Object.keys(this._chunks).length}`
     }
-
 
     update(dt){
         this.updateVisibleQuadtree();
     }
 
     _createChunk(offset, dimensions){
-        const chunk = new TerrainChunk2(this._root, this._material, offset, dimensions, this.heightmap);
+        const chunk = new TerrainChunk(this._root, this._material, offset, dimensions, this._heightmap);
         return chunk;
     }
 

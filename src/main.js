@@ -50,7 +50,7 @@ const viewManager = new OrbitViewManager(goa, camera);
 
 const aircraft = factory.createAircraft(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0,0,0));
 
-factory.createTerrain();
+const terrain = factory.createTerrain();
 //factory.createTestCube(new THREE.Vector3(-20, 20, -20));
 //factory.createTestCube(new THREE.Vector3(20, 20, 20));
 
@@ -115,6 +115,8 @@ const animate = function (now) {
                 }
             }
         });
+
+        terrain.update(dt);
     }
 
 	stats.update()	
