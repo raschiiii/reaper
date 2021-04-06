@@ -58,7 +58,10 @@ export class Physics extends Component {
         this.ode.update(dt);
         this.gameObject.position.copy(this.ode.position);
         this.gameObject.velocity.copy(this.ode.velocity);
-        //this.gameObject.transform.quaternion.setFromEuler(this.ode.rotation);
+        this.gameObject.position.multiplyScalar(0.1);
+
+        this.gameObject.velocity.multiplyScalar(0.1);
+
         this.gameObject.transform.setRotationFromEuler(this.ode.rotation);
     }
 }

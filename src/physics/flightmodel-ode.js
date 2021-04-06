@@ -16,8 +16,6 @@ export class FlightmodelODE extends ODE {
         let y = params.y;
         let z = params.z;
 
-        console.log(x,y,z)
-
         this.s = 0; 
         this.q[0] = vx;
         this.q[1] = x;

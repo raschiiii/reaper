@@ -14,6 +14,7 @@ import { Cessna } from './physics/cessna-flightmodel.js';
 import { TestODE } from './physics/test-ode.js';
 import { LocalAxis } from './testing.js';
 import { AirplaneModel } from './model.js';
+import { TerrainManager } from './terrain.js';
 
 export class Factory {
     constructor(scene, goa, camera, grid){
@@ -29,7 +30,8 @@ export class Factory {
         obj.velocity.copy(vel);
         
         obj.addComponent(new AirplaneModel(obj, '../assets/objects/MQ-9.glb', {
-            rotation: new THREE.Vector3(0, Math.PI / 2, 0)
+            rotation: new THREE.Vector3(0, Math.PI / 2, 0),
+            scale: new THREE.Vector3(0.1,0.1,0.1)
         }));
 
         //obj.addComponent(new BasicPhysics(obj, {}));
@@ -56,13 +58,21 @@ export class Factory {
         return obj;
     }
 
-    createGround(){
+    createTerrain(){
         let size = 1000;
         const obj = new GameObject(this.scene);
-        obj.position.set(0,-5, 0);
-        obj.addComponent(new Ground(obj, size));
-        let aabb = obj.addComponent(new AABB(obj, new THREE.Vector3(size, 5, size)))
-        this.grid.insert(aabb)
+        //obj.position.set(0,-5, 0);
+        //obj.addComponent(new Ground(obj, size));
+
+        obj.addComponent(new TerrainManager(obj, {
+            camera: this.camera
+        }))
+
+        //let aabb = obj.addComponent(new AABB(obj, new THREE.Vector3(size, 5, size)))
+        //this.grid.insert(aabb)
+        //this.goa.add(obj);
+
+        this.goa.add(obj);
         return obj;
     }
 }

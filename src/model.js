@@ -27,7 +27,7 @@ export class AirplaneModel extends Component {
             });
 
             this.propellor = this.model.children[4];
-            console.log(this.propellor)
+            //console.log(this.propellor)
 
             this.gameObject.transform.add(this.model)
         })();
