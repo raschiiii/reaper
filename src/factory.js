@@ -14,12 +14,14 @@ import { TestODE } from './physics/test-ode.js';
 import { LocalAxis } from './testing.js';
 import { AirplaneModel } from './model.js';
 import { TerrainManager } from './terrain/terrain.js';
+import { Sensor } from './aircraft.js';
 
 export class Factory {
-    constructor(scene, goa, camera, grid){
+    constructor(scene, goa, camera, grid, sensor){
         this.scene = scene;
         this.goa = goa;
         this.camera = camera;
+        this.sensor = sensor;
         this.grid = grid;
     }
 
@@ -35,8 +37,9 @@ export class Factory {
 
         //obj.addComponent(new BasicPhysics(obj, {}));
         //obj.addComponent(new Physics(obj, new SpringODE(obj, 1.0, 1.5, 20, -2.7)));
+        
         obj.addComponent(new Physics(obj, new Cessna(obj, pos, vel)));
-        //obj.addComponent(new Physics(obj, new TestODE(obj)));
+        obj.addComponent(new Sensor(obj, this.sensor))
         
         //obj.addComponent(new LocalAxis(obj)); 
 
@@ -59,20 +62,10 @@ export class Factory {
     }
 
     createTerrain(){
-        let size = 1000;
         const obj = new GameObject(this.scene);
-        //obj.position.set(0,-5, 0);
-        //obj.addComponent(new Ground(obj, size));
-
         obj.addComponent(new TerrainManager(obj, {
             camera: this.camera
         }))
-
-        //let aabb = obj.addComponent(new AABB(obj, new THREE.Vector3(size, 5, size)))
-        //this.grid.insert(aabb)
-        //this.goa.add(obj);
-
-        //this.goa.add(obj);
         return obj;
     }
 }

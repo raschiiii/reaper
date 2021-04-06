@@ -155,6 +155,7 @@ export class TerrainManager extends Component {
 
         for (const key in this._chunks) this._chunks[key].chunk.destroy();
         this._chunks = newChunks;
+        this.display2.innerText = `${Object.keys(this._chunks).length}`
     }
 
     update(dt){
@@ -178,4 +179,3 @@ export class TerrainManager extends Component {
         return `${x}/${z}`;
     }
 }
-

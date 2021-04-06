@@ -15,7 +15,10 @@ const width  = 640;
 const height = 480;
 
 const scene = new THREE.Scene();
+
 const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 10000);
+const sensor = new THREE.PerspectiveCamera(75, width / height, 0.1, 10000);
+
 const canvas = document.querySelector("#canvas");
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
@@ -31,21 +34,37 @@ const stats = new Stats();
 document.body.appendChild(stats.dom);
 
 let paused = false;
+let sensorEnabled = false;
+
+
 document.addEventListener('keydown', (e) => {
+    switch(e.keyCode){
+
+        case 80: // p
+            paused = !paused;
+            pauseDisplay.style.display = paused ? "block" : "none";
+            break;
+
+        case 49:
+            sensorEnabled = !sensorEnabled;
+            break;
+    }
+
+    /*
     if (e.keyCode == 80){
         paused = !paused;
-
         if (paused){
             pauseDisplay.style.display = "block";
         } else {
             pauseDisplay.style.display = "none";
         }
     }
+    */
 }, false);
 
 const goa = new GameObjectArray()
 const grid = new HashGrid(2);
-const factory = new Factory(scene, goa, camera, grid);
+const factory = new Factory(scene, goa, camera, grid, sensor);
 const viewManager = new OrbitViewManager(goa, camera);
 
 const aircraft = factory.createAircraft(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0,0,0));
@@ -120,7 +139,7 @@ const animate = function (now) {
     }
 
 	stats.update()	
-    renderer.render(scene, camera);
+    renderer.render(scene, sensorEnabled ? sensor : camera);
 };
 
 animate();
