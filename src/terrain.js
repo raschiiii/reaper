@@ -2,6 +2,7 @@ import * as THREE from './three/build/three.module.js';
 import { Component }  from './components.js';
 
 const _MIN_CELL_SIZE = 50;
+const _FIXED_GRID_SIZE = 3;
 
 class TerrainChunk {
     constructor(root, material, offset){
@@ -11,7 +12,7 @@ class TerrainChunk {
         mesh.receiveShadow = true;
         mesh.rotation.x = Math.PI * -0.5;
         mesh.position.set(offset.x, 0, offset.y)
-        
+
         root.add(mesh);
     }
 }
@@ -39,8 +40,38 @@ export class TerrainManager extends Component {
 
         //console.log("update");
 
-        const [x, z] = this._cell(this._camera.position) 
-        const newChunkKey = this._key(x,z);
+        const [xc, zc] = this._cell(this._camera.position) 
+
+        const keys = {};
+
+        for (let x = - _FIXED_GRID_SIZE; x <= _FIXED_GRID_SIZE; x++){
+            for (let z = -_FIXED_GRID_SIZE; z <= _FIXED_GRID_SIZE; z++){
+                const k = this._key(xc + x, zc + z);
+                keys[k] = {
+                    position: [xc + x, zc + z]
+                }
+            }
+        }
+
+        for (const key in keys){
+
+            if (key in this._chunks) continue;
+            console.log(key)
+
+            const [xp, zp] = keys[key].position;
+
+            const offset = new THREE.Vector2(xp * _MIN_CELL_SIZE, zp * _MIN_CELL_SIZE);
+
+            this._chunks[key] = {
+                position: [xp, zp],
+                chunk: this._createChunk(offset)
+            }
+        }
+
+
+
+        /*
+        const newChunkKey = this._key(xc,zc);
 
         //console.log(newChunkKey);
 
@@ -48,14 +79,16 @@ export class TerrainManager extends Component {
             return;
         }
 
-        const offset = new THREE.Vector2(x * _MIN_CELL_SIZE, z * _MIN_CELL_SIZE);
+
+        const offset = new THREE.Vector2(xc * _MIN_CELL_SIZE, zc * _MIN_CELL_SIZE);
 
         this._chunks[newChunkKey] = {
-            position: [x,z],
+            position: [xc,zc],
             chunk: this._createChunk(offset)
         }
 
         console.log(`create ${newChunkKey}`)
+        */
 
 
 
