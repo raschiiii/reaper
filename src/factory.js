@@ -36,7 +36,10 @@ export class Factory {
             scale: new THREE.Vector3(0.1,0.1,0.1)
         }));
 
-        obj.addComponent(new Sound(obj, this.listener, '../assets/audio/engine2.mp3'))
+        obj.addComponent(new Sound(obj, this.listener, {
+            path: '../assets/audio/engine2.mp3',
+            loop: true, volume: 0.5, autoplay: true
+        }))
 
         //obj.addComponent(new BasicPhysics(obj, {}));
         //obj.addComponent(new Physics(obj, new SpringODE(obj, 1.0, 1.5, 20, -2.7)));

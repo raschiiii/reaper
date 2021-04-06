@@ -101,19 +101,20 @@ export class Sensor extends Component {
 }
 
 export class Sound extends Component {
-    constructor(gameObject, listener, path){
+    constructor(gameObject, listener, params){
         super(gameObject);
         (async () => {
             const audioLoader = new THREE.AudioLoader();
+
             const buffer = await new Promise((resolve, reject) => {
-                audioLoader.load(path, 
-                    data => resolve(data), null, reject);
+                audioLoader.load(params.path, data => resolve(data), null, reject);
             });
-            const sound = new THREE.Audio(listener);
-            sound.setBuffer( buffer );
-            sound.setLoop( true );
-            sound.setVolume( 0.5 );
-            sound.play();
+
+            this.sound = new THREE.Audio(listener);
+            this.sound.setBuffer( buffer );
+            this.sound.setLoop( params.loop );
+            this.sound.setVolume( params.volume );
+            if (params.autoplay) this.sound.play();
         })();
     }
 }
