@@ -4,7 +4,6 @@ import { GameObject } from './game-object.js';
 import { Box } from './shapes.js';
 import { BasicPhysics } from './physics/basic-physics.js';
 import { OrbitCamera } from './orbit-camera.js';
-import { Ground, Ground2 } from './ground.js';
 import { AABB } from './collision.js';
 import { SimpleGLTFModel } from './components.js';
 import { Physics } from './physics/physics.js';
@@ -14,7 +13,7 @@ import { Cessna } from './physics/cessna-flightmodel.js';
 import { TestODE } from './physics/test-ode.js';
 import { LocalAxis } from './testing.js';
 import { AirplaneModel } from './model.js';
-import { TerrainManager } from './terrain.js';
+import { TerrainManager } from './terrain/terrain.js';
 
 export class Factory {
     constructor(scene, goa, camera, grid){
@@ -39,7 +38,8 @@ export class Factory {
         obj.addComponent(new Physics(obj, new Cessna(obj, pos, vel)));
         //obj.addComponent(new Physics(obj, new TestODE(obj)));
         
-        obj.addComponent(new LocalAxis(obj)); 
+        //obj.addComponent(new LocalAxis(obj)); 
+
         obj.addComponent(new AABB(obj));
         
         this.goa.add(obj);

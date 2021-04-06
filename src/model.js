@@ -34,7 +34,7 @@ export class AirplaneModel extends Component {
     }
 
     update(dt){
-        if (this.propellor) this.propellor.rotateZ(200.0 * dt)
+        if (this.propellor) this.propellor.rotateZ(400.0 * dt)
     }
 
     destroy(){
