@@ -11,7 +11,7 @@ class TerrainChunk {
         const geometry = new THREE.PlaneGeometry(dimensions.x, dimensions.y, 5, 5);
         this.mesh = new THREE.Mesh(geometry, material);
 
-        console.log(dimensions)
+        //console.log(dimensions)
         
         this.mesh.receiveShadow = true;
         this.mesh.rotation.x = Math.PI * -0.5;
@@ -20,7 +20,7 @@ class TerrainChunk {
     }
 
     destroy(){
-        this.mesh.dispose();
+		this.mesh.geometry.dispose()
     }
 }
 
@@ -29,7 +29,7 @@ export class TerrainManager extends Component {
         super(gameObject);
 
         this._camera = params.camera;
-        this._chunks = [];
+        this._chunks = {};
 
         this._root = new THREE.Group();
         this.gameObject.transform.add(this._root);
@@ -94,10 +94,14 @@ export class TerrainManager extends Component {
 
             const key = this._key(c.x, c.y);
 
-            if (key in this._chunks) continue;
+            if (key in this._chunks) {
+                newChunks[key] = this._chunks[key];
+                delete this._chunks[key];
+                continue;
+            }
             const offset = new THREE.Vector2(c.x, c.y);
-            
-            this._chunks[key] = {
+
+            newChunks[key] = {
                 position: [c.x, c.y],
                 chunk: this._createChunk(offset, d)
             }
@@ -107,6 +111,12 @@ export class TerrainManager extends Component {
             //    dimensions: d
             //}
         }
+
+        for (const key in this._chunks){
+            this._chunks[key].chunk.destroy();
+        }
+
+        this._chunks = newChunks;
 
         /*
         const intersection = utils.DictIntersection(this._chunks, newChunks);

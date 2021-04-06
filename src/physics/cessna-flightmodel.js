@@ -36,7 +36,7 @@ export class Cessna extends FlightmodelODE {
         let that = this;
         let thrustSlider = document.querySelector('#slider3');
         thrustSlider.oninput = function() {
-            console.log(this.value);
+            //console.log(this.value);
             that.throttle = this.value;
             throttle.innerText = that.throttle
         } 
@@ -49,7 +49,7 @@ export class Cessna extends FlightmodelODE {
 
         let aoaSlider = document.querySelector('#slider1');
         aoaSlider.oninput = function() {
-            that.alpha  = this.value
+            that.alpha  = this.value / 10
             alpha.innerText = that.alpha
         } 
 
