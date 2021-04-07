@@ -16,6 +16,46 @@ class FixedHeightMap {
     }
 }
 
+class ImageHeightMap {
+    constructor(path){
+
+        const that = this;
+
+        const loader = new THREE.TextureLoader();
+        loader.load(path, (result) => {
+            const image = result.image;
+            console.log(image)
+            const canvas = document.createElement('canvas');
+            canvas.width = image.width;
+            canvas.height = image.height;
+            const context = canvas.getContext( '2d' );
+            context.drawImage(image, 0, 0);
+
+            that.data = context.getImageData(0, 0, image.width, image.height);
+
+            console.log(that.data)
+        });
+    
+    }
+
+    _getPixel(x, y){
+        const position = (x + this.data.width * y) * 4;
+        return {
+            r: this.data.data[position],
+            g: this.data.data[position + 1],
+            b: this.data.data[position + 2],
+            a: this.data.data[position + 3]
+        }
+    }
+
+    get(x, y){
+        console.log("get")
+        //console.log(this._getPixel(0,0))
+
+        return 0;
+    }
+}
+
 class RandomHeightMap {
     constructor(){
         this._values = []
@@ -30,29 +70,25 @@ class RandomHeightMap {
     }   
 
     get(x,y){
+        // bilenear interpolation
         const x1 = Math.floor(x);
         const y1 = Math.floor(y);
         const x2 = x1 + 1;
         const y2 = y1 + 1;
-        
         const xp = x - x1;
         const yp = y - y1;
-
         const p11 = this._rand(x1, y1);
         const p21 = this._rand(x2, y1);
         const p12 = this._rand(x1, y2);
         const p22 = this._rand(x2, y2);
-
-        const px1 = THREE.MathUtils.lerp(xp, p11, p21);
-        const px2 = THREE.MathUtils.lerp(xp, p12, p22);
-
-        return THREE.MathUtils.lerp(yp, px1, px2)
+        const px1 = THREE.MathUtils.lerp(p11, p21, xp);
+        const px2 = THREE.MathUtils.lerp(p12, p22, xp);
+        return THREE.MathUtils.lerp(px1, px2, yp);
     }
 }
 
 class TerrainChunk {
     constructor(root, material, offset, dimensions, heightmap){
-        const geometry = new THREE.PlaneBufferGeometry(dimensions.x, dimensions.y, 10, 10);
 
         this._heightmap = heightmap;
 
@@ -63,8 +99,8 @@ class TerrainChunk {
         //    flatShading: true
         //});
 
+        const geometry = new THREE.PlaneBufferGeometry(dimensions.x, dimensions.y, 10, 10);
         this._plane = new THREE.Mesh(geometry, material);
-        // this.offset = offset;
         
         let vertices = this._plane.geometry.attributes.position.array;
         
@@ -91,7 +127,9 @@ export class TerrainManager extends Component {
     constructor(gameObject, params){
         super(gameObject);
 
-        this._heightmap = new RandomHeightMap();
+        //this._heightmap = new RandomHeightMap();
+        this._heightmap = new ImageHeightMap('../../assets/textures/heightmap.png');
+        
         this._camera = params.camera;
         this._chunks = {};
 
@@ -108,7 +146,7 @@ export class TerrainManager extends Component {
         this.display2 = document.querySelector('#display2');
     }
 
-    updateVisible(){
+    _updateVisible(){
         const [xc, zc] = this._cell(this._camera.position) 
 
         const keys = {};
@@ -139,7 +177,7 @@ export class TerrainManager extends Component {
 
     }
 
-    updateVisibleQuadtree(){
+    _updateVisibleQuadtree(){
         const quadtree = new QuadTree({
             min: new THREE.Vector2(-32000, -32000),
             max: new THREE.Vector2( 32000,  32000),
@@ -178,7 +216,7 @@ export class TerrainManager extends Component {
     }
 
     update(dt){
-        this.updateVisibleQuadtree();
+        this._updateVisibleQuadtree();
     }
 
     _createChunk(offset, dimensions){

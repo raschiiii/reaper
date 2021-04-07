@@ -109,6 +109,16 @@ export class Sound extends Component {
             this.sound.setLoop( params.loop );
             this.sound.setVolume( params.volume );
             if (params.autoplay) this.sound.play();
+
+            this.gameObject.subscribe("paused", (event) => {
+                if (event.paused){
+                    this.sound.pause();
+                } else {
+                    this.sound.play();
+                }
+            })
+
+
         })();
     }
 }

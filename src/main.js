@@ -63,6 +63,7 @@ document.addEventListener('keydown', (e) => {
         case 80: // p
             paused = !paused;
             pauseDisplay.style.display = paused ? "block" : "none";
+            aircraft.publish("paused", { paused: paused });
             break;
         case 49: // 1
             sensorView = !sensorView;
