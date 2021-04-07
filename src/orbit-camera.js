@@ -18,7 +18,8 @@ export class OrbitCamera extends Component {
             this.gameObject.position.z
         );
        
-        this.controls = new OrbitControls(this.camera, document.querySelector('#canvas'));
+        //this.controls = new OrbitControls(this.camera, document.querySelector('#canvas'));
+        this.controls = new OrbitControls(this.camera, document.querySelector('#screen'));
         this.controls.target.copy(this.gameObject.position);
         this.controls.update();
     }

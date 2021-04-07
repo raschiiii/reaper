@@ -25,33 +25,32 @@ export class Sensor extends Component {
         this._target = new THREE.Vector3(0,-5,0);
 
         this.gameObject.subscribe("sensor", (e) => {
-            console.log(e);
+            //console.log(e);
         })
         
         document.addEventListener('keydown', (e) => {
-            switch(e.keyCode){
-                case 76: // l
+            switch(e.code){
+                case "KeyL": // l
                     this.laserTrack();
-                    //this._track = true;
                     break;
 
-                case 75: // k
+                case "KeyK": // k
                     this._track = false;
                     break;
 
-                case 38: // arrow up
+                case "KeyW": // arrow up
                     this._sensorRotation.x += 0.1;
                     break;
 
-                case 40: // arrow down
+                case "KeyS": // arrow down
                     this._sensorRotation.x -= 0.1;
                     break;
 
-                case 37: // arrow left
+                case "KeyA": // arrow left
                     this._sensorRotation.y += 0.1;
                     break;
 
-                case 39: // arrow right
+                case "KeyD": // arrow right
                     this._sensorRotation.y -= 0.1;
                     break;
             }
@@ -70,7 +69,6 @@ export class Sensor extends Component {
         this._raycaster.set(this._camera.position, dir);
         
         const intersects = this._raycaster.intersectObjects(this.gameObject.root.children, true);
-        //console.log(intersects);
 
         if (intersects.length > 0){
             this._target.copy(intersects[0].point);
@@ -97,8 +95,6 @@ export class Sensor extends Component {
 export class Sound extends Component {
     constructor(gameObject, listener, buffer, params){
         super(gameObject);
-
-        console.log(buffer)
 
         this.sound = new THREE.Audio(listener);
         this.sound.setBuffer( buffer );

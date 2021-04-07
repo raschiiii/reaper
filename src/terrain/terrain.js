@@ -23,7 +23,11 @@ class ImageHeightMap {
         canvas.height = image.height;
         const context = canvas.getContext('2d');
         context.drawImage(image, 0, 0);
+
+        console.log(image.width)
         this._data = context.getImageData(0, 0, image.width, image.height);
+
+        console.log(this.get(0,0))
     }
 
     get(x, y) {
@@ -36,11 +40,9 @@ class ImageHeightMap {
             return Math.min(Math.max(x, 0.0), 1.0);
         }
 
-        //const offset = new THREE.Vector2(-16000, -16000);
-        //const dimensions = new THREE.Vector2(32000, 32000);
-
-        const offset = new THREE.Vector2(   -10000, -10000);
-        const dimensions = new THREE.Vector2(20000, 20000);
+        // where to place to heightmap
+        const offset = new THREE.Vector2(   -16000, -16000);
+        const dimensions = new THREE.Vector2(32000, 32000);
 
         const xf = 1.0 - sat((x - offset.x) / dimensions.x);
         const yf = sat((y - offset.y) / dimensions.y);
@@ -58,7 +60,7 @@ class ImageHeightMap {
         const p22 = getPixel(x2, y2);
         const px1 = THREE.MathUtils.lerp(p11, p21, xp);
         const px2 = THREE.MathUtils.lerp(p12, p22, xp);
-        return THREE.MathUtils.lerp(px1, px2, yp) * 5;
+        return THREE.MathUtils.lerp(px1, px2, yp) * 500;
     }
 }
 
@@ -110,7 +112,7 @@ class TerrainChunk {
         let vertices = this._plane.geometry.attributes.position.array;
 
         for (let i = 0; i < vertices.length; i = i + 3) {
-            vertices[i + 2] = this._heightmap.get(vertices[i] + offset.x, -vertices[i + 1] + offset.y) * 50;
+            vertices[i + 2] = this._heightmap.get(vertices[i] + offset.x, -vertices[i + 1] + offset.y);
         }
 
         this._plane.geometry.attributes.position.needsUpdate = true;
@@ -145,7 +147,7 @@ export class TerrainManager extends Component {
         this._material = new THREE.MeshStandardMaterial({
             color: 0x00ff00,
             wireframe: false,
-            side: THREE.FrontSide,
+            side: THREE.DoubleSide,
             flatShading: true
         });
 

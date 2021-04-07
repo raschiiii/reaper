@@ -1,6 +1,11 @@
 import * as THREE from './three/build/three.module.js';
 import Stats from './three/examples/jsm/libs/stats.module.js'
 import { GLTFLoader } from './three/examples/jsm/loaders/GLTFLoader.js';
+import {EffectComposer} from './three/examples/jsm/postprocessing/EffectComposer.js';
+import {RenderPass}     from './three/examples/jsm/postprocessing/RenderPass.js';
+import {FilmPass}       from './three/examples/jsm/postprocessing/FilmPass.js';
+import { UnrealBloomPass } from './three/examples/jsm/postprocessing/UnrealBloomPass.js';
+
 
 import { Factory } from './factory.js';
 import { GameObjectArray } from './game-object-array.js';
@@ -10,6 +15,7 @@ import { OrbitViewManager } from './orbit-camera.js';
 // Debug
 const debug         = document.querySelector('#display1');
 const pauseDisplay  = document.querySelector('#paused');
+const hud           = document.querySelector('#hud-img');
 
 const width  = 640;
 const height = 480;
@@ -24,7 +30,7 @@ const canvas = document.querySelector("#canvas");
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color( 0xcce0ff );
-scene.fog = new THREE.Fog( 0xcce0ff, 1000, 10000 );
+scene.fog = new THREE.Fog( 0xcce0ff, 200, 10000 );
 
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
@@ -36,6 +42,17 @@ renderer.setClearColor("red");
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.BasicShadowMap;
 renderer.physicallyCorrectLights = true;
+
+const cameraRender = new EffectComposer(renderer);
+cameraRender.addPass(new RenderPass(scene, camera));
+
+const sensorRender = new EffectComposer(renderer);
+sensorRender.addPass(new RenderPass(scene, sensor));
+//sensorRender.addPass(new FilmPass(0.35, 0.5, 2048, true)) // bw
+sensorRender.addPass(new FilmPass(0.35, 0.0125, 648, true))
+//sensorRender.addPass(new FilmPass(0.35, 0.025, 648, false)) // color
+
+
 
 const stats = new Stats();
 document.body.appendChild(stats.dom);
@@ -54,12 +71,12 @@ sun.shadow.camera.top  	 =  50;
 sun.shadow.camera.right	 =  50;
 scene.add(sun);
 scene.add(sun.target)
-const helper = new THREE.CameraHelper(sun.shadow.camera);
-scene.add( helper );
+//const helper = new THREE.CameraHelper(sun.shadow.camera);
+//scene.add( helper );
 const light = new THREE.AmbientLight(0x404040, 1.0); 
 scene.add(light);
-const axesHelper = new THREE.AxesHelper( 50 );
-scene.add( axesHelper );
+//const axesHelper = new THREE.AxesHelper( 50 );
+//scene.add( axesHelper );
 
 let paused = false;
 let sensorView = false;
@@ -126,9 +143,9 @@ let assets = {
     const factory       = new Factory(assets, scene, goa, camera, grid, sensor, listener);
     const viewManager   = new OrbitViewManager(goa, camera);
 
-    const aircraft = factory.createAircraft(new THREE.Vector3(0, 100, 0), new THREE.Vector3(8, 0, 0));
+    const aircraft = factory.createAircraft(new THREE.Vector3(0, 200, 0), new THREE.Vector3(8, 0, 0));
     const terrain = factory.createTerrain();
-    factory.createTestCube(new THREE.Vector3(-20, 20, -20));
+    factory.createTestCube(new THREE.Vector3(0, 60, 0));
     factory.createTestCube(new THREE.Vector3(20, 20, 20));
 
     goa._addQueued();
@@ -143,6 +160,7 @@ let assets = {
                 break;
             case 49: // 1
                 sensorView = !sensorView;
+                hud.style.display = sensorView ? "block" : "none";
                 aircraft.publish("sensor", { enabled: sensorView })
                 break;
             case 50: // 2
@@ -195,7 +213,13 @@ let assets = {
 
 
         stats.update()	
-        renderer.render(scene, sensorView ? sensor : camera);
+        //renderer.render(scene, sensorView ? sensor : camera);
+
+        if (sensorView){
+            sensorRender.render(dt);
+        } else {
+            cameraRender.render(dt);
+        }
         requestAnimationFrame(animate);
     };
 

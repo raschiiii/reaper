@@ -10,7 +10,7 @@ export class Box extends Component {
         let size            = params.size           ? params.size : new THREE.Vector3(1,1,1);
         let castShadow      = params.castShadow     ? params.castShadow : false;
         let receiveShadow   = params.receiveShadow  ? params.receiveShadow : false;
-        let color           = params.color          ? params.color : 0x00ff00;
+        let color           = params.color          ? params.color : 0xff0000;
 
 		let geometry 	= new THREE.BoxBufferGeometry(size.x, size.y, size.z)
 		let material 	= new THREE.MeshStandardMaterial({ 

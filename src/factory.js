@@ -12,7 +12,7 @@ import { GravityODE } from './physics/gravity-ode.js';
 import { Cessna } from './physics/cessna-flightmodel.js';
 import { TestODE } from './physics/test-ode.js';
 import { LocalAxis } from './testing.js';
-import { AirplaneModel2 } from './model.js';
+import { AirplaneModel } from './model.js';
 import { TerrainManager } from './terrain/terrain.js';
 import { Sensor, Sound } from './aircraft.js';
 
@@ -32,7 +32,7 @@ export class Factory {
         obj.position.copy(pos);
         obj.velocity.copy(vel);
         
-        obj.addComponent(new AirplaneModel2(obj, this.assets.gltf.drone.asset, {
+        obj.addComponent(new AirplaneModel(obj, this.assets.gltf.drone.asset, {
             rotation: new THREE.Vector3(0, Math.PI / 2, 0),
             scale: new THREE.Vector3(0.1,0.1,0.1)
         }));
