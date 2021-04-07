@@ -1,5 +1,9 @@
 # Documentation
 
+Map size: 32000 * 32000
+
+scaling factor x10
+
 ## Events
 * input: `{}` 
 * collision : ` collision: { depth: [x,y,z] } `

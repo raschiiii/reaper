@@ -32,11 +32,6 @@ export class Factory {
         obj.position.copy(pos);
         obj.velocity.copy(vel);
         
-        //obj.addComponent(new AirplaneModel(obj, '../assets/objects/MQ-9.glb', {
-        //    rotation: new THREE.Vector3(0, Math.PI / 2, 0),
-        //    scale: new THREE.Vector3(0.1,0.1,0.1)
-        //}));
-
         obj.addComponent(new AirplaneModel2(obj, this.assets.gltf.drone.asset, {
             rotation: new THREE.Vector3(0, Math.PI / 2, 0),
             scale: new THREE.Vector3(0.1,0.1,0.1)
@@ -45,7 +40,7 @@ export class Factory {
         obj.addComponent(new Sound(obj, this.listener, this.assets.audio.engine.asset,{
             loop: true, 
             volume: 0.5, 
-            autoplay: true
+            autoplay: false
         }))
 
         //obj.addComponent(new BasicPhysics(obj, {}));
@@ -76,7 +71,10 @@ export class Factory {
 
     createTerrain(){
         const obj = new GameObject(this.scene);
-        obj.addComponent(new TerrainManager(obj, { camera: this.camera }));
+        obj.addComponent(new TerrainManager(obj, { 
+            camera: this.camera,
+            heightmap: this.assets.textures.heightmap.asset.image 
+        }));
         return obj;
     }
 }

@@ -126,14 +126,13 @@ let assets = {
     const factory       = new Factory(assets, scene, goa, camera, grid, sensor, listener);
     const viewManager   = new OrbitViewManager(goa, camera);
 
-    const aircraft = factory.createAircraft(new THREE.Vector3(0, 10, 0), new THREE.Vector3(8, 0, 0));
+    const aircraft = factory.createAircraft(new THREE.Vector3(0, 100, 0), new THREE.Vector3(8, 0, 0));
     const terrain = factory.createTerrain();
     factory.createTestCube(new THREE.Vector3(-20, 20, -20));
     factory.createTestCube(new THREE.Vector3(20, 20, 20));
 
     goa._addQueued();
     viewManager.setActive(0);
-
 
     document.addEventListener('keydown', (e) => {
         switch(e.keyCode){
@@ -152,9 +151,6 @@ let assets = {
         }
     }, false);
 
-
-    
-
     let dt = 0, then = 0;
     const animate = function (now) {
 
@@ -163,7 +159,7 @@ let assets = {
         then = now;
         if (dt > 0.1 || isNaN(dt)) dt = 0.1;
 
-        debug.innerText = `pos: ${sun.position.x.toFixed(2)}, ${sun.position.y.toFixed(2)}, ${sun.position.z.toFixed(2)}\nvel: ${aircraft.velocity.x.toFixed(2)}, ${aircraft.velocity.y.toFixed(2)}, ${aircraft.velocity.z.toFixed(2)}`;
+        debug.innerText = `pos: ${aircraft.position.x.toFixed(2)}, ${aircraft.position.y.toFixed(2)}, ${aircraft.position.z.toFixed(2)}\nvel: ${aircraft.velocity.x.toFixed(2)}, ${aircraft.velocity.y.toFixed(2)}, ${aircraft.velocity.z.toFixed(2)}`;
 
         if (!paused){
             goa.forEach(gameObject => {
@@ -204,10 +200,5 @@ let assets = {
     };
 
     animate();
-
-
-
-
-
 })();
 

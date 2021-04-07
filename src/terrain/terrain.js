@@ -1,76 +1,81 @@
 import * as THREE from '../three/build/three.module.js';
 import { ImprovedNoise } from '../three/examples/jsm/math/ImprovedNoise.js';
-import { Component }  from '../components.js';
+import { Component } from '../components.js';
 import { QuadTree } from './quadtree.js';
 
-const _MIN_CELL_SIZE    = 50;
-const _FIXED_GRID_SIZE  =  3;
+const _MIN_CELL_SIZE = 50;
+const _FIXED_GRID_SIZE = 3;
 
 class FixedHeightMap {
-    constructor(){
+    constructor() {
 
     }
 
-    get(x,y){
+    get(x, y) {
         return 0;
     }
 }
 
 class ImageHeightMap {
-    constructor(path){
-
-        const that = this;
-
-        const loader = new THREE.TextureLoader();
-        loader.load(path, (result) => {
-            const image = result.image;
-            console.log(image)
-            const canvas = document.createElement('canvas');
-            canvas.width = image.width;
-            canvas.height = image.height;
-            const context = canvas.getContext( '2d' );
-            context.drawImage(image, 0, 0);
-
-            that.data = context.getImageData(0, 0, image.width, image.height);
-
-            console.log(that.data)
-        });
-    
+    constructor(image) {
+        const canvas = document.createElement('canvas');
+        canvas.width = image.width;
+        canvas.height = image.height;
+        const context = canvas.getContext('2d');
+        context.drawImage(image, 0, 0);
+        this._data = context.getImageData(0, 0, image.width, image.height);
     }
 
-    _getPixel(x, y){
-        const position = (x + this.data.width * y) * 4;
-        return {
-            r: this.data.data[position],
-            g: this.data.data[position + 1],
-            b: this.data.data[position + 2],
-            a: this.data.data[position + 3]
+    get(x, y) {
+        const getPixel = (x, y) => {
+            const position = (x + this._data.width * y) * 4;
+            const data = this._data.data;
+            return data[position] / 255.0;
         }
-    }
+        const sat = (x) => {
+            return Math.min(Math.max(x, 0.0), 1.0);
+        }
 
-    get(x, y){
-        //console.log("get")
-        //console.log(this._getPixel(0,0))
+        //const offset = new THREE.Vector2(-16000, -16000);
+        //const dimensions = new THREE.Vector2(32000, 32000);
 
-        return 0;
+        const offset = new THREE.Vector2(   -10000, -10000);
+        const dimensions = new THREE.Vector2(20000, 20000);
+
+        const xf = 1.0 - sat((x - offset.x) / dimensions.x);
+        const yf = sat((y - offset.y) / dimensions.y);
+        const w = this._data.width - 1;
+        const h = this._data.height - 1;
+        const x1 = Math.floor(xf * w);
+        const y1 = Math.floor(yf * h);
+        const x2 = THREE.MathUtils.clamp(x1 + 1, 0, w);
+        const y2 = THREE.MathUtils.clamp(y1 + 1, 0, h);
+        const xp = xf * w - x1;
+        const yp = yf * h - y1;
+        const p11 = getPixel(x1, y1);
+        const p21 = getPixel(x2, y1);
+        const p12 = getPixel(x1, y2);
+        const p22 = getPixel(x2, y2);
+        const px1 = THREE.MathUtils.lerp(p11, p21, xp);
+        const px2 = THREE.MathUtils.lerp(p12, p22, xp);
+        return THREE.MathUtils.lerp(px1, px2, yp) * 5;
     }
 }
 
 class RandomHeightMap {
-    constructor(){
+    constructor() {
         this._values = []
     }
 
-    _rand(x,y){
+    _rand(x, y) {
         const k = x + '.' + y;
-        if (!(k in this._values)){
+        if (!(k in this._values)) {
             this._values[k] = Math.random();
         }
         return this._values[k];
-    }   
+    }
 
-    get(x,y){
-        // bilenear interpolation
+    get(x, y) {
         const x1 = Math.floor(x);
         const y1 = Math.floor(y);
         const x2 = x1 + 1;
@@ -88,7 +93,7 @@ class RandomHeightMap {
 }
 
 class TerrainChunk {
-    constructor(root, material, offset, dimensions, heightmap){
+    constructor(root, material, offset, dimensions, heightmap) {
 
         this._heightmap = heightmap;
 
@@ -101,12 +106,12 @@ class TerrainChunk {
 
         const geometry = new THREE.PlaneBufferGeometry(dimensions.x, dimensions.y, 10, 10);
         this._plane = new THREE.Mesh(geometry, material);
-        
+
         let vertices = this._plane.geometry.attributes.position.array;
-        
+
         for (let i = 0; i < vertices.length; i = i + 3) {
-            vertices[i+2] = this._heightmap.get(vertices[i] + offset.x, -vertices[i+1] + offset.y) * 50;
-        } 
+            vertices[i + 2] = this._heightmap.get(vertices[i] + offset.x, -vertices[i + 1] + offset.y) * 50;
+        }
 
         this._plane.geometry.attributes.position.needsUpdate = true;
         this._plane.geometry.computeVertexNormals();
@@ -118,18 +123,19 @@ class TerrainChunk {
         root.add(this._plane);
     }
 
-    destroy(){
-		this._plane.geometry.dispose()
+    destroy() {
+        this._plane.geometry.dispose()
     }
 }
 
 export class TerrainManager extends Component {
-    constructor(gameObject, params){
+    constructor(gameObject, params) {
         super(gameObject);
 
         //this._heightmap = new RandomHeightMap();
-        this._heightmap = new ImageHeightMap('../../assets/textures/heightmap.png');
-        
+        //this._heightmap = new ImageHeightMap('../../assets/textures/heightmap.png');
+        this._heightmap = new ImageHeightMap(params.heightmap);
+
         this._camera = params.camera;
         this._chunks = {};
 
@@ -146,13 +152,13 @@ export class TerrainManager extends Component {
         this.display2 = document.querySelector('#display2');
     }
 
-    _updateVisible(){
-        const [xc, zc] = this._cell(this._camera.position) 
+    _updateVisible() {
+        const [xc, zc] = this._cell(this._camera.position)
 
         const keys = {};
 
-        for (let x = - _FIXED_GRID_SIZE; x <= _FIXED_GRID_SIZE; x++){
-            for (let z = -_FIXED_GRID_SIZE; z <= _FIXED_GRID_SIZE; z++){
+        for (let x = - _FIXED_GRID_SIZE; x <= _FIXED_GRID_SIZE; x++) {
+            for (let z = -_FIXED_GRID_SIZE; z <= _FIXED_GRID_SIZE; z++) {
                 const k = this._key(xc + x, zc + z);
                 keys[k] = {
                     position: [xc + x, zc + z]
@@ -160,10 +166,10 @@ export class TerrainManager extends Component {
             }
         }
 
-        for (const key in keys){
+        for (const key in keys) {
 
             if (key in this._chunks) continue;
-            
+
             const [xp, zp] = keys[key].position;
 
             const offset = new THREE.Vector2(xp * _MIN_CELL_SIZE, zp * _MIN_CELL_SIZE);
@@ -177,10 +183,10 @@ export class TerrainManager extends Component {
 
     }
 
-    _updateVisibleQuadtree(){
+    _updateVisibleQuadtree() {
         const quadtree = new QuadTree({
             min: new THREE.Vector2(-32000, -32000),
-            max: new THREE.Vector2( 32000,  32000),
+            max: new THREE.Vector2(32000, 32000),
         });
         quadtree.Insert(this._camera.position);
         const children = quadtree.GetChildren();
@@ -190,7 +196,7 @@ export class TerrainManager extends Component {
 
         let newChunks = {};
 
-        for (const child of children){
+        for (const child of children) {
 
             child.bounds.getCenter(center);
             child.bounds.getSize(dimensions);
@@ -215,16 +221,16 @@ export class TerrainManager extends Component {
         this.display2.innerText = `${Object.keys(this._chunks).length}`
     }
 
-    update(dt){
+    update(dt) {
         this._updateVisibleQuadtree();
     }
 
-    _createChunk(offset, dimensions){
+    _createChunk(offset, dimensions) {
         const chunk = new TerrainChunk(this._root, this._material, offset, dimensions, this._heightmap);
         return chunk;
     }
 
-    _cell(p){
+    _cell(p) {
         const xp = p.x + _MIN_CELL_SIZE * 0.5;
         const yp = p.z + _MIN_CELL_SIZE * 0.5;
         const x = Math.floor(xp / _MIN_CELL_SIZE);
@@ -232,7 +238,7 @@ export class TerrainManager extends Component {
         return [x, z];
     }
 
-    _key(x, z){
+    _key(x, z) {
         return `${x}/${z}`;
     }
 }
