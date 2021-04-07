@@ -12,12 +12,13 @@ import { GravityODE } from './physics/gravity-ode.js';
 import { Cessna } from './physics/cessna-flightmodel.js';
 import { TestODE } from './physics/test-ode.js';
 import { LocalAxis } from './testing.js';
-import { AirplaneModel } from './model.js';
+import { AirplaneModel2 } from './model.js';
 import { TerrainManager } from './terrain/terrain.js';
 import { Sensor, Sound } from './aircraft.js';
 
 export class Factory {
-    constructor(scene, goa, camera, grid, sensor, listener){
+    constructor(assets, scene, goa, camera, grid, sensor, listener){
+        this.assets = assets;
         this.scene = scene;
         this.goa = goa;
         this.camera = camera;
@@ -31,13 +32,18 @@ export class Factory {
         obj.position.copy(pos);
         obj.velocity.copy(vel);
         
-        obj.addComponent(new AirplaneModel(obj, '../assets/objects/MQ-9.glb', {
+        //obj.addComponent(new AirplaneModel(obj, '../assets/objects/MQ-9.glb', {
+        //    rotation: new THREE.Vector3(0, Math.PI / 2, 0),
+        //    scale: new THREE.Vector3(0.1,0.1,0.1)
+        //}));
+
+        obj.addComponent(new AirplaneModel2(obj, this.assets.gltf.drone.asset, {
             rotation: new THREE.Vector3(0, Math.PI / 2, 0),
             scale: new THREE.Vector3(0.1,0.1,0.1)
         }));
 
-        obj.addComponent(new Sound(obj, this.listener, {
-            path: '../assets/audio/engine2.mp3',
+        obj.addComponent(new Sound(obj, this.listener, this.assets.audio.engine.asset, 
+            {
             loop: true, volume: 0.5, autoplay: true
         }))
 

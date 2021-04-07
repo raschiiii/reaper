@@ -95,8 +95,29 @@ export class Sensor extends Component {
 }
 
 export class Sound extends Component {
-    constructor(gameObject, listener, params){
+    constructor(gameObject, listener, buffer, params){
         super(gameObject);
+
+        console.log(buffer)
+        
+        this.sound = new THREE.Audio(listener);
+        this.sound.setBuffer( buffer );
+        this.sound.setLoop( params.loop );
+        this.sound.setVolume( params.volume );
+        this.sound.play();
+
+        /*
+        this.gameObject.subscribe("paused", (event) => {
+            if (event.paused){
+                this.sound.pause();
+            } else {
+                this.sound.play();
+            }
+        })
+        */
+
+        /*
+
         (async () => {
             const audioLoader = new THREE.AudioLoader();
 
@@ -120,5 +141,6 @@ export class Sound extends Component {
 
 
         })();
+        */
     }
 }

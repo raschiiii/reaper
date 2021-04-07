@@ -49,7 +49,7 @@ class ImageHeightMap {
     }
 
     get(x, y){
-        console.log("get")
+        //console.log("get")
         //console.log(this._getPixel(0,0))
 
         return 0;

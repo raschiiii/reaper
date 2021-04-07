@@ -76,8 +76,6 @@ document.addEventListener('keydown', (e) => {
 }, false);
 
 
-
-
 // Create lights
 
 const sun = new THREE.DirectionalLight(0x404040, 6);
@@ -105,7 +103,6 @@ scene.add( axesHelper );
 
 let dt = 0, then = 0;
 const animate = function (now) {
-    requestAnimationFrame(animate);
 
     now *= 0.001; 
     dt   = now - then;
@@ -133,7 +130,7 @@ const animate = function (now) {
                 }
             }
         });
-        terrain.update(dt);
+        this.terrain.update(dt);
     }
 
     //sun.position.copy(aircraft.position)
@@ -149,6 +146,7 @@ const animate = function (now) {
 
 	stats.update()	
     renderer.render(scene, sensorView ? sensor : camera);
+    requestAnimationFrame(animate);
 };
 
 animate();
