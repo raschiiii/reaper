@@ -11,8 +11,6 @@ import { OrbitViewManager } from './orbit-camera.js';
 
 export class Game {
     constructor(){
-        this.then = null;
-
         this.assets = {
             gltf: {
                 drone: {
@@ -30,58 +28,58 @@ export class Game {
                 }
             }
         }
+        this.then = null;
+        this.paused = false;
+        this.sensorView = false;
 
-        //this.resouces = {};
 
-        const manager = new THREE.LoadingManager();
-        manager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
-            console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
-        };
 
-        const gltfLoader = new GLTFLoader(manager);
-        for (const resource of Object.values(this.assets.gltf)) {  
-            gltfLoader.load(resource.url, (result) => {
-                resource.asset = result;
-            });
-        }
+        this.load();
+    }
 
-        const textureLoader = new THREE.TextureLoader(manager);
-        for (const resource of Object.values(this.assets.textures)){
-            textureLoader.load(resource.url, (result) => {
-                resource.asset = result;
-            })
-        }
+    async load(){
 
-        const audioLoader = new THREE.AudioLoader(manager);
+        const promises = [];
+        
+        let loader = new THREE.AudioLoader();
         for (const resource of Object.values(this.assets.audio)){
-
-            //resource.asset = await new Promise((resolve, reject) => {
-            //    audioLoader.load(resource.url, data => resolve(data), null, reject);
-            //});
-
-            
-
-            audioLoader.load(resource.url, (result) => {
-                resource.asset = result;
-                console.log(resource.url)
-                console.log(resource.asset)
+            const p = new Promise((resolve, reject) => {
+                loader.load(resource.url, data => {
+                    resource.asset = data
+                    resolve(resource)
+                }, null, reject);
             });
-            
-
+            promises.push(p);
+        }
+       
+        loader = new THREE.TextureLoader();
+        for (const resource of Object.values(this.assets.textures)){
+            const p = new Promise((resolve, reject) => {
+                loader.load(resource.url, data => {
+                    resource.asset = data
+                    resolve(resource)
+                }, null, reject);
+            });
+            promises.push(p);
+        }
+        
+        loader = new GLTFLoader();
+        for (const resource of Object.values(this.assets.gltf)){
+            const p = new Promise((resolve, reject) => {
+                loader.load(resource.url, data => {
+                    resource.asset = data
+                    resolve(resource)
+                }, null, reject);
+            });
+            promises.push(p);
         }
 
-        let that = this;
-        manager.onLoad = function () {
-            console.log( "Loading complete!")
-            console.log(that.assets)
-            console.log(that.assets.gltf.drone)
-            console.log(that.assets.audio.engine)
-
-            //console.log(that.assets.audio.engine.asset);
-            
-            that.init();
-        }
-
+        await Promise.all(promises);
+        console.log(this.assets)
+        this.initGraphics();
+        this.initLights();
+        this.initGame();
+        this.raf();
     }
 
     initLights(){
@@ -138,10 +136,41 @@ export class Game {
         document.body.appendChild(this.stats.dom);
     }
 
+    initControls(){
+        document.addEventListener('keydown', (e) => {
+            switch(e.keyCode){
+                case 80: // p
+                    this.paused = !this.paused;
+                    pauseDisplay.style.display = this.paused ? "block" : "none";
+                    this.aircraft.publish("paused", { paused: this.paused });
+                    break;
+
+                case 49: // 1
+                    this.sensorView = !this.sensorView;
+                    this.aircraft.publish("sensor", { enabled: this.sensorView })
+                    break;
+
+                case 50: // 2
+                    this.viewManager.toggle();
+                    break;            
+            }
+        }, false);
+
+    }
+
     initGame(){
         this.goa           = new GameObjectArray()
         this.grid          = new HashGrid(2);
-        this.factory       = new Factory(this.assets, this.scene, this.goa, this.camera, this.grid, this.sensor, this.listener);
+        this.factory       = new Factory(
+                                this.assets, 
+                                this.scene, 
+                                this.goa, 
+                                this.camera, 
+                                this.grid, 
+                                this.sensor, 
+                                this.listener
+                            );
+
         this.viewManager   = new OrbitViewManager(this.goa, this.camera);
 
         this.aircraft = this.factory.createAircraft(
@@ -157,13 +186,6 @@ export class Game {
         this.viewManager.setActive(0);
     }
 
-    init(){
-        this.initGraphics();
-        this.initLights();
-        this.initGame();
-        this.raf()
-    }
-
     raf(){
         requestAnimationFrame((now) => {
             if (this.then === null) {
@@ -177,6 +199,9 @@ export class Game {
     render(t){
         const dt = Math.min(t * 0.001, 0.1);
 
+        //if (!this.paused){
+//
+        //}
         this.goa.forEach(gameObject => {
             gameObject.update(dt);
 
@@ -195,9 +220,11 @@ export class Game {
                 }
             }
         });
+
         this.terrain.update(dt);
 
-        this.stats.update()	
+        this.stats.update();
+
         //renderer.render(scene, sensorView ? sensor : camera);
         this.renderer.render(this.scene, this.camera);
         this.raf();

@@ -42,9 +42,10 @@ export class Factory {
             scale: new THREE.Vector3(0.1,0.1,0.1)
         }));
 
-        obj.addComponent(new Sound(obj, this.listener, this.assets.audio.engine.asset, 
-            {
-            loop: true, volume: 0.5, autoplay: true
+        obj.addComponent(new Sound(obj, this.listener, this.assets.audio.engine.asset,{
+            loop: true, 
+            volume: 0.5, 
+            autoplay: true
         }))
 
         //obj.addComponent(new BasicPhysics(obj, {}));
@@ -52,10 +53,10 @@ export class Factory {
         
         obj.addComponent(new Physics(obj, new Cessna(obj, pos, vel)));
         obj.addComponent(new Sensor(obj, this.sensor))
+        obj.addComponent(new AABB(obj));
         
         //obj.addComponent(new LocalAxis(obj)); 
 
-        obj.addComponent(new AABB(obj));
         
         this.goa.add(obj);
         return obj;

@@ -99,14 +99,13 @@ export class Sound extends Component {
         super(gameObject);
 
         console.log(buffer)
-        
+
         this.sound = new THREE.Audio(listener);
         this.sound.setBuffer( buffer );
         this.sound.setLoop( params.loop );
         this.sound.setVolume( params.volume );
-        this.sound.play();
-
-        /*
+        if (params.autoplay) this.sound.play();
+        
         this.gameObject.subscribe("paused", (event) => {
             if (event.paused){
                 this.sound.pause();
@@ -114,33 +113,5 @@ export class Sound extends Component {
                 this.sound.play();
             }
         })
-        */
-
-        /*
-
-        (async () => {
-            const audioLoader = new THREE.AudioLoader();
-
-            const buffer = await new Promise((resolve, reject) => {
-                audioLoader.load(params.path, data => resolve(data), null, reject);
-            });
-
-            this.sound = new THREE.Audio(listener);
-            this.sound.setBuffer( buffer );
-            this.sound.setLoop( params.loop );
-            this.sound.setVolume( params.volume );
-            if (params.autoplay) this.sound.play();
-
-            this.gameObject.subscribe("paused", (event) => {
-                if (event.paused){
-                    this.sound.pause();
-                } else {
-                    this.sound.play();
-                }
-            })
-
-
-        })();
-        */
     }
 }
