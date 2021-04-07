@@ -48,11 +48,11 @@ export class Sensor extends Component {
                     break;
 
                 case 37: // arrow left
-                    this._sensorRotation.y -= 0.1;
+                    this._sensorRotation.y += 0.1;
                     break;
 
                 case 39: // arrow right
-                    this._sensorRotation.y += 0.1;
+                    this._sensorRotation.y -= 0.1;
                     break;
             }
         }, false);
@@ -70,7 +70,7 @@ export class Sensor extends Component {
         this._raycaster.set(this._camera.position, dir);
         
         const intersects = this._raycaster.intersectObjects(this.gameObject.root.children, true);
-        console.log(intersects);
+        //console.log(intersects);
 
         if (intersects.length > 0){
             this._target.copy(intersects[0].point);
@@ -87,13 +87,7 @@ export class Sensor extends Component {
         this._cameraDummy.getWorldPosition(o);
         this._camera.position.copy(o);
         this._camera.rotation.copy(this._sensorRotation);
-
-        // let dir = new THREE.Vector3(0,0,-1);
-        // dir.applyEuler(this._camera.rotation);
-        // dir.normalize();
-        // this.helper.setDirection(dir);
-        // this.helper.position.copy(o)
-        
+         
         if (this._track){
             this._camera.lookAt(this._target);
         }
