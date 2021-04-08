@@ -14,7 +14,7 @@ import { TestODE } from './physics/test-ode.js';
 import { LocalAxis } from './testing.js';
 import { AirplaneModel } from './model.js';
 import { TerrainManager } from './terrain/terrain.js';
-import { Sensor, Sound } from './aircraft.js';
+import { Sensor, Sound } from './aircraft-systems.js';
 
 export class Factory {
     constructor(assets, scene, goa, camera, grid, sensor, listener){

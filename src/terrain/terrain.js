@@ -41,8 +41,8 @@ class ImageHeightMap {
         }
 
         // where to place to heightmap
-        const offset = new THREE.Vector2(   -16000, -16000);
-        const dimensions = new THREE.Vector2(32000, 32000);
+        const offset     = new THREE.Vector2(-16000, -16000);
+        const dimensions = new THREE.Vector2( 32000,  32000);
 
         const xf = 1.0 - sat((x - offset.x) / dimensions.x);
         const yf = sat((y - offset.y) / dimensions.y);
@@ -99,12 +99,7 @@ class TerrainChunk {
 
         this._heightmap = heightmap;
 
-        //let m = new THREE.MeshStandardMaterial({
-        //    color: 0x00ff00,
-        //    wireframe: false,
-        //    side: THREE.FrontSide,
-        //    flatShading: true
-        //});
+        console.log(dimensions);
 
         const geometry = new THREE.PlaneBufferGeometry(dimensions.x, dimensions.y, 10, 10);
         this._plane = new THREE.Mesh(geometry, material);
@@ -135,7 +130,6 @@ export class TerrainManager extends Component {
         super(gameObject);
 
         //this._heightmap = new RandomHeightMap();
-        //this._heightmap = new ImageHeightMap('../../assets/textures/heightmap.png');
         this._heightmap = new ImageHeightMap(params.heightmap);
 
         this._camera = params.camera;

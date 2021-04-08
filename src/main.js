@@ -49,7 +49,7 @@ cameraRender.addPass(new RenderPass(scene, camera));
 const sensorRender = new EffectComposer(renderer);
 sensorRender.addPass(new RenderPass(scene, sensor));
 //sensorRender.addPass(new FilmPass(0.35, 0.5, 2048, true)) // bw
-sensorRender.addPass(new FilmPass(0.35, 0.0125, 648, true))
+sensorRender.addPass(new FilmPass(0.35, 0.0125, 1024, true))
 //sensorRender.addPass(new FilmPass(0.35, 0.025, 648, false)) // color
 
 
@@ -84,7 +84,7 @@ let sensorView = false;
 let assets = {
     gltf: {
         drone: {
-            url: '../assets/objects/MQ-9.glb'
+            url: '../assets/objects/MQ-9v2.glb'
         }
     },
     textures: {
@@ -201,19 +201,7 @@ let assets = {
             terrain.update(dt);
         }
 
-        //sun.position.copy(aircraft.position)
-        //sun.position.x += 10,
-        //sun.position.y += 1000,
-        //sun.position.z += 10
-        //sun.target.position.copy(aircraft.position)
-        //sun.target.position.y = 0;
-        //sun.updateMatrix();
-        //sun.updateMatrixWorld(); 
-        //helper.update()
-
-
         stats.update()	
-        //renderer.render(scene, sensorView ? sensor : camera);
 
         if (sensorView){
             sensorRender.render(dt);

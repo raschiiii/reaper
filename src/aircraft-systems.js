@@ -65,7 +65,6 @@ export class Sensor extends Component {
         dir.applyEuler(this._camera.rotation);
         dir.normalize();
 
-        //this._raycaster.set(this._camera.position, new THREE.Vector3(0,-1,0));
         this._raycaster.set(this._camera.position, dir);
         
         const intersects = this._raycaster.intersectObjects(this.gameObject.root.children, true);
