@@ -16,9 +16,9 @@ export class OrbitCamera extends Component {
 
         this.oldPos.copy(this.worldPos);
         this.camera.position.set(
-            this.worldPos.x - 2,
-            this.worldPos.y,
-            this.worldPos.z
+            this.worldPos.x - 1,
+            this.worldPos.y + 1,
+            this.worldPos.z - 1
         );
 
         //this.controls = new OrbitControls(this.camera, document.querySelector('#canvas'));
