@@ -222,7 +222,6 @@ export class Explosion extends ParticleSystem {
             this.sound.setRefDistance(20);
             parent.add(this.sound);
         })();
-        
     }
 
     impact(pos){

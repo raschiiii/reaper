@@ -6,6 +6,12 @@ import { OrbitControls } from './three/examples/jsm/controls/OrbitControls.js';
 export class OrbitCamera extends Component {
     constructor(gameObject, camera){
         super(gameObject);
+
+
+        this._speed = document.querySelector('#speed');
+        this._altitude = document.querySelector('#altitude');
+
+
         this.camera = camera;
 
         this.oldPos   = new THREE.Vector3();
@@ -33,6 +39,11 @@ export class OrbitCamera extends Component {
         this.camera.position.add(this.moved);
         this.controls.target.copy(this.worldPos);
         this.controls.update();
+
+        this._speed.innerText = `${ (this.gameObject.velocity.length() * 10).toFixed(2) } km/h`
+        this._altitude.innerText = `${ (this.gameObject.position.y * 10).toFixed(2) } m`
+
+
     }
 
     destroy(){

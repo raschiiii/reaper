@@ -23,3 +23,9 @@ html, body {
     top: 240px;
     display: none;
 }
+
+#info {
+    left: 510px;
+    top:  50px;
+}
+

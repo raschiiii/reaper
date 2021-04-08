@@ -43,6 +43,7 @@ renderer.setClearColor("red");
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.BasicShadowMap;
 renderer.physicallyCorrectLights = true;
+renderer.logarithmicDepthBuffer = true;
 
 const cameraRenderer = new EffectComposer(renderer);
 cameraRenderer.addPass(new RenderPass(scene, camera));
@@ -149,7 +150,7 @@ let assets = {
     const explosions    = new Explosion(scene, '../assets/textures/explosion2.png', listener)
 
 
-    const aircraft  = factory.createAircraft(new THREE.Vector3(0, 100, 0), new THREE.Vector3(8, 0, 0));
+    const aircraft  = factory.createAircraft(new THREE.Vector3(0, 300, 0), new THREE.Vector3(8, 0, 0));
     const terrain   = factory.createTerrain();
     const heightmap = terrain.getComponent("TerrainManager");
 

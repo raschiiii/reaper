@@ -9,15 +9,23 @@
         <div id="screen">
             <canvas id="canvas" width="640" height="480"></canvas>
             <img id="hud-img" src="./assets/textures/HUD.png" alt="">
-
         </div>
-        <br>
-        <span class="hud-element" id="paused">Paused</span>
+        <div class="hud-element" id="info">
+            <span id="speed">Speed</span><br>
+            <span id="altitude">Alt</span>
+        </div>
+       
 
-        
+        <span id="paused">Paused</span>
+
+
+
+
+
         <input type="range" id="slider1"  min="-100" max="100" value="0">
         <input type="range" id="slider2"  min="-10" max="10" value="0">
         <input type="range" id="slider3"  min="0"   max="500" value="200">
+        <input type="range" id="slider4"  min="1"   max="100" value="1">
         <br>
         <span id="display1">display1</span>
         <br>

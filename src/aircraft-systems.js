@@ -24,6 +24,15 @@ export class Sensor extends Component {
         this.gameObject.subscribe("sensor", (e) => {
             //console.log(e);
         })
+
+        this._zoom = 0;
+        const that = this;
+        this._zoomSlider = document.querySelector('#slider4');
+        
+        this._zoomSlider.oninput = function() {
+            that._camera.zoom = this.value;
+            that._camera.updateProjectionMatrix();
+        }
         
         document.addEventListener('keydown', (e) => {
             switch(e.code){
@@ -81,8 +90,16 @@ export class Sensor extends Component {
     update(dt){
         let o = new THREE.Vector3();
         this._cameraDummy.getWorldPosition(o);
-        this._camera.position.copy(o);
+
         this._camera.rotation.copy(this._sensorRotation);
+        
+        //let dir = new THREE.Vector3(0,0,-1);
+        //dir.applyEuler(this._camera.rotation);
+        //dir.normalize();
+        //dir.multiplyScalar(this._zoom);
+        //o.add(dir);
+
+        this._camera.position.copy(o);
          
         if (this._track){
             this._camera.lookAt(this._target);
