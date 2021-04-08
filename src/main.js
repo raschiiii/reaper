@@ -11,6 +11,7 @@ import { Factory } from './factory.js';
 import { GameObjectArray } from './game-object-array.js';
 import { HashGrid } from './hashgrid.js';
 import { OrbitViewManager } from './orbit-camera.js';
+import { Smoke } from './particles.js';
 
 // Debug
 const debug         = document.querySelector('#display1');
@@ -153,6 +154,8 @@ let assets = {
     factory.createTestCube(new THREE.Vector3(0, 60, 0));
     factory.createTestCube(new THREE.Vector3(20, 20, 20));
 
+    const smoke = new Smoke(aircraft.transform);
+
     goa._addQueued();
     viewManager.setActive(0);
 
@@ -203,6 +206,8 @@ let assets = {
                     }
                 }
             });
+
+            smoke.update(dt);
             terrain.update(dt);
         }
 
