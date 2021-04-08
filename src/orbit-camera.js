@@ -13,7 +13,7 @@ export class OrbitCamera extends Component {
         
         this.oldPos.copy(this.gameObject.position);
         this.camera.position.set(
-            this.gameObject.position.x - 5,
+            this.gameObject.position.x - 2,
             this.gameObject.position.y,
             this.gameObject.position.z
         );

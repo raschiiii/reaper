@@ -9,3 +9,15 @@ export class JoystickInput extends Component {
     }
 }
 
+export class PilotInput extends Component {
+    constructor(gameObject){
+        super(gameObject);
+
+
+
+
+
+        
+    }
+}
+

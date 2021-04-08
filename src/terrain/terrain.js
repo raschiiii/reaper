@@ -99,7 +99,7 @@ class TerrainChunk {
 
         this._heightmap = heightmap;
 
-        console.log(dimensions);
+        //console.log(dimensions);
 
         const geometry = new THREE.PlaneBufferGeometry(dimensions.x, dimensions.y, 10, 10);
         this._plane = new THREE.Mesh(geometry, material);

@@ -91,6 +91,30 @@ export class Sensor extends Component {
     }
 }
 
+export class Hardpoints extends Component {
+    constructor(gameObject){
+        super(gameObject);
+
+        // from right to left
+
+        this.h1 = new THREE.Object3D();
+        this.h1.position.set(.17, -.1,   .285)
+        this.gameObject.transform.add(this.h1);
+
+        this.h2 = new THREE.Object3D();
+        this.h2.position.set(.17, -.1,  .14)
+        this.gameObject.transform.add(this.h2);
+
+        this.h3 = new THREE.Object3D();
+        this.h3.position.set(.17, -.1,  -.14)
+        this.gameObject.transform.add(this.h3);
+
+        this.h4 = new THREE.Object3D();
+        this.h4.position.set(.17, -.1,   -.285)
+        this.gameObject.transform.add(this.h4);
+    }
+}
+
 export class Sound extends Component {
     constructor(gameObject, listener, buffer, params){
         super(gameObject);

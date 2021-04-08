@@ -11,7 +11,8 @@ export class SimpleModel extends Component {
         let scale    = params.scale    ? params.scale    : new THREE.Vector3(1,1,1);
 
 
-        this.model = gltf.scene;
+        this.model = gltf.scene.clone();
+        
         this.model.position.copy(position);
         this.model.rotateX(rotation.x);
         this.model.rotateY(rotation.y);

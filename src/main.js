@@ -84,7 +84,10 @@ let sensorView = false;
 let assets = {
     gltf: {
         drone: {
-            url: '../assets/objects/MQ-9v2.glb'
+            url: '../assets/objects/MQ-9v3.glb'
+        },
+        hellfire: {
+            url: '../assets/objects/AGM-114.glb'
         }
     },
     textures: {
@@ -137,6 +140,8 @@ let assets = {
     }
 
     await Promise.all(promises);
+
+    console.log(assets)
 
     const goa           = new GameObjectArray()
     const grid          = new HashGrid(2);

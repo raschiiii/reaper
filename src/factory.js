@@ -12,9 +12,10 @@ import { GravityODE } from './physics/gravity-ode.js';
 import { Cessna } from './physics/cessna-flightmodel.js';
 import { TestODE } from './physics/test-ode.js';
 import { LocalAxis } from './testing.js';
-import { AirplaneModel } from './model.js';
+import { AirplaneModel, SimpleModel } from './model.js';
 import { TerrainManager } from './terrain/terrain.js';
-import { Sensor, Sound } from './aircraft-systems.js';
+import { Hardpoints, Sensor, Sound } from './aircraft-systems.js';
+import { PilotInput } from './input.js';
 
 export class Factory {
     constructor(assets, scene, goa, camera, grid, sensor, listener){
@@ -31,6 +32,7 @@ export class Factory {
         const obj = new GameObject(this.scene);
         obj.position.copy(pos);
         obj.velocity.copy(vel);
+        this.goa.add(obj);
         
         obj.addComponent(new AirplaneModel(obj, this.assets.gltf.drone.asset, {
             rotation: new THREE.Vector3(0, Math.PI / 2, 0),
@@ -47,12 +49,27 @@ export class Factory {
         //obj.addComponent(new Physics(obj, new SpringODE(obj, 1.0, 1.5, 20, -2.7)));
         
         obj.addComponent(new Physics(obj, new Cessna(obj, pos, vel)));
-        obj.addComponent(new Sensor(obj, this.sensor))
+        obj.addComponent(new Sensor(obj, this.sensor));
+        obj.addComponent(new PilotInput(obj));
         obj.addComponent(new AABB(obj));
         
-        //obj.addComponent(new LocalAxis(obj)); 
+        obj.addComponent(new LocalAxis(obj));
 
+        const hardpoints = obj.addComponent(new Hardpoints(obj))
+        this.createHellfire(hardpoints.h1);
+        this.createHellfire(hardpoints.h2);
+        this.createHellfire(hardpoints.h3);
+        this.createHellfire(hardpoints.h4);
         
+        return obj;
+    }
+
+    createHellfire(parent){
+        let obj = new GameObject(parent);
+        obj.addComponent(new SimpleModel(obj, this.assets.gltf.hellfire.asset, {
+            rotation: new THREE.Vector3(0, Math.PI / 2, 0),
+            scale: new THREE.Vector3(0.1,0.1,0.1)
+        }));
         this.goa.add(obj);
         return obj;
     }
