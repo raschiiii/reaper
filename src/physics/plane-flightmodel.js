@@ -2,19 +2,11 @@ import * as THREE from '../three/build/three.module.js';
 import { FlightmodelODE } from './flightmodel-ode.js';
 import { ODESolver } from './physics.js';
 
-export class Cessna extends FlightmodelODE {
+export class PropPlane extends FlightmodelODE {
     constructor(gameObject){
         super(gameObject, {
-            /*
-            x: pos.x * 10.0,
-            y: pos.z * 10.0,
-            z: pos.y * 10.0,
 
-            vx: vel.x * 10,
-            vy: vel.z * 10,
-            vz: vel.y * 10,
-            */
-
+            // switch coordiantes
             x: gameObject.position.x * 10.0,
             y: gameObject.position.z * 10.0,
             z: gameObject.position.y * 10.0,

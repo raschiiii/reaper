@@ -9,7 +9,7 @@ import { EventRelay, SimpleGLTFModel } from './components.js';
 import { Physics } from './physics/physics.js';
 import { SpringODE } from './physics/spring-ode.js';
 import { GravityODE } from './physics/gravity-ode.js';
-import { Cessna } from './physics/cessna-flightmodel.js';
+import { PropPlane } from './physics/plane-flightmodel.js';
 import { TestODE } from './physics/test-ode.js';
 import { LocalAxis } from './testing.js';
 import { AirplaneModel, SimpleModel } from './model.js';
@@ -17,6 +17,7 @@ import { TerrainManager } from './terrain/terrain.js';
 import { Hardpoints, Sensor, Sound } from './aircraft-systems.js';
 import { PilotInput } from './input.js';
 import { MissileFireControl } from './weapon-systems.js';
+import { Hellfire } from './physics/hellfire.js';
 
 export class Factory {
     constructor(assets, scene, goa, camera, grid, sensor, listener){
@@ -48,7 +49,7 @@ export class Factory {
 
         //obj.addComponent(new BasicPhysics(obj, {}));
         //obj.addComponent(new Physics(obj, new SpringODE(obj, 1.0, 1.5, 20, -2.7)));
-        obj.addComponent(new Physics(obj, new Cessna(obj)));
+        obj.addComponent(new Physics(obj, new PropPlane(obj)));
         //obj.addComponent(new Physics(obj, new GravityODE(obj)))
 
         obj.addComponent(new Sensor(obj, this.sensor));

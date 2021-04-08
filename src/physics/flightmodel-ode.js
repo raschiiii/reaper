@@ -8,23 +8,13 @@ export class FlightmodelODE extends ODE {
         this.display2 = document.querySelector('#display2')
         this.display1 = document.querySelector('#throttle');
 
-        let vx = params.vx;
-        let vy = params.vy;
-        let vz = params.vz;
-
-        let x = params.x;
-        let y = params.y;
-        let z = params.z;
-
         this.s    = 0; 
-        this.q[0] = vx;
-        this.q[1] = x;
-
-        this.q[2] = vy;
-        this.q[3] = y;
-
-        this.q[4] = vz;
-        this.q[5] = z;
+        this.q[0] = params.vx;
+        this.q[1] = params.x;
+        this.q[2] = params.vy;
+        this.q[3] = params.y;
+        this.q[4] = params.vz;
+        this.q[5] = params.z;
 
         this.time = 0;
         this.wingArea = params.wingArea;
@@ -62,21 +52,9 @@ export class FlightmodelODE extends ODE {
 
     }
 
-    get position(){
-        return new THREE.Vector3(this.q[1], this.q[5], this.q[3]);
-    }
-
-    get velocity(){
-        return new THREE.Vector3(this.q[0], this.q[4], this.q[2]);
-    }
-
-    get rotation(){
-        return new THREE.Euler(-this.roll, this.yaw, this.pitch, "YZX");
-    }
-
     getRightHandSide(s, q, deltaQ, ds, qScale){
-        let dQ = [];
-        let newQ = [];
+        let dQ      = [];
+        let newQ    = [];
 
         for(let i = 0; i < 6; i++) {
             newQ[i] = q[i] + qScale*deltaQ[i];
@@ -145,10 +123,6 @@ export class FlightmodelODE extends ODE {
             this.pitch = Math.atan(vz / vh);
             cosPitch = Math.cos(this.pitch)
             sinPitch = Math.sin(this.pitch)
-            
-            //cosPitch = vh/vtotal;  
-            //sinPitch = vz/vtotal;  
-            //this.pitch = Math.asin(sinPitch);
         }
         
         if ( vh == 0.0 ) {
@@ -159,15 +133,8 @@ export class FlightmodelODE extends ODE {
         } else {
             cosYaw = vx/vh;
             sinYaw = vy/vh;
-                       
-            //this.yaw = Math.acos(vx/vh);
-            //this.yaw = -Math.asin(vy/vh);
-
             this.yaw = Math.atan2(vx, vy) - Math.PI / 2
         }
-
-        //this.display1.innerText = `vx/vh=${vx/vh},\n vy/vh=${vy/vh}}`
-
 
         let Fx = cosYaw*cosPitch*(thrust - drag) + ( sinYaw*sinRoll - cosYaw*sinPitch*cosRoll)*lift;
         let Fy = sinYaw*cosPitch*(thrust - drag) + (-cosYaw*sinRoll - sinYaw*sinPitch*cosRoll)*lift;
@@ -186,6 +153,17 @@ export class FlightmodelODE extends ODE {
         dQ[4] = ds*(Fz/this.mass);
         dQ[5] = ds*vz;
         return dQ;
-    
+    }
+
+    get position(){
+        return new THREE.Vector3(this.q[1], this.q[5], this.q[3]);
+    }
+
+    get velocity(){
+        return new THREE.Vector3(this.q[0], this.q[4], this.q[2]);
+    }
+
+    get rotation(){
+        return new THREE.Euler(-this.roll, this.yaw, this.pitch, "YZX");
     }
 }
