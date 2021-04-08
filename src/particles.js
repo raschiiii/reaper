@@ -73,7 +73,7 @@ export class ParticleSystem {
 			fragmentShader: _FS,
 			depthTest: 		true,
 			depthWrite: 	false,
-			blending: params.blending, 
+			blending:       params.blending, 
 			transparent: 	true,
 			vertexColors: 	true
 		});

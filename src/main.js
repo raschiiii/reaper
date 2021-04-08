@@ -35,7 +35,7 @@ scene.fog = new THREE.Fog( 0xcce0ff, 200, 10000 );
 
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
-    logarithmicDepthBuffer: true
+    logarithmicDepthBuffer: false
 });
 
 renderer.setSize(width, height);
@@ -150,11 +150,14 @@ let assets = {
     const viewManager   = new OrbitViewManager(goa, camera);
 
     const aircraft = factory.createAircraft(new THREE.Vector3(0, 200, 0), new THREE.Vector3(8, 0, 0));
+    const smoke = new Smoke(aircraft.transform);
+    
     const terrain = factory.createTerrain();
     factory.createTestCube(new THREE.Vector3(0, 60, 0));
     factory.createTestCube(new THREE.Vector3(20, 20, 20));
 
-    const smoke = new Smoke(aircraft.transform);
+    //smoke._source.set(0, 60, 0)
+
 
     goa._addQueued();
     viewManager.setActive(0);
@@ -206,7 +209,8 @@ let assets = {
                     }
                 }
             });
-
+            
+            //aircraft.transform.localToWorld(smoke._source)
             smoke.update(dt);
             terrain.update(dt);
         }
