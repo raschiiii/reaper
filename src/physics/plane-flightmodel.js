@@ -27,7 +27,7 @@ export class PropPlane extends FlightmodelODE {
             eff: 0.77,
             mass: 1114.0,
             engineRps: 40.0,
-            enginePower: 11931.0,
+            enginePower: 119310.0,
             propDiameter: 1.905,
             a: 1.83,
             b: -1.32

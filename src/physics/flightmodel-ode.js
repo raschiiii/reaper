@@ -50,6 +50,9 @@ export class FlightmodelODE extends ODE {
         this.pitch = 0;
         this.yaw = 0;
 
+
+        this.display2 = document.querySelector('#display2');
+
     }
 
     getRightHandSide(s, q, deltaQ, ds, qScale){
@@ -77,10 +80,14 @@ export class FlightmodelODE extends ODE {
         let pressure = 101325.0*Math.pow(grp, 5.25);
         let density = 0.00348*pressure/temperature;
         
-        let omega = density/1.225;
-        let factor = (omega - 0.12)/0.88;
-        let advanceRatio = vtotal/(this.engineRps*this.propDiameter);
-        let thrust = this.throttle*factor*this.enginePower*(this.a + this.b*advanceRatio*advanceRatio)/(this.engineRps*this.propDiameter);
+        //let omega = density/1.225;
+        //let factor = (omega - 0.12)/0.88;
+        //let advanceRatio = vtotal/(this.engineRps*this.propDiameter);
+        //let thrust = this.throttle*factor*this.enginePower*(this.a + this.b*advanceRatio*advanceRatio)/(this.engineRps*this.propDiameter);
+
+        let thrust = this.throttle * 5;
+
+        this.display2.innerText = `thrust ${thrust.toFixed(2)}`
 
         let cl;
         if ( this.alpha < this.alphaClMax ) {

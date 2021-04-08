@@ -137,8 +137,6 @@ export class TerrainManager extends Component {
             side: THREE.DoubleSide,
             flatShading: true
         });
-
-        this.display2 = document.querySelector('#display2');
     }
 
     _updateVisible() {
@@ -207,7 +205,7 @@ export class TerrainManager extends Component {
 
         for (const key in this._chunks) this._chunks[key].chunk.destroy();
         this._chunks = newChunks;
-        this.display2.innerText = `${Object.keys(this._chunks).length}`
+        //this.display2.innerText = `${Object.keys(this._chunks).length}`
     }
 
     update(dt) {

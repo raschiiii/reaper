@@ -31,7 +31,7 @@ const canvas = document.querySelector("#canvas");
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color( 0xcce0ff );
-scene.fog = new THREE.Fog( 0xcce0ff, 200, 10000 );
+scene.fog = new THREE.Fog( 0xcce0ff, 500, 10000 );
 
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
@@ -50,9 +50,8 @@ cameraRenderer.addPass(new RenderPass(scene, camera));
 
 const sensorRenderer = new EffectComposer(renderer);
 sensorRenderer.addPass(new RenderPass(scene, sensor));
-//sensorRender.addPass(new FilmPass(0.35, 0.5, 2048, true)) // bw
-sensorRenderer.addPass(new FilmPass(0.35, 0.0125, 1024, true))
-
+sensorRenderer.addPass(new FilmPass(0.35, 0.5, 2048, true)) // bw
+//sensorRenderer.addPass(new FilmPass(0.35, 0.0125, 1024, true))
 
 const stats = new Stats();
 document.body.appendChild(stats.dom);
@@ -71,10 +70,13 @@ sun.shadow.camera.top  	 =  50;
 sun.shadow.camera.right	 =  50;
 scene.add(sun);
 scene.add(sun.target)
+
 //const helper = new THREE.CameraHelper(sun.shadow.camera);
 //scene.add( helper );
+
 const light = new THREE.AmbientLight(0x404040, 1.0); 
 scene.add(light);
+
 //const axesHelper = new THREE.AxesHelper( 50 );
 //scene.add( axesHelper );
 
@@ -204,18 +206,14 @@ let assets = {
                 const terrainHeight = heightmap.getHeight(gameObject.position.x, gameObject.position.z);
                 if (gameObject.position.y < terrainHeight){
                     
-                    console.log("ground collision");
-
-                    const impactPoint = new THREE.Vector3(
-                        gameObject.position.x,
-                        terrainHeight,
-                        gameObject.position.z
+                    const impactPoint = new THREE.Vector3( 
+                        gameObject.position.x, terrainHeight, gameObject.position.z
                     );
                     
                     explosions.impact(impactPoint);
 
                     gameObject.publish("collision", { 
-                        depth: [0, terrainHeight - gameObject.position.y, 0]
+                        depth: [ 0, terrainHeight - gameObject.position.y, 0 ]
                     });
                 }
 
