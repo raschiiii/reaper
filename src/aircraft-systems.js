@@ -11,8 +11,8 @@ export class Sensor extends Component {
         this._camera.rotation.copy(this._sensorRotation);
 
         this._cameraDummy = new THREE.Object3D();
-        this._cameraDummy.position.x += 0.9;
-        this._cameraDummy.position.y -= 0.2;
+        this._cameraDummy.position.x += 0.6;
+        this._cameraDummy.position.y -= 0.1;
 
         this.gameObject.transform.add(this._cameraDummy);
 
@@ -33,6 +33,7 @@ export class Sensor extends Component {
 
                 case "KeyK": // k
                     this._track = false;
+                    this._sensorRotation.copy(this._camera.rotation);
                     break;
 
                 case "KeyW": // arrow up

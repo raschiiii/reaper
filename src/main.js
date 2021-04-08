@@ -11,7 +11,7 @@ import { Factory } from './factory.js';
 import { GameObjectArray } from './game-object-array.js';
 import { HashGrid } from './hashgrid.js';
 import { OrbitViewManager } from './orbit-camera.js';
-import { Smoke } from './particles.js';
+import { Explosion } from './particles.js';
 
 // Debug
 const debug         = document.querySelector('#display1');
@@ -21,8 +21,8 @@ const hud           = document.querySelector('#hud-img');
 const width  = 640;
 const height = 480;
 
-const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 10000);
-const sensor = new THREE.PerspectiveCamera(75, width / height, 0.1, 10000);
+const camera = new THREE.PerspectiveCamera(75, width / height, 0.01, 10000);
+const sensor = new THREE.PerspectiveCamera(75, width / height, 0.01, 10000);
 
 const listener = new THREE.AudioListener();
 camera.add(listener);
@@ -44,15 +44,13 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.BasicShadowMap;
 renderer.physicallyCorrectLights = true;
 
-const cameraRender = new EffectComposer(renderer);
-cameraRender.addPass(new RenderPass(scene, camera));
+const cameraRenderer = new EffectComposer(renderer);
+cameraRenderer.addPass(new RenderPass(scene, camera));
 
-const sensorRender = new EffectComposer(renderer);
-sensorRender.addPass(new RenderPass(scene, sensor));
+const sensorRenderer = new EffectComposer(renderer);
+sensorRenderer.addPass(new RenderPass(scene, sensor));
 //sensorRender.addPass(new FilmPass(0.35, 0.5, 2048, true)) // bw
-sensorRender.addPass(new FilmPass(0.35, 0.0125, 1024, true))
-//sensorRender.addPass(new FilmPass(0.35, 0.025, 648, false)) // color
-
+sensorRenderer.addPass(new FilmPass(0.35, 0.0125, 1024, true))
 
 
 const stats = new Stats();
@@ -148,16 +146,17 @@ let assets = {
     const grid          = new HashGrid(2);
     const factory       = new Factory(assets, scene, goa, camera, grid, sensor, listener);
     const viewManager   = new OrbitViewManager(goa, camera);
+    const explosions    = new Explosion(scene, '../assets/textures/explosion2.png', listener)
 
-    const aircraft = factory.createAircraft(new THREE.Vector3(0, 200, 0), new THREE.Vector3(8, 0, 0));
-    const smoke = new Smoke(aircraft.transform);
-    
-    const terrain = factory.createTerrain();
-    factory.createTestCube(new THREE.Vector3(0, 60, 0));
-    factory.createTestCube(new THREE.Vector3(20, 20, 20));
 
-    //smoke._source.set(0, 60, 0)
+    const aircraft  = factory.createAircraft(new THREE.Vector3(0, 100, 0), new THREE.Vector3(8, 0, 0));
+    const terrain   = factory.createTerrain();
+    const heightmap = terrain.getComponent("TerrainManager");
 
+    let h = heightmap.getHeight(0,0);
+    factory.createTestCube(new THREE.Vector3(0, h, 0));
+    h = heightmap.getHeight(20,20);
+    factory.createTestCube(new THREE.Vector3(20, h, 20));
 
     goa._addQueued();
     viewManager.setActive(0);
@@ -201,26 +200,46 @@ let assets = {
                     }
                 }
 
+                const terrainHeight = heightmap.getHeight(gameObject.position.x, gameObject.position.z);
+                if (gameObject.position.y < terrainHeight){
+                    
+                    console.log("ground collision");
+
+                    const impactPoint = new THREE.Vector3(
+                        gameObject.position.x,
+                        terrainHeight,
+                        gameObject.position.z
+                    );
+                    
+                    explosions.impact(impactPoint);
+
+                    gameObject.publish("collision", { 
+                        depth: [0, terrainHeight - gameObject.position.y, 0]
+                    });
+                }
+
                 if (gameObject.lifetime != undefined){
                     gameObject.lifetime -= dt;
                     if (gameObject.lifetime <= 0){
-                        gameObjectArray.remove(gameObject);
+                        if (viewManager.activeGameObject == gameObject.id){
+                            viewManager.toggle();
+                        }
+                        goa.remove(gameObject);
                         gameObject.destroy();
                     }
                 }
             });
             
-            //aircraft.transform.localToWorld(smoke._source)
-            smoke.update(dt);
+            explosions.update(dt);
             terrain.update(dt);
         }
 
         stats.update()	
 
         if (sensorView){
-            sensorRender.render(dt);
+            sensorRenderer.render(dt);
         } else {
-            cameraRender.render(dt);
+            cameraRenderer.render(dt);
         }
         requestAnimationFrame(animate);
     };

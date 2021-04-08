@@ -5,7 +5,7 @@ import { Box } from './shapes.js';
 import { BasicPhysics } from './physics/basic-physics.js';
 import { OrbitCamera } from './orbit-camera.js';
 import { AABB } from './collision.js';
-import { EventRelay, SimpleGLTFModel } from './components.js';
+import { EventRelay, Explosive } from './components.js';
 import { Physics } from './physics/physics.js';
 import { SpringODE } from './physics/spring-ode.js';
 import { GravityODE } from './physics/gravity-ode.js';
@@ -18,6 +18,7 @@ import { Hardpoints, Sensor, Sound } from './aircraft-systems.js';
 import { PilotInput } from './input.js';
 import { MissileFireControl } from './weapon-systems.js';
 import { Hellfire } from './physics/hellfire.js';
+import { SmokeEmitter } from './particles.js';
 
 export class Factory {
     constructor(assets, scene, goa, camera, grid, sensor, listener){
@@ -47,15 +48,15 @@ export class Factory {
             autoplay: false
         }))
 
-        //obj.addComponent(new BasicPhysics(obj, {}));
         //obj.addComponent(new Physics(obj, new SpringODE(obj, 1.0, 1.5, 20, -2.7)));
         obj.addComponent(new Physics(obj, new PropPlane(obj)));
-        //obj.addComponent(new Physics(obj, new GravityODE(obj)))
 
         obj.addComponent(new Sensor(obj, this.sensor));
         obj.addComponent(new PilotInput(obj));
         obj.addComponent(new AABB(obj));
+        obj.addComponent(new Explosive(obj));
         
+        //obj.addComponent(new SmokeEmitter(obj));
         //obj.addComponent(new LocalAxis(obj));
 
         const hardpoints = obj.addComponent(new Hardpoints(obj))
@@ -75,11 +76,12 @@ export class Factory {
             scale: new THREE.Vector3(0.1,0.1,0.1)
         }));
 
-        obj.addComponent(new EventRelay(obj, parent, ["fire"]))
-        obj.addComponent(new MissileFireControl(obj, hardpointId));
+        obj.addComponent(new EventRelay(obj, parent, ["fire"]));
+        obj.addComponent(new Explosive(obj));
+        obj.addComponent(new MissileFireControl(obj, hardpointId, this.goa));
 
 
-        this.goa.add(obj);
+        //this.goa.add(obj);
         return obj;
     }
 

@@ -14,6 +14,12 @@ export class PilotInput extends Component {
         super(gameObject);
 
         this._target = null;
+        this._h = 1;
+
+
+        this._input = {
+            
+        }
 
         this.gameObject.subscribe("laser", (e) => {
             this._target = e.target;
@@ -24,7 +30,7 @@ export class PilotInput extends Component {
             switch(e.code){
                 case "KeyF": 
                     this.gameObject.publish("fire", { 
-                        hardpoint: 1, 
+                        hardpoint: this._h ++ , 
                         target: this._target,
                         position: this.gameObject.position,
                         velocity: this.gameObject.velocity

@@ -4,11 +4,12 @@ import { BasicPhysics } from './physics/basic-physics.js';
 import { Physics } from './physics/physics.js';
 import { GravityODE } from './physics/gravity-ode.js';
 import { Hellfire } from './physics/hellfire.js';
+import { SmokeEmitter } from './particles.js';
 
 export class MissileFireControl extends Component {
-    constructor(gameObject, id){
+    constructor(gameObject, id, goa){
         super(gameObject);
-
+        this.goa = goa;
         this.id = id;
 
         this.gameObject.subscribe("fire", (e) => {
@@ -31,7 +32,9 @@ export class MissileFireControl extends Component {
                 this.gameObject.position.copy(tmp);
                 this.gameObject.velocity.copy(e.velocity);
                 
+                this.gameObject.addComponent(new SmokeEmitter(this.gameObject));
                 this.gameObject.addComponent(new Physics(this.gameObject, new Hellfire(this.gameObject)))
+                this.goa.add(this.gameObject);
             }
         })
     }

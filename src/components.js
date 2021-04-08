@@ -1,6 +1,7 @@
 import * as THREE from './three/build/three.module.js';
 import { GLTFLoader } from './three/examples/jsm/loaders/GLTFLoader.js';
 
+// base class for all components
 export class Component {
 	constructor(gameObject){
 		this.gameObject = gameObject
@@ -25,38 +26,24 @@ export class EventRelay extends Component {
     }
 }
 
-export class SimpleGLTFModel extends Component {
-    constructor(gameObject, path, params){
+// listens to collisions and destroys the GameObject
+export class Explosive extends Component {
+    constructor(gameObject){
         super(gameObject);
 
-        let rotation = params.rotation ? params.rotation : new THREE.Vector3();
-        let position = params.position ? params.position : new THREE.Vector3();
-        let scale    = params.scale    ? params.scale    : new THREE.Vector3(1,1,1);
+        let hasExploded = false;
 
-        (async () => {
-            const loader = new GLTFLoader();
-            const gltf = await new Promise((resolve, reject) => {
-                loader.load(path, data => resolve(data), null, reject);
-            });
-            this.model = gltf.scene;
-            this.model.position.copy(position);
-            this.model.rotateX(rotation.x);
-            this.model.rotateY(rotation.y);
-            this.model.rotateZ(rotation.z);
-            this.model.scale.copy(scale);
+        this.gameObject.subscribe("collision", () => {
+            if (!hasExploded){
+                hasExploded = true;
+                this.gameObject.lifetime = 0;
+                const physics = this.gameObject.getComponent("Physics");
+                if (physics) this.gameObject.removeComponent("Physics");
 
-            this.model.traverse( function ( object ) {
-                if(object.isMesh) object.castShadow = true;
-            });
+                const smoke = this.gameObject.getComponent("SmokeEmitter");
+                if (smoke) this.gameObject.removeComponent("SmokeEmitter");
 
-            this.gameObject.transform.add(this.model)
-        })();
+            }
+        });
     }
-
-    destroy(){
-		this.model.geometry.dispose()
-		this.model.material.dispose()
-		this.model.parent.remove(this.model)
-	}
 }
-

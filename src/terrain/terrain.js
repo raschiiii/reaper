@@ -96,14 +96,9 @@ class RandomHeightMap {
 
 class TerrainChunk {
     constructor(root, material, offset, dimensions, heightmap) {
-
         this._heightmap = heightmap;
-
-        //console.log(dimensions);
-
         const geometry = new THREE.PlaneBufferGeometry(dimensions.x, dimensions.y, 10, 10);
         this._plane = new THREE.Mesh(geometry, material);
-
         let vertices = this._plane.geometry.attributes.position.array;
 
         for (let i = 0; i < vertices.length; i = i + 3) {
@@ -112,11 +107,9 @@ class TerrainChunk {
 
         this._plane.geometry.attributes.position.needsUpdate = true;
         this._plane.geometry.computeVertexNormals();
-
         this._plane.position.set(offset.x, 0, offset.y)
         this._plane.rotation.x = Math.PI * -0.5;
         this._plane.receiveShadow = true;
-
         root.add(this._plane);
     }
 
@@ -139,7 +132,7 @@ export class TerrainManager extends Component {
         this.gameObject.transform.add(this._root);
 
         this._material = new THREE.MeshStandardMaterial({
-            color: 0x00ff00,
+            color: 0xaa895e,
             wireframe: false,
             side: THREE.DoubleSide,
             flatShading: true
@@ -236,5 +229,9 @@ export class TerrainManager extends Component {
 
     _key(x, z) {
         return `${x}/${z}`;
+    }
+
+    getHeight(x,z){
+        return this._heightmap.get(x,z);
     }
 }

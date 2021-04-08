@@ -80,7 +80,7 @@ export class ParticleSystem {
         
 		this._geometry = new THREE.BufferGeometry();
 		this._geometry.computeBoundingSphere()
-		this._geometry.boundingSphere.set(this._cache, 100);
+		this._geometry.boundingSphere.set(this._cache, 16000);
 		this._points = new THREE.Points(this._geometry, this._material);
         this._updateGeometry();
 		parent.add(this._points);
@@ -191,8 +191,8 @@ export class Explosion extends ParticleSystem {
     constructor(parent, texturePath, listener){
         super(parent, {
             numParticles: 1000, 
-            particleLifetime: 0.5,
-            particlesPerSecond: 1, 
+            particleLifetime: 15,
+            particlesPerSecond: 20, 
             texture: texturePath,
             blending: THREE.AdditiveBlending,
             alphaDegrading: 0.1
@@ -215,17 +215,14 @@ export class Explosion extends ParticleSystem {
         (async () => {
             const audioLoader = new THREE.AudioLoader();
             const buffer = await new Promise((resolve, reject) => {
-                audioLoader.load('./assets/audio/explosion2.mp3', data => resolve(data), null, reject);
+                audioLoader.load('../assets/audio/explosion.mp3', data => resolve(data), null, reject);
             });
             this.sound = new THREE.PositionalAudio(listener);
-            //console.log(this.sound);
             this.sound.setBuffer(buffer);
             this.sound.setRefDistance(20);
-            //this.sound.play()
             parent.add(this.sound);
         })();
-
-
+        
     }
 
     impact(pos){
@@ -233,6 +230,7 @@ export class Explosion extends ParticleSystem {
         this.on = true;
         this.counter = 0;
         this.light.color.setHex(0xffffff);
+        
         
         if (this.sound){
             if (this.sound.isPlaying){
@@ -242,9 +240,11 @@ export class Explosion extends ParticleSystem {
                 this.sound.play();
             }
         }
+        
 
 
         for (let i = 0; i < this.particlesPerImpact; i++){
+            console.log("emit")
             let unused = this._findUnusedParticle();
             this._particles[unused].position.copy(pos);
 
@@ -270,7 +270,6 @@ export class Explosion extends ParticleSystem {
         this._updateParticles(dt);
         this._updateGeometry();
 	}
-
 }
 
 export class BulletImpact extends ParticleSystem {
@@ -313,26 +312,44 @@ export class Smoke extends ParticleSystem {
     constructor(parent, source = new THREE.Vector3()){
         super(parent, {
             numParticles: 1000, 
-            particleLifetime: 5,
-            particlesPerSecond: 10, 
+            particleLifetime: 3,
+            particlesPerSecond: 300, 
             texture: '../assets/textures/smoke.png',
             blending: THREE.NormalBlending,
-            alphaDegrading: 0.1
+            alphaDegrading: 0.5
 
         });
+
+        this._spread = 0.1
         this._source = source;
     }
 
     _createParticle(unused){
-        this._particles[unused].position.x = this._source.x + 0.25 * Math.random() - 0.125;
-        this._particles[unused].position.y = this._source.y + 0.25 * Math.random() - 0.125;
-        this._particles[unused].position.z = this._source.z + 0.25 * Math.random() - 0.125;
+        this._particles[unused].position.x = this._source.x + this._spread * Math.random() - this._spread / 2;
+        this._particles[unused].position.y = this._source.y + this._spread * Math.random() - this._spread / 2;
+        this._particles[unused].position.z = this._source.z + this._spread * Math.random() - this._spread / 2;
 
         this._particles[unused].velocity.set(0.1, 0.3, 0);
         this._particles[unused].lifetime = this.particleLifetime;
         this._particles[unused].size = this.startSize;
         this._particles[unused].color = new THREE.Color();
         this._particles[unused].alpha = 1;
+    }
+}
+
+export class SmokeEmitter extends Component {
+    constructor(gameObject, offset = new THREE.Vector3()){
+        super(gameObject);
+        this._smoke = new Smoke(this.gameObject.root)
+    }
+
+    update(dt){
+        this.gameObject.transform.getWorldPosition(this._smoke._source);
+        this._smoke.update(dt);
+    }
+
+    destroy(){
+        this._smoke.destroy();
     }
 }
 
