@@ -3,8 +3,9 @@ import { FlightmodelODE } from './flightmodel-ode.js';
 import { ODESolver } from './physics.js';
 
 export class Cessna extends FlightmodelODE {
-    constructor(gameObject, pos, vel){
+    constructor(gameObject){
         super(gameObject, {
+            /*
             x: pos.x * 10.0,
             y: pos.z * 10.0,
             z: pos.y * 10.0,
@@ -12,6 +13,15 @@ export class Cessna extends FlightmodelODE {
             vx: vel.x * 10,
             vy: vel.z * 10,
             vz: vel.y * 10,
+            */
+
+            x: gameObject.position.x * 10.0,
+            y: gameObject.position.z * 10.0,
+            z: gameObject.position.y * 10.0,
+
+            vx: gameObject.velocity.x * 10,
+            vy: gameObject.velocity.z * 10,
+            vz: gameObject.velocity.y * 10,
 
             wingArea: 16.2,
             wingSpan: 10.9,

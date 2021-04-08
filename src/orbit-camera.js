@@ -10,14 +10,17 @@ export class OrbitCamera extends Component {
 
         this.oldPos = new THREE.Vector3();
         this.moved  = new THREE.Vector3();
-        
-        this.oldPos.copy(this.gameObject.position);
-        this.camera.position.set(
-            this.gameObject.position.x - 2,
-            this.gameObject.position.y,
-            this.gameObject.position.z
-        );
+        this.worldPos = new THREE.Vector3();
        
+        this.gameObject.transform.getWorldPosition(this.worldPos);
+
+        this.oldPos.copy(this.worldPos);
+        this.camera.position.set(
+            this.worldPos.x - 2,
+            this.worldPos.y,
+            this.worldPos.z
+        );
+
         //this.controls = new OrbitControls(this.camera, document.querySelector('#canvas'));
         this.controls = new OrbitControls(this.camera, document.querySelector('#screen'));
         this.controls.target.copy(this.gameObject.position);
@@ -25,12 +28,14 @@ export class OrbitCamera extends Component {
     }
 
     update(dt){
-        this.moved.subVectors(this.gameObject.position, this.oldPos);
-        this.oldPos.copy(this.gameObject.position);
+        this.gameObject.transform.getWorldPosition(this.worldPos);
+        
+        this.moved.subVectors(this.worldPos, this.oldPos);
+        this.oldPos.copy(this.worldPos);
 
         this.camera.position.add(this.moved);
         
-        this.controls.target.copy(this.gameObject.position);
+        this.controls.target.copy(this.worldPos);
         this.controls.update();
     }
 

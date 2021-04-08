@@ -7,9 +7,6 @@ export class Sensor extends Component {
 
         this._camera = camera;
         
-        // this.helper = new THREE.ArrowHelper(new THREE.Vector3(1,0,0), new THREE.Vector3(), 5, 0xff0000);
-        // this.gameObject.root.add(this.helper);
-
         this._sensorRotation = new THREE.Euler(0, -Math.PI/2, 0, "YZX");
         this._camera.rotation.copy(this._sensorRotation);
 
@@ -59,7 +56,6 @@ export class Sensor extends Component {
     }
 
     laserTrack(){
-        console.log("laser")
 
         let dir = new THREE.Vector3(0,0,-1);
         dir.applyEuler(this._camera.rotation);
@@ -71,6 +67,8 @@ export class Sensor extends Component {
 
         if (intersects.length > 0){
             this._target.copy(intersects[0].point);
+            console.log("laser")
+            this.gameObject.publish("laser", { target: this._target });
             this._track = true;
         }
         

@@ -9,6 +9,8 @@ scaling factor x10
 * collision : ` collision: { depth: [x,y,z] } `
 * sensor: `{ enabled: bool }`
 * paused: `{ paused: bool }`
+* fire: `{ hardpoint: , target:  , position: vec3, velocity: vec3}`
+* laser: `{ target: vec3 }`
 
 
 ## Input
