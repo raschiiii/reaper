@@ -31,11 +31,11 @@ export class Explosive extends Component {
             if (!hasExploded){
                 hasExploded = true;
                 this.gameObject.lifetime = 0;
-                const physics = this.gameObject.getComponent(Physics.name);
-                if (physics) this.gameObject.removeComponent(Physics.name);
+                const physics = this.gameObject.getComponent(Physics);
+                if (physics) this.gameObject.removeComponent(Physics);
 
-                const smoke = this.gameObject.getComponent("SmokeEmitter");
-                if (smoke) this.gameObject.removeComponent("SmokeEmitter");
+                const smoke = this.gameObject.getComponent(SmokeEmitter);
+                if (smoke) this.gameObject.removeComponent(SmokeEmitter);
 
             }
         });

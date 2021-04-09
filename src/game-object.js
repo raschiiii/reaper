@@ -44,14 +44,14 @@ export class GameObject {
 		return component;
 	}
 
-    removeComponent(name){
-        let component = this.getComponent(name);
-        this.components = this.components.filter(c => c.name != name);
-        if (component) component.destroy();
+    removeComponent(component){
+        let comp = this.getComponent(component);
+        this.components = this.components.filter(c => c.name != component.name);
+        if (comp) comp.destroy();
     }
 
-	getComponent(name) {
-		return this.components.find(c => c.name == name);
+	getComponent(component) {
+		return this.components.find(c => c.name == component.name);
 	}
 
 	update(dt){
@@ -61,7 +61,7 @@ export class GameObject {
 	}
 
 	destroy(){
-        console.log(`destroy ${this.id}`)
+        console.log(`destroy GameObject(id=${this.id})`)
         this.publish("destroy", {});
 		for (let component of this.components){
 			component.destroy()

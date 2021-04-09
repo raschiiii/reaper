@@ -11,7 +11,7 @@ export class Sensor extends Component {
         this._camera.rotation.copy(this._sensorRotation);
 
         this._cameraDummy = new THREE.Object3D();
-        this._cameraDummy.position.x += 0.6;
+        this._cameraDummy.position.x += 0.45;
         this._cameraDummy.position.y -= 0.1;
 
         this.gameObject.transform.add(this._cameraDummy);
@@ -57,7 +57,6 @@ export class Sensor extends Component {
                     break;
             }
         }, false);
-
     }
 
     laserTrack(){

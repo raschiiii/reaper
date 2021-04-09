@@ -51,7 +51,7 @@ export class PlayerView extends Component {
 export class OrbitViewManager {
     constructor(goa, camera){
         this._goa  = goa;
-        this._activeIndex = 0;
+        this._activeIndex = -1;
         this.activeGameObject = null;
         this._camera = camera;
     }
@@ -59,15 +59,21 @@ export class OrbitViewManager {
     toggle(){
         const n = this._goa.array.length;
         const old = this._goa.array[this._activeIndex];
-
-        old.removeComponent("PlayerView");
-        old.removeComponent("PlayerInput");
+        old.removeComponent(PlayerView);
+        old.removeComponent(PlayerInput);
 
         this._activeIndex = (this._activeIndex + 1) % n; 
         this.setActive(this._activeIndex)
     }
 
     setActive(n){
+
+        if (this._activeIndex != -1){
+            const old = this._goa.array[this._activeIndex];
+            old.removeComponent(PlayerView);
+            old.removeComponent(PlayerInput);
+        }
+
         let gameObject = this._goa.array[n];
         
         if (gameObject == undefined) return;
@@ -76,11 +82,11 @@ export class OrbitViewManager {
         this._activeIndex = n;
         
 
-        if (!gameObject.getComponent(PlayerView.name)){
+        if (!gameObject.getComponent(PlayerView)){
             gameObject.addComponent(new PlayerView(gameObject, this._camera))
         }
         
-        if (!gameObject.getComponent(PlayerInput.name)){
+        if (!gameObject.getComponent(PlayerInput)){
             gameObject.addComponent(new PlayerInput(gameObject));
         }
     }

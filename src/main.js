@@ -13,6 +13,7 @@ import { HashGrid } from './hashgrid.js';
 import { OrbitViewManager } from './orbit-camera.js';
 import { Explosion } from './particles.js';
 import { TerrainManager } from './terrain/terrain.js';
+import { AABB } from './collision.js';
 
 // Debug
 const debug         = document.querySelector('#display1');
@@ -153,7 +154,7 @@ let assets = {
 
     const aircraft  = factory.createAircraft(new THREE.Vector3(0, 300, 0), new THREE.Vector3(10, 0, 0));
     const terrain   = factory.createTerrain();
-    const heightmap = terrain.getComponent(TerrainManager.name);
+    const heightmap = terrain.getComponent(TerrainManager);
 
     let h = heightmap.getHeight(0,0);
     factory.createTestCube(new THREE.Vector3(0, h, 0));
@@ -164,19 +165,22 @@ let assets = {
     viewManager.setActive(0);
 
     document.addEventListener('keydown', (e) => {
-        switch(e.keyCode){
-            case 80: // p
+        switch(e.code){
+            case "keyP": // p
                 paused = !paused;
                 pauseDisplay.style.display = paused ? "block" : "none";
                 aircraft.publish("paused", { paused: paused });
                 break;
-            case 49: // 1
+
+            case "Digit1": // 1
                 sensorView = !sensorView;
+                viewManager.setActive(0);
                 hud.style.display = sensorView ? "block" : "none";
                 aircraft.publish("sensor", { enabled: sensorView })
                 break;
-            case 50: // 2
-                viewManager.toggle();
+
+            case "Digit2": // 2
+                if (!sensorView) viewManager.toggle();
                 break;            
         }
     }, false);
@@ -195,7 +199,7 @@ let assets = {
             goa.forEach(gameObject => {
                 gameObject.update(dt);
 
-                let aabb = gameObject.getComponent("AABB");
+                let aabb = gameObject.getComponent(AABB);
                 if (aabb){
                     for (let otherObject of grid.possible_aabb_collisions(aabb)){
                         if (otherObject != gameObject) aabb.collide(otherObject); 
