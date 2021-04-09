@@ -76,11 +76,11 @@ export class OrbitViewManager {
         this._activeIndex = n;
         
 
-        if (!gameObject.getComponent("PlayerView")){
+        if (!gameObject.getComponent(PlayerView.name)){
             gameObject.addComponent(new PlayerView(gameObject, this._camera))
         }
         
-        if (!gameObject.getComponent("PlayerInput")){
+        if (!gameObject.getComponent(PlayerInput.name)){
             gameObject.addComponent(new PlayerInput(gameObject));
         }
     }

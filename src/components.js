@@ -1,5 +1,3 @@
-import { SmokeEmitter } from './particles.js';
-import { Physics } from './physics/physics.js';
 import * as THREE from './three/build/three.module.js';
 import { GLTFLoader } from './three/examples/jsm/loaders/GLTFLoader.js';
 
@@ -8,6 +6,8 @@ export class Component {
 	constructor(gameObject){
 		this.gameObject = gameObject
 		this.name = this.constructor.name;
+
+        //console.log(Component.name)
 	}
 	update(dt){}
 	destroy(){}
