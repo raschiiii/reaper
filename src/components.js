@@ -6,6 +6,8 @@ export class Component {
 	constructor(gameObject){
 		this.gameObject = gameObject
 		this.name = this.constructor.name;
+
+        //console.log(Component.name)
 	}
 	update(dt){}
 	destroy(){}

@@ -4,7 +4,7 @@ import { Component } from './components.js';
 import { OrbitControls } from './three/examples/jsm/controls/OrbitControls.js';
 import { PlayerInput } from './input.js';
 
-export class OrbitCamera extends Component {
+export class PlayerView extends Component {
     constructor(gameObject, camera){
         super(gameObject);
 
@@ -60,7 +60,7 @@ export class OrbitViewManager {
         const n = this._goa.array.length;
         const old = this._goa.array[this._activeIndex];
 
-        old.removeComponent("OrbitCamera");
+        old.removeComponent("PlayerView");
         old.removeComponent("PlayerInput");
 
         this._activeIndex = (this._activeIndex + 1) % n; 
@@ -75,11 +75,12 @@ export class OrbitViewManager {
         this.activeGameObject = gameObject.id;
         this._activeIndex = n;
         
-        if (!gameObject.getComponent("OrbitCamera")){
-            gameObject.addComponent(new OrbitCamera(gameObject, this._camera))
+
+        if (!gameObject.getComponent(PlayerView.name)){
+            gameObject.addComponent(new PlayerView(gameObject, this._camera))
         }
         
-        if (!gameObject.getComponent("PlayerInput")){
+        if (!gameObject.getComponent(PlayerInput.name)){
             gameObject.addComponent(new PlayerInput(gameObject));
         }
     }
