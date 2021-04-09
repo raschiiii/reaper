@@ -1,10 +1,10 @@
 import * as THREE from '../three/build/three.module.js';
-import { ImprovedNoise } from '../three/examples/jsm/math/ImprovedNoise.js';
+
 import { Component } from '../component.js';
 import { QuadTree } from './quadtree.js';
 
-const _MIN_CELL_SIZE = 50;
-const _FIXED_GRID_SIZE = 3;
+const _MIN_CELL_SIZE    = 50;
+const _FIXED_GRID_SIZE  =  3;
 
 class FixedHeightMap {
     constructor() {
@@ -23,11 +23,7 @@ class ImageHeightMap {
         canvas.height = image.height;
         const context = canvas.getContext('2d');
         context.drawImage(image, 0, 0);
-
-        console.log(image.width)
         this._data = context.getImageData(0, 0, image.width, image.height);
-
-        console.log(this.get(0,0))
     }
 
     get(x, y) {
@@ -40,20 +36,20 @@ class ImageHeightMap {
             return Math.min(Math.max(x, 0.0), 1.0);
         }
 
-        // where to place to heightmap
+        // where to place to heightmap image
         const offset     = new THREE.Vector2(-16000, -16000);
         const dimensions = new THREE.Vector2( 32000,  32000);
 
-        const xf = 1.0 - sat((x - offset.x) / dimensions.x);
-        const yf = sat((y - offset.y) / dimensions.y);
-        const w = this._data.width - 1;
-        const h = this._data.height - 1;
-        const x1 = Math.floor(xf * w);
-        const y1 = Math.floor(yf * h);
-        const x2 = THREE.MathUtils.clamp(x1 + 1, 0, w);
-        const y2 = THREE.MathUtils.clamp(y1 + 1, 0, h);
-        const xp = xf * w - x1;
-        const yp = yf * h - y1;
+        const xf  = 1.0 - sat((x - offset.x) / dimensions.x);
+        const yf  = sat((y - offset.y) / dimensions.y);
+        const w   = this._data.width - 1;
+        const h   = this._data.height - 1;
+        const x1  = Math.floor(xf * w);
+        const y1  = Math.floor(yf * h);
+        const x2  = THREE.MathUtils.clamp(x1 + 1, 0, w);
+        const y2  = THREE.MathUtils.clamp(y1 + 1, 0, h);
+        const xp  = xf * w - x1;
+        const yp  = yf * h - y1;
         const p11 = getPixel(x1, y1);
         const p21 = getPixel(x2, y1);
         const p12 = getPixel(x1, y2);

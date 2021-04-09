@@ -28,7 +28,6 @@ export class Sensor extends Component {
             that._camera.updateProjectionMatrix();
         }
         
-        //document.addEventListener('keydown', (e) => {
         this.gameObject.subscribe('keydown', (e) => {
             switch(e.code){
                 case "KeyL": // l

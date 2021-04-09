@@ -16,8 +16,9 @@ export class MissileFireControl extends Component {
         this.gameObject.subscribe("fire", (e) => {
 
             if (e.hardpoint == this.id){
-                console.log("firing missile")
-                console.log(e);
+                
+                //console.log("firing missile")
+                //console.log(e);
 
                 let tmp = new THREE.Vector3();
 

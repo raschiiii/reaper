@@ -144,42 +144,38 @@ let assets = {
 
     await Promise.all(promises);
 
-    console.log(assets)
-
     const goa           = new GameObjectArray()
     const grid          = new HashGrid(2);
     const factory       = new Factory(assets, scene, goa, camera, grid, sensor, listener);
     const viewManager   = new OrbitViewManager(goa, camera);
     const explosions    = new Explosion(scene, '../assets/textures/explosion2.png', listener)
 
-    const aircraft  = factory.createAircraft(new THREE.Vector3(0, 300, 0), new THREE.Vector3(10, 0, 0));
-    const terrain   = factory.createTerrain();
-    const heightmap = terrain.getComponent(TerrainManager);
+    const aircraft      = factory.createAircraft(new THREE.Vector3(0, 300, 0), new THREE.Vector3(10, 0, 0));
+    const terrain       = factory.createTerrain();
+    const heightmap     = terrain.getComponent(TerrainManager);
 
-    let h = heightmap.getHeight(0,0);
-    factory.createTestCube(new THREE.Vector3(0, h, 0));
-    h = heightmap.getHeight(20,20);
-    factory.createTestCube(new THREE.Vector3(20, h, 20));
+    factory.createTestCube(new THREE.Vector3( 0, heightmap.getHeight(0,0),    0));
+    factory.createTestCube(new THREE.Vector3(20, heightmap.getHeight(20,20), 20));
 
     goa._addQueued();
     viewManager.setActive(0);
 
     document.addEventListener('keydown', (e) => {
         switch(e.code){
-            case "keyP": // p
+            case "keyP": 
                 paused = !paused;
                 pauseDisplay.style.display = paused ? "block" : "none";
                 aircraft.publish("paused", { paused: paused });
                 break;
 
-            case "Digit1": // 1
+            case "Digit1": 
                 sensorView = !sensorView;
                 viewManager.setActive(0);
                 hud.style.display = sensorView ? "block" : "none";
                 aircraft.publish("sensor", { enabled: sensorView })
                 break;
 
-            case "Digit2": // 2
+            case "Digit2": 
                 if (!sensorView) viewManager.toggle();
                 break;            
         }
