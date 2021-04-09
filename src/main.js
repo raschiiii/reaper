@@ -12,6 +12,8 @@ import { GameObjectArray } from './game-object-array.js';
 import { HashGrid } from './hashgrid.js';
 import { OrbitViewManager } from './orbit-camera.js';
 import { Explosion } from './particles.js';
+import { TerrainManager } from './terrain/terrain.js';
+import { AABB } from './collision.js';
 
 // Debug
 const debug         = document.querySelector('#display1');
@@ -148,11 +150,11 @@ let assets = {
     const grid          = new HashGrid(2);
     const factory       = new Factory(assets, scene, goa, camera, grid, sensor, listener);
     const viewManager   = new OrbitViewManager(goa, camera);
-    const explosions    = new Explosion(scene, '../assets/textures/explosion2.png', listener)
 
-    const aircraft  = factory.createAircraft(new THREE.Vector3(0, 300, 0), new THREE.Vector3(10, 0, 0));
-    const terrain   = factory.createTerrain();
-    const heightmap = terrain.getComponent("TerrainManager");
+    const aircraft      = factory.createAircraft(new THREE.Vector3(0, 300, 0), new THREE.Vector3(10, 0, 0));
+    const terrain       = factory.createTerrain();
+    const heightmap     = terrain.getComponent("TerrainManager");
+    const explosions    = new Explosion(scene, '../assets/textures/explosion2.png', listener)
 
     let h = heightmap.getHeight(0,0);
     factory.createTestCube(new THREE.Vector3(0, h, 0));
