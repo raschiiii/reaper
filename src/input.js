@@ -1,7 +1,7 @@
 import * as THREE from './three/build/three.module.js';
 import { OrbitControls } from './three/examples/jsm/controls/OrbitControls.js';
 
-import { Component } from './components.js';
+import { Component } from './component.js';
 
 // only the active GameObject gets User input
 export class PlayerInput extends Component {

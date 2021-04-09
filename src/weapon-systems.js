@@ -1,5 +1,5 @@
 import * as THREE from './three/build/three.module.js';
-import { Component } from './components.js';
+import { Component } from './component.js';
 import { BasicPhysics } from './physics/basic-physics.js';
 import { Physics } from './physics/physics.js';
 import { GravityODE } from './physics/gravity-ode.js';

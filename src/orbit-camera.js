@@ -1,5 +1,5 @@
 import * as THREE from './three/build/three.module.js';
-import { Component } from './components.js';
+import { Component } from './component.js';
 
 import { OrbitControls } from './three/examples/jsm/controls/OrbitControls.js';
 import { PlayerInput } from './input.js';

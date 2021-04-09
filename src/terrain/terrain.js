@@ -1,6 +1,6 @@
 import * as THREE from '../three/build/three.module.js';
 import { ImprovedNoise } from '../three/examples/jsm/math/ImprovedNoise.js';
-import { Component } from '../components.js';
+import { Component } from '../component.js';
 import { QuadTree } from './quadtree.js';
 
 const _MIN_CELL_SIZE = 50;

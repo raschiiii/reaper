@@ -1,4 +1,4 @@
-import { Component } from './components.js';
+import { Component } from './component.js';
 import * as THREE from './three/build/three.module.js';
 
 export class LocalAxis extends Component {

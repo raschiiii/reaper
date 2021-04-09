@@ -1,5 +1,5 @@
 import * as THREE from './three/build/three.module.js';
-import { Component } from './components.js';
+import { Component } from './component.js';
 import { GLTFLoader } from './three/examples/jsm/loaders/GLTFLoader.js';
 
 export class SimpleModel extends Component {

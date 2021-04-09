@@ -3,7 +3,7 @@ import { GLTFLoader } from './three/examples/jsm/loaders/GLTFLoader.js';
 
 import { Smoke, SmokeEmitter } from './particles.js';
 import { Physics } from './physics/physics.js';
-import { Component } from './components.js';
+import { Component } from './component.js';
 
 // allows a gameObject to subscribe to the events of another gameobject
 export class EventRelay extends Component {

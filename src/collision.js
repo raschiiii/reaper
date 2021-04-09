@@ -1,5 +1,5 @@
 import * as THREE from './three/build/three.module.js';
-import { Component } from './components.js';
+import { Component } from './component.js';
 
 export class AABB extends Component {
     constructor(gameObject, size = new THREE.Vector3(1,1,1)){
