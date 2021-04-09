@@ -12,6 +12,7 @@ import { GameObjectArray } from './game-object-array.js';
 import { HashGrid } from './hashgrid.js';
 import { OrbitViewManager } from './orbit-camera.js';
 import { Explosion } from './particles.js';
+import { TerrainManager } from './terrain/terrain.js';
 
 // Debug
 const debug         = document.querySelector('#display1');
@@ -152,7 +153,7 @@ let assets = {
 
     const aircraft  = factory.createAircraft(new THREE.Vector3(0, 300, 0), new THREE.Vector3(10, 0, 0));
     const terrain   = factory.createTerrain();
-    const heightmap = terrain.getComponent("TerrainManager");
+    const heightmap = terrain.getComponent(TerrainManager.name);
 
     let h = heightmap.getHeight(0,0);
     factory.createTestCube(new THREE.Vector3(0, h, 0));
