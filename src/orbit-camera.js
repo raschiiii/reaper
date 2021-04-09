@@ -2,15 +2,14 @@ import * as THREE from './three/build/three.module.js';
 import { Component } from './components.js';
 
 import { OrbitControls } from './three/examples/jsm/controls/OrbitControls.js';
+import { PlayerInput } from './input.js';
 
 export class OrbitCamera extends Component {
     constructor(gameObject, camera){
         super(gameObject);
 
-
         this._speed = document.querySelector('#speed');
         this._altitude = document.querySelector('#altitude');
-
 
         this.camera = camera;
 
@@ -40,10 +39,8 @@ export class OrbitCamera extends Component {
         this.controls.target.copy(this.worldPos);
         this.controls.update();
 
-        this._speed.innerText = `${ (this.gameObject.velocity.length() * 10).toFixed(2) } km/h`
-        this._altitude.innerText = `${ (this.gameObject.position.y * 10).toFixed(2) } m`
-
-
+        this._speed.innerText       = `${ (this.gameObject.velocity.length() * 10).toFixed(2) } km/h`;
+        this._altitude.innerText    = `${ (this.gameObject.position.y * 10).toFixed(2) } m`;
     }
 
     destroy(){
@@ -62,7 +59,10 @@ export class OrbitViewManager {
     toggle(){
         const n = this._goa.array.length;
         const old = this._goa.array[this._activeIndex];
+
         old.removeComponent("OrbitCamera");
+        old.removeComponent("PlayerInput");
+
         this._activeIndex = (this._activeIndex + 1) % n; 
         this.setActive(this._activeIndex)
     }
@@ -77,6 +77,10 @@ export class OrbitViewManager {
         
         if (!gameObject.getComponent("OrbitCamera")){
             gameObject.addComponent(new OrbitCamera(gameObject, this._camera))
+        }
+        
+        if (!gameObject.getComponent("PlayerInput")){
+            gameObject.addComponent(new PlayerInput(gameObject));
         }
     }
 }

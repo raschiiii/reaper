@@ -3,43 +3,31 @@ import { OrbitControls } from './three/examples/jsm/controls/OrbitControls.js';
 
 import { Component } from './components.js';
 
-export class JoystickInput extends Component {
-    constructor(gameObject){
-        super(gameObject);
-    }
-}
-
-export class PilotInput extends Component {
+// only the active GameObject gets User input
+export class PlayerInput extends Component {
     constructor(gameObject){
         super(gameObject);
 
-        this._target = null;
-        this._h = 1;
+        this._keyDown = (event) => {
+            //console.log(`keydown ${this.gameObject.id} ${event.code}`)
+            this.gameObject.publish("keydown", event);
+        };
 
-
-        this._input = {
-            
+        this._keyUp = (event) => {
+            this.gameObject.publish("keyup", event);
         }
 
-        this.gameObject.subscribe("laser", (e) => {
-            this._target = e.target;
-            console.log("got laser target")
-        })
-
-        document.addEventListener('keydown', (e) => {
-            switch(e.code){
-                case "KeyF": 
-                    this.gameObject.publish("fire", { 
-                        hardpoint: this._h ++ , 
-                        target: this._target,
-                        position: this.gameObject.position,
-                        velocity: this.gameObject.velocity
-                    });                    
-                    break;
-            }
-        });
-
-        
+        document.addEventListener("keydown", this._keyDown, false);
+        document.addEventListener("keyup",   this._keyUp,   false);
     }
+
+    destroy(){
+        //console.log(`remove Component from ${this.gameObject.id}`)
+        document.removeEventListener("keydown", this._keyDown, false);
+        document.removeEventListener("keyup",   (e) => this._keyUp(e),   false);
+    }
+
 }
+
+
 

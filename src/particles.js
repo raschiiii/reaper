@@ -243,7 +243,6 @@ export class Explosion extends ParticleSystem {
 
 
         for (let i = 0; i < this.particlesPerImpact; i++){
-            console.log("emit")
             let unused = this._findUnusedParticle();
             this._particles[unused].position.copy(pos);
 

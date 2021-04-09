@@ -21,20 +21,15 @@ export class Sensor extends Component {
         this._track  = false;
         this._target = new THREE.Vector3(0,-5,0);
 
-        this.gameObject.subscribe("sensor", (e) => {
-            //console.log(e);
-        })
-
-        this._zoom = 0;
         const that = this;
         this._zoomSlider = document.querySelector('#slider4');
-        
         this._zoomSlider.oninput = function() {
             that._camera.zoom = this.value;
             that._camera.updateProjectionMatrix();
         }
         
-        document.addEventListener('keydown', (e) => {
+        //document.addEventListener('keydown', (e) => {
+        this.gameObject.subscribe('keydown', (e) => {
             switch(e.code){
                 case "KeyL": // l
                     this.laserTrack();
@@ -66,7 +61,6 @@ export class Sensor extends Component {
     }
 
     laserTrack(){
-
         let dir = new THREE.Vector3(0,0,-1);
         dir.applyEuler(this._camera.rotation);
         dir.normalize();
@@ -119,7 +113,7 @@ export class Hardpoints extends Component {
         this.gameObject.transform.add(this.h1);
 
         this.h3 = new THREE.Object3D();
-        this.h3.position.set(x, y,  .27)
+        this.h3.position.set(x, y,  .27);
         this.gameObject.transform.add(this.h3);
 
         this.h5 = new THREE.Object3D();
@@ -127,16 +121,42 @@ export class Hardpoints extends Component {
         this.gameObject.transform.add(this.h5);
 
         this.h6 = new THREE.Object3D();
-        this.h6.position.set(x, y,  .14);
+        this.h6.position.set(x, y, -.14);
         this.gameObject.transform.add(this.h6);
 
         this.h4 = new THREE.Object3D();
-        this.h4.position.set(x, y,  -.27)
+        this.h4.position.set(x, y, -.27);
         this.gameObject.transform.add(this.h4);
 
         this.h2 = new THREE.Object3D();
-        this.h2.position.set(x, y,   -.30)
+        this.h2.position.set(x, y, -.30);
         this.gameObject.transform.add(this.h2);
     }
 }
 
+export class FireControlSystem extends Component {
+    constructor(gameObject){
+        super(gameObject);
+
+        this._target    = null;
+        this._h         = 1;
+
+        this.gameObject.subscribe("laser", (e) => {
+            this._target = e.target;
+            console.log("got laser target")
+        })
+
+        this.gameObject.subscribe('keydown', (e) => {
+            switch(e.code){
+                case "KeyF": 
+                    this.gameObject.publish("fire", { 
+                        hardpoint:  this._h++ , 
+                        target:     this._target,
+                        position:   this.gameObject.position,
+                        velocity:   this.gameObject.velocity
+                    });                    
+                    break;
+            }
+        });        
+    }
+}

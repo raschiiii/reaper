@@ -9,8 +9,9 @@ import { SmokeEmitter } from './particles.js';
 export class MissileFireControl extends Component {
     constructor(gameObject, id, goa){
         super(gameObject);
+        
+        this.id  = id;
         this.goa = goa;
-        this.id = id;
 
         this.gameObject.subscribe("fire", (e) => {
 
@@ -19,7 +20,6 @@ export class MissileFireControl extends Component {
                 console.log(e);
 
                 let tmp = new THREE.Vector3();
-
 
                 const transform = this.gameObject.transform;
                 const parent = transform.parent;

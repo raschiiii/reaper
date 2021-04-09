@@ -40,18 +40,17 @@ const renderer = new THREE.WebGLRenderer({
 
 renderer.setSize(width, height);
 renderer.setClearColor("red");
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.BasicShadowMap;
-renderer.physicallyCorrectLights = true;
-renderer.logarithmicDepthBuffer = true;
+renderer.shadowMap.enabled          = true;
+renderer.physicallyCorrectLights    = true;
+renderer.logarithmicDepthBuffer     = true;
+renderer.shadowMap.type             = THREE.BasicShadowMap;
 
 const cameraRenderer = new EffectComposer(renderer);
 cameraRenderer.addPass(new RenderPass(scene, camera));
 
 const sensorRenderer = new EffectComposer(renderer);
 sensorRenderer.addPass(new RenderPass(scene, sensor));
-sensorRenderer.addPass(new FilmPass(0.35, 0.5, 2048, true)) // bw
-//sensorRenderer.addPass(new FilmPass(0.35, 0.0125, 1024, true))
+sensorRenderer.addPass(new FilmPass(0.35, 0.5, 2048, false));
 
 const stats = new Stats();
 document.body.appendChild(stats.dom);
@@ -151,8 +150,7 @@ let assets = {
     const viewManager   = new OrbitViewManager(goa, camera);
     const explosions    = new Explosion(scene, '../assets/textures/explosion2.png', listener)
 
-
-    const aircraft  = factory.createAircraft(new THREE.Vector3(0, 300, 0), new THREE.Vector3(8, 0, 0));
+    const aircraft  = factory.createAircraft(new THREE.Vector3(0, 300, 0), new THREE.Vector3(10, 0, 0));
     const terrain   = factory.createTerrain();
     const heightmap = terrain.getComponent("TerrainManager");
 

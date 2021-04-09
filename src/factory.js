@@ -14,8 +14,7 @@ import { TestODE } from './physics/test-ode.js';
 import { LocalAxis } from './testing.js';
 import { AirplaneModel, SimpleModel } from './model.js';
 import { TerrainManager } from './terrain/terrain.js';
-import { Hardpoints, Sensor } from './aircraft-systems.js';
-import { PilotInput } from './input.js';
+import { FireControlSystem, Hardpoints, Sensor } from './aircraft-systems.js';
 import { MissileFireControl } from './weapon-systems.js';
 import { Hellfire } from './physics/hellfire.js';
 import { SmokeEmitter } from './particles.js';
@@ -52,7 +51,8 @@ export class Factory {
         obj.addComponent(new Physics(obj, new PropPlane(obj)));
 
         obj.addComponent(new Sensor(obj, this.sensor));
-        obj.addComponent(new PilotInput(obj));
+        obj.addComponent(new FireControlSystem(obj));
+
         obj.addComponent(new AABB(obj));
         obj.addComponent(new Explosive(obj));
         

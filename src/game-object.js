@@ -20,7 +20,6 @@ export class GameObject {
     }
 
     subscribe(event, callback){
-        
         if (!this.subscribers[event]){
              this.subscribers[event] = [];
         }
