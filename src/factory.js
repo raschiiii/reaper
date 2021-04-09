@@ -5,7 +5,7 @@ import { Box } from './shapes.js';
 import { BasicPhysics } from './physics/basic-physics.js';
 import { OrbitCamera } from './orbit-camera.js';
 import { AABB } from './collision.js';
-import { EventRelay, Explosive } from './components.js';
+import { EventRelay, Explosive, Sound } from './components.js';
 import { Physics } from './physics/physics.js';
 import { SpringODE } from './physics/spring-ode.js';
 import { GravityODE } from './physics/gravity-ode.js';
@@ -14,7 +14,7 @@ import { TestODE } from './physics/test-ode.js';
 import { LocalAxis } from './testing.js';
 import { AirplaneModel, SimpleModel } from './model.js';
 import { TerrainManager } from './terrain/terrain.js';
-import { Hardpoints, Sensor, Sound } from './aircraft-systems.js';
+import { Hardpoints, Sensor } from './aircraft-systems.js';
 import { PilotInput } from './input.js';
 import { MissileFireControl } from './weapon-systems.js';
 import { Hellfire } from './physics/hellfire.js';
@@ -64,6 +64,8 @@ export class Factory {
         this.createHellfire(obj, hardpoints.h2, 2);
         this.createHellfire(obj, hardpoints.h3, 3);
         this.createHellfire(obj, hardpoints.h4, 4);
+        this.createHellfire(obj, hardpoints.h5, 5);
+        this.createHellfire(obj, hardpoints.h6, 6);
         
         return obj;
     }

@@ -47,3 +47,23 @@ export class Explosive extends Component {
         });
     }
 }
+
+export class Sound extends Component {
+    constructor(gameObject, listener, buffer, params){
+        super(gameObject);
+
+        this.sound = new THREE.Audio(listener);
+        this.sound.setBuffer( buffer );
+        this.sound.setLoop( params.loop );
+        this.sound.setVolume( params.volume );
+        if (params.autoplay) this.sound.play();
+        
+        this.gameObject.subscribe("paused", (event) => {
+            if (event.paused){
+                this.sound.pause();
+            } else {
+                this.sound.play();
+            }
+        })
+    }
+}

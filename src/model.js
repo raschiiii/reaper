@@ -55,9 +55,9 @@ export class AirplaneModel extends Component {
             if(object.isMesh) object.castShadow = true;
         });
 
-        this.propellor  = this.model.children[4];
-        this.sensor     = this.model.children[5];
-
+        //console.log(this.model)
+        
+        this.propellor  = this.model.children[3];
         this.gameObject.transform.add(this.model)
     }
 

@@ -111,42 +111,32 @@ export class Hardpoints extends Component {
     constructor(gameObject){
         super(gameObject);
 
-        // from right to left
+        const y = -0.06;
+        const x =  0.01;
 
         this.h1 = new THREE.Object3D();
-        this.h1.position.set(.17, -.1,   .285)
+        this.h1.position.set(x, y,  .30);
         this.gameObject.transform.add(this.h1);
 
-        this.h2 = new THREE.Object3D();
-        this.h2.position.set(.17, -.1,  .14)
-        this.gameObject.transform.add(this.h2);
-
         this.h3 = new THREE.Object3D();
-        this.h3.position.set(.17, -.1,  -.14)
+        this.h3.position.set(x, y,  .27)
         this.gameObject.transform.add(this.h3);
 
+        this.h5 = new THREE.Object3D();
+        this.h5.position.set(x, y,  .14);
+        this.gameObject.transform.add(this.h5);
+
+        this.h6 = new THREE.Object3D();
+        this.h6.position.set(x, y,  .14);
+        this.gameObject.transform.add(this.h6);
+
         this.h4 = new THREE.Object3D();
-        this.h4.position.set(.17, -.1,   -.285)
+        this.h4.position.set(x, y,  -.27)
         this.gameObject.transform.add(this.h4);
+
+        this.h2 = new THREE.Object3D();
+        this.h2.position.set(x, y,   -.30)
+        this.gameObject.transform.add(this.h2);
     }
 }
 
-export class Sound extends Component {
-    constructor(gameObject, listener, buffer, params){
-        super(gameObject);
-
-        this.sound = new THREE.Audio(listener);
-        this.sound.setBuffer( buffer );
-        this.sound.setLoop( params.loop );
-        this.sound.setVolume( params.volume );
-        if (params.autoplay) this.sound.play();
-        
-        this.gameObject.subscribe("paused", (event) => {
-            if (event.paused){
-                this.sound.pause();
-            } else {
-                this.sound.play();
-            }
-        })
-    }
-}
