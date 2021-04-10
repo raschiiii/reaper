@@ -46,10 +46,13 @@ export class Sound extends Component {
     constructor(gameObject, listener, buffer, params){
         super(gameObject);
 
-        this.sound = new THREE.Audio(listener);
+        this.sound = new THREE.PositionalAudio(listener);
         this.sound.setBuffer( buffer );
         this.sound.setLoop( params.loop );
         this.sound.setVolume( params.volume );
+        this.sound.setRefDistance( 20 );
+        this.gameObject.transform.add( this.sound );
+
         if (params.autoplay) this.sound.play();
         
         this.gameObject.subscribe("paused", (event) => {
@@ -58,6 +61,6 @@ export class Sound extends Component {
             } else {
                 this.sound.play();
             }
-        })
+        });
     }
 }

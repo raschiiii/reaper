@@ -29,30 +29,33 @@ export class Sensor extends Component {
         }
         
         this.gameObject.subscribe('keydown', (e) => {
+
+            const sensitivity = 0.1 / this._camera.zoom;
+
             switch(e.code){
-                case "KeyL": // l
+                case "KeyL": 
                     this.laserTrack();
                     break;
 
-                case "KeyK": // k
+                case "KeyK": 
                     this._track = false;
                     this._sensorRotation.copy(this._camera.rotation);
                     break;
 
-                case "KeyW": // arrow up
-                    this._sensorRotation.x += 0.1;
+                case "KeyW": 
+                    this._sensorRotation.x += sensitivity;
                     break;
 
-                case "KeyS": // arrow down
-                    this._sensorRotation.x -= 0.1;
+                case "KeyS": 
+                    this._sensorRotation.x -= sensitivity;
                     break;
 
-                case "KeyA": // arrow left
-                    this._sensorRotation.y += 0.1;
+                case "KeyA": 
+                    this._sensorRotation.y += sensitivity;
                     break;
 
-                case "KeyD": // arrow right
-                    this._sensorRotation.y -= 0.1;
+                case "KeyD": 
+                    this._sensorRotation.y -= sensitivity;
                     break;
             }
         }, false);
@@ -85,11 +88,11 @@ export class Sensor extends Component {
 
         this._camera.rotation.copy(this._sensorRotation);
         
-        //let dir = new THREE.Vector3(0,0,-1);
-        //dir.applyEuler(this._camera.rotation);
-        //dir.normalize();
-        //dir.multiplyScalar(this._zoom);
-        //o.add(dir);
+        // let dir = new THREE.Vector3(0,0,-1);
+        // dir.applyEuler(this._camera.rotation);
+        // dir.normalize();
+        // dir.multiplyScalar(this._zoom);
+        // o.add(dir);
 
         this._camera.position.copy(o);
          

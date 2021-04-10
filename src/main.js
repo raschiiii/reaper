@@ -162,7 +162,7 @@ let assets = {
 
     document.addEventListener('keydown', (e) => {
         switch(e.code){
-            case "keyP": 
+            case "KeyP": 
                 paused = !paused;
                 pauseDisplay.style.display = paused ? "block" : "none";
                 aircraft.publish("paused", { paused: paused });
@@ -183,7 +183,6 @@ let assets = {
 
     let dt = 0, then = 0;
     const animate = function (now) {
-
         now *= 0.001; 
         dt   = now - then;
         then = now;
