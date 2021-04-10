@@ -1,11 +1,9 @@
 *.zip
 *.sh
+*.blend
+*.blend1
 
 src/three/
 resources/
 test/
-server/
-
-
-
 
