@@ -215,7 +215,7 @@ export class Explosion extends ParticleSystem {
         (async () => {
             const audioLoader = new THREE.AudioLoader();
             const buffer = await new Promise((resolve, reject) => {
-                audioLoader.load('../assets/audio/explosion.mp3', data => resolve(data), null, reject);
+                audioLoader.load('assets/audio/explosion.mp3', data => resolve(data), null, reject);
             });
             this.sound = new THREE.PositionalAudio(listener);
             this.sound.setBuffer(buffer);
@@ -312,7 +312,7 @@ export class Smoke extends ParticleSystem {
             numParticles: 1000, 
             particleLifetime: 3,
             particlesPerSecond: 300, 
-            texture: '../assets/textures/smoke.png',
+            texture: 'assets/textures/smoke.png',
             blending: THREE.NormalBlending,
             alphaDegrading: 0.5
 

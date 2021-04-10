@@ -87,20 +87,20 @@ let sensorView = false;
 let assets = {
     gltf: {
         drone: {
-            url: '../assets/objects/MQ-9v3.glb'
+            url: 'assets/objects/MQ-9v3.glb'
         },
         hellfire: {
-            url: '../assets/objects/AGM-114.glb'
+            url: 'assets/objects/AGM-114.glb'
         }
     },
     textures: {
         heightmap: {
-            url: '../assets/textures/heightmap.png'
+            url: 'assets/textures/heightmap.png'
         }
     },
     audio: {
         engine: {
-            url: '../assets/audio/engine2.mp3'
+            url: 'assets/audio/engine2.mp3'
         }
     }
 };
@@ -148,7 +148,7 @@ let assets = {
     const grid          = new HashGrid(2);
     const factory       = new Factory(assets, scene, goa, camera, grid, sensor, listener);
     const viewManager   = new OrbitViewManager(goa, camera);
-    const explosions    = new Explosion(scene, '../assets/textures/explosion2.png', listener)
+    const explosions    = new Explosion(scene, 'assets/textures/explosion2.png', listener)
 
     const aircraft      = factory.createAircraft(new THREE.Vector3(0, 300, 0), new THREE.Vector3(10, 0, 0));
     const terrain       = factory.createTerrain();
