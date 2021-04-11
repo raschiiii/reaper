@@ -248,6 +248,7 @@ export class TerrainManager extends Component {
         this._root = new THREE.Group();
         this.gameObject.transform.add(this._root);
 
+
         this._material = new THREE.MeshStandardMaterial({
             color: 0xaa895e,
             wireframe: false,

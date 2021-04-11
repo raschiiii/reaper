@@ -67,11 +67,14 @@ export class ParticleSystem {
 			}
 		};
 
+
+        // depth test with log depth buffer does not work correctly in linux/firefox
+        // 
 		this._material = new THREE.ShaderMaterial({
 			uniforms: uniforms,
 			vertexShader: 	_VS,
 			fragmentShader: _FS,
-			depthTest: 		true,
+			depthTest: 		false, // TODO fix this, does not work 
 			depthWrite: 	false,
 			blending:       params.blending, 
 			transparent: 	true,
@@ -82,6 +85,9 @@ export class ParticleSystem {
 		this._geometry.computeBoundingSphere()
 		this._geometry.boundingSphere.set(this._cache, 16000);
 		this._points = new THREE.Points(this._geometry, this._material);
+
+        
+
         this._updateGeometry();
 		parent.add(this._points);
 	}
