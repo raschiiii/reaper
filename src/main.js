@@ -7,7 +7,6 @@ import {RenderPass}     from './three/examples/jsm/postprocessing/RenderPass.js'
 import {FilmPass}       from './three/examples/jsm/postprocessing/FilmPass.js';
 import { UnrealBloomPass } from './three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
-
 import { AABB } from './collision.js';
 import { Factory } from './factory.js';
 import { HashGrid } from './hashgrid.js';
@@ -23,8 +22,8 @@ const hud           = document.querySelector('#hud-img');
 const width  = 640;
 const height = 480;
 
-const camera = new THREE.PerspectiveCamera(75, width / height, 0.01, 10000);
-const sensor = new THREE.PerspectiveCamera(75, width / height, 0.01, 10000);
+const camera = new THREE.PerspectiveCamera(75, width / height, 0.01, 15000);
+const sensor = new THREE.PerspectiveCamera(75, width / height, 0.01, 15000);
 
 const listener = new THREE.AudioListener();
 camera.add(listener);
@@ -37,14 +36,13 @@ scene.background = new THREE.Color( 0xcce0ff );
 
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
-    logarithmicDepthBuffer: false
+    logarithmicDepthBuffer: true
 });
 
 renderer.setSize(width, height);
 renderer.setClearColor("red");
 renderer.shadowMap.enabled          = true;
 renderer.physicallyCorrectLights    = true;
-renderer.logarithmicDepthBuffer     = true;
 renderer.shadowMap.type             = THREE.BasicShadowMap;
 
 const cameraRenderer = new EffectComposer(renderer);
@@ -75,7 +73,7 @@ scene.add(sun.target)
 //const helper = new THREE.CameraHelper(sun.shadow.camera);
 //scene.add( helper );
 
-const light = new THREE.AmbientLight(0x404040, 3.0); 
+const light = new THREE.AmbientLight(0x404040, 4.0); 
 scene.add(light);
 
 //const axesHelper = new THREE.AxesHelper( 50 );
