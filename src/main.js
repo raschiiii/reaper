@@ -1,4 +1,5 @@
 import * as THREE from './three/build/three.module.js';
+
 import Stats from './three/examples/jsm/libs/stats.module.js'
 import { GLTFLoader } from './three/examples/jsm/loaders/GLTFLoader.js';
 import {EffectComposer} from './three/examples/jsm/postprocessing/EffectComposer.js';
@@ -7,13 +8,13 @@ import {FilmPass}       from './three/examples/jsm/postprocessing/FilmPass.js';
 import { UnrealBloomPass } from './three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
 
-import { Factory } from './factory.js';
-import { GameObjectArray } from './game-object-array.js';
-import { HashGrid } from './hashgrid.js';
-import { OrbitViewManager } from './orbit-camera.js';
-import { Explosion } from './particles.js';
-import { TerrainManager } from './terrain/terrain.js';
 import { AABB } from './collision.js';
+import { Factory } from './factory.js';
+import { HashGrid } from './hashgrid.js';
+import { Explosion } from './particles.js';
+import { OrbitViewManager } from './orbit-camera.js';
+import { TerrainManager } from './terrain/terrain.js';
+import { GameObjectArray } from './game-object-array.js';
 
 // Debug
 const pauseDisplay  = document.querySelector('#paused');
