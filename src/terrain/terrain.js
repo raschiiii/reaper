@@ -90,11 +90,129 @@ class RandomHeightMap {
     }
 }
 
+class TerrainChunk2 {
+    constructor(root, material, offset, dimensions, heightmap) {
+        this._heightmap = heightmap;
+
+        let divisions = 5;
+        const skirt = dimensions.x / divisions;
+        
+        divisions    += 2;
+        dimensions.x += skirt * 2;
+        dimensions.y += skirt * 2;
+
+        const mat = new THREE.MeshStandardMaterial({
+            color: Math.floor(Math.random() * 50000),
+            wireframe: false,
+            side: THREE.DoubleSide,
+            flatShading: true
+        });
+
+        this._plane = new THREE.Mesh(
+            new THREE.PlaneBufferGeometry(dimensions.x, dimensions.y, divisions, divisions),
+            material
+        );
+
+        let vertices = this._plane.geometry.attributes.position.array;
+        let normals  = this._plane.geometry.attributes.normal.array;
+        console.log(normals.length)
+
+        for (let i = 0; i < vertices.length; i = i + 3) {
+            vertices[i + 2] = this._heightmap.get(vertices[i]+offset.x, -vertices[i+1]+offset.y);
+            //vertices[i + 2] = 0;
+        }
+        
+        this._plane.geometry.computeVertexNormals();
+        
+        const h = -30;
+        let x, y;
+
+
+
+        const fix = function(skrt, edge){
+            vertices[ skrt * 3 + 2] = vertices[ edge * 3 + 2] + h;
+            vertices[ skrt * 3 + 1] = vertices[ edge * 3 + 1];
+            vertices[ skrt * 3 + 0] = vertices[ edge * 3 + 0];
+        }
+
+        const fixN = function(skrt, edge){
+            normals[ skrt * 3 + 2] = normals[ edge * 3 + 2];
+            normals[ skrt * 3 + 1] = normals[ edge * 3 + 1];
+            normals[ skrt * 3 + 0] = normals[ edge * 3 + 0];
+        }
+        
+        y = 0;
+        for (x = 0; x <= divisions; x++){
+            fix((y + (divisions+1) * x), ((y+1) + (divisions+1) * x));
+            fixN((y + (divisions+1) * x), ((y+1) + (divisions+1) * x));
+
+            //vertices[ (y + (divisions+1) * x) * 3 + 2] = vertices[ ((y+1) + (divisions+1) * x) * 3 + 2] + h;
+            //vertices[ (y + (divisions+1) * x) * 3 + 1] = vertices[ ((y+1) + (divisions+1) * x) * 3 + 1];
+            //vertices[ (y + (divisions+1) * x) * 3 + 0] = vertices[ ((y+1) + (divisions+1) * x) * 3 + 0];
+        }
+        
+        y = divisions;
+        for (x = 0; x <= divisions; x++){
+            
+            fix((y + (divisions+1) * x), ((y-1) + (divisions+1) * x));
+            fixN((y + (divisions+1) * x), ((y-1) + (divisions+1) * x));
+            
+            //vertices[ (y + (divisions+1) * x) * 3 + 2] = vertices[ ((y-1) + (divisions+1) * x) * 3 + 2] + h;
+            //vertices[ (y + (divisions+1) * x) * 3 + 1] = vertices[ ((y-1) + (divisions+1) * x) * 3 + 1];
+            //vertices[ (y + (divisions+1) * x) * 3 + 0] = vertices[ ((y-1) + (divisions+1) * x) * 3 + 0];
+        }
+        
+        x = 0;
+        for (y = 0; y <= divisions; y++){
+            fix((y + (divisions+1) * x), (y + (divisions+1) * (x+1)));
+            fixN((y + (divisions+1) * x), (y + (divisions+1) * (x+1)));
+            
+            //vertices[ (y + (divisions+1) * x) * 3 + 2] = vertices[ (y + (divisions+1) * (x+1)) * 3 + 2] + h;
+            //vertices[ (y + (divisions+1) * x) * 3 + 1] = vertices[ (y + (divisions+1) * (x+1)) * 3 + 1];
+            //vertices[ (y + (divisions+1) * x) * 3 + 0] = vertices[ (y + (divisions+1) * (x+1)) * 3 + 0];
+        }
+        
+        x = divisions;
+        for (y = 0; y <= divisions; y++){
+            fix((y + (divisions+1) * x), (y + (divisions+1) * (x-1)));
+            
+            //vertices[ (y + (divisions+1) * x) * 3 + 2] += h;
+            //vertices[ (y + (divisions+1) * x) * 3 + 2] = vertices[ (y + (divisions+1) * (x-1)) * 3 + 2] + h;
+            //vertices[ (y + (divisions+1) * x) * 3 + 1] = vertices[ (y + (divisions+1) * (x-1)) * 3 + 1];
+            //vertices[ (y + (divisions+1) * x) * 3 + 0] = vertices[ (y + (divisions+1) * (x-1)) * 3 + 0];
+        }
+
+        this._plane.geometry.attributes.position.needsUpdate = true;
+        this._plane.geometry.attributes.normal.needsUpdate = true;
+
+        this._plane.position.set(offset.x, 0, offset.y)
+        this._plane.rotation.x = Math.PI * -0.5;
+        this._plane.receiveShadow = true;
+        root.add(this._plane);
+    }
+
+    destroy() {
+        this._plane.geometry.dispose()
+    }
+}
+
 class TerrainChunk {
     constructor(root, material, offset, dimensions, heightmap) {
         this._heightmap = heightmap;
-        const geometry = new THREE.PlaneBufferGeometry(dimensions.x, dimensions.y, 10, 10);
-        this._plane = new THREE.Mesh(geometry, material);
+
+        const _geometry = new THREE.PlaneBufferGeometry(dimensions.x, dimensions.y, 10, 10);
+        
+        /*
+        const _material = new THREE.MeshStandardMaterial({
+            color: Math.floor(Math.random() * 50000),
+            wireframe: false,
+            side: THREE.DoubleSide,
+            flatShading: true
+        });
+        */
+
+        this._plane = new THREE.Mesh(_geometry, material);
+
         let vertices = this._plane.geometry.attributes.position.array;
 
         for (let i = 0; i < vertices.length; i = i + 3) {
@@ -111,6 +229,9 @@ class TerrainChunk {
 
     destroy() {
         this._plane.geometry.dispose()
+        this._plane.material.dispose();
+        const parent = this._plane.parent;
+        parent.remove(this._plane);
     }
 }
 
@@ -133,6 +254,9 @@ export class TerrainManager extends Component {
             side: THREE.DoubleSide,
             flatShading: true
         });
+
+        this._count = 0;
+        this._debug         = document.querySelector('#display1');
     }
 
     _updateVisible() {
@@ -150,26 +274,20 @@ export class TerrainManager extends Component {
         }
 
         for (const key in keys) {
-
             if (key in this._chunks) continue;
-
             const [xp, zp] = keys[key].position;
-
             const offset = new THREE.Vector2(xp * _MIN_CELL_SIZE, zp * _MIN_CELL_SIZE);
-
             this._chunks[key] = {
                 position: [xp, zp],
                 chunk: this._createChunk(offset)
             }
         }
-
-
     }
 
     _updateVisibleQuadtree() {
         const quadtree = new QuadTree({
             min: new THREE.Vector2(-32000, -32000),
-            max: new THREE.Vector2(32000, 32000),
+            max: new THREE.Vector2( 32000,  32000)
         });
         quadtree.Insert(this._camera.position);
         const children = quadtree.GetChildren();
@@ -199,16 +317,21 @@ export class TerrainManager extends Component {
             }
         }
 
-        for (const key in this._chunks) this._chunks[key].chunk.destroy();
+        for (const key in this._chunks) {
+            console.log("destroy")
+            this._count--;
+            this._chunks[key].chunk.destroy();
+        }
         this._chunks = newChunks;
-        //this.display2.innerText = `${Object.keys(this._chunks).length}`
     }
 
     update(dt) {
         this._updateVisibleQuadtree();
+        this._debug.innerText = `chunks: ${this._count}`
     }
 
     _createChunk(offset, dimensions) {
+        this._count++;
         const chunk = new TerrainChunk(this._root, this._material, offset, dimensions, this._heightmap);
         return chunk;
     }

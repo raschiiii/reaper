@@ -16,7 +16,6 @@ import { TerrainManager } from './terrain/terrain.js';
 import { AABB } from './collision.js';
 
 // Debug
-const debug         = document.querySelector('#display1');
 const pauseDisplay  = document.querySelector('#paused');
 const hud           = document.querySelector('#hud-img');
 
@@ -33,7 +32,7 @@ const canvas = document.querySelector("#canvas");
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color( 0xcce0ff );
-scene.fog = new THREE.Fog( 0xcce0ff, 500, 10000 );
+//scene.fog = new THREE.Fog( 0xcce0ff, 500, 10000 );
 
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
@@ -60,22 +59,22 @@ document.body.appendChild(stats.dom);
 // Create lights
 const sun = new THREE.DirectionalLight(0x404040, 6);
 sun.position.set(1000, 5000, 1000)
-sun.castShadow 			=  true; 
+sun.castShadow 			    =  true; 
 sun.shadow.mapSize.width 	=  2048; 
-sun.shadow.mapSize.height =  2048; 
-sun.shadow.camera.near 	 =  1000; 
-sun.shadow.camera.far 	 =  20000;
-sun.shadow.camera.left 	 = -50;
-sun.shadow.camera.bottom = -50;
-sun.shadow.camera.top  	 =  50;
-sun.shadow.camera.right	 =  50;
+sun.shadow.mapSize.height   =  2048; 
+sun.shadow.camera.near 	    =  1000; 
+sun.shadow.camera.far 	    =  20000;
+sun.shadow.camera.left 	    = -50;
+sun.shadow.camera.bottom    = -50;
+sun.shadow.camera.top  	    =  50;
+sun.shadow.camera.right	    =  50;
 scene.add(sun);
 scene.add(sun.target)
 
 //const helper = new THREE.CameraHelper(sun.shadow.camera);
 //scene.add( helper );
 
-const light = new THREE.AmbientLight(0x404040, 1.0); 
+const light = new THREE.AmbientLight(0x404040, 3.0); 
 scene.add(light);
 
 //const axesHelper = new THREE.AxesHelper( 50 );
@@ -188,7 +187,7 @@ let assets = {
         then = now;
         if (dt > 0.1 || isNaN(dt)) dt = 0.1;
 
-        debug.innerText = `pos: ${aircraft.position.x.toFixed(2)}, ${aircraft.position.y.toFixed(2)}, ${aircraft.position.z.toFixed(2)}\nvel: ${aircraft.velocity.x.toFixed(2)}, ${aircraft.velocity.y.toFixed(2)}, ${aircraft.velocity.z.toFixed(2)}`;
+        //debug.innerText = `pos: ${aircraft.position.x.toFixed(2)}, ${aircraft.position.y.toFixed(2)}, ${aircraft.position.z.toFixed(2)}\nvel: ${aircraft.velocity.x.toFixed(2)}, ${aircraft.velocity.y.toFixed(2)}, ${aircraft.velocity.z.toFixed(2)}`;
 
         if (!paused){
             goa.forEach(gameObject => {
