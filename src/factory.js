@@ -80,7 +80,7 @@ export class Factory {
 
         obj.addComponent(new EventRelay(obj, parent, ["fire"]));
         obj.addComponent(new Explosive(obj));
-        obj.addComponent(new MissileFireControl(obj, hardpointId, this.goa));
+        obj.addComponent(new LaserGuidance(obj, hardpointId, this.goa));
 
 
         //this.goa.add(obj);

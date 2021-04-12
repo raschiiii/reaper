@@ -39,11 +39,41 @@ export class MissileFireControl extends Component {
 }
 
 export class LaserGuidance extends Component {
-    constructor(gameObject, target){
+    //constructor(gameObject, target){
+    constructor(gameObject, id, goa){
         super(gameObject);
-        this._target      = target;
+        this._target      = null;
         this._dirToTarget = new THREE.Vector3();
         this._debug       = document.querySelector('#display1');
+
+        this.id  = id;
+        this.goa = goa;
+
+        this.gameObject.subscribe("fire", (e) => {
+            if (e.hardpoint == this.id){
+                let tmp = new THREE.Vector3();
+
+                this._target = e.target;
+
+                const transform = this.gameObject.transform;
+                const parent = transform.parent;
+                const scene = this.gameObject.root;
+
+                parent.getWorldPosition(tmp);
+                
+                parent.remove(transform);
+                scene.add(transform)
+                this.gameObject.position.copy(tmp);
+                this.gameObject.velocity.copy(e.velocity);
+                
+                this.gameObject.addComponent(new SmokeEmitter(this.gameObject));
+                //this.gameObject.addComponent(new LaserGuidance(this.gameObject, e.target));
+                this.gameObject.addComponent(new Physics(this.gameObject, new Hellfire(this.gameObject)));
+                
+                this.goa.add(this.gameObject);
+            }
+        });
+
     }
 
     // negativ is to far right, positiv to far left
