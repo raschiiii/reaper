@@ -33,7 +33,7 @@ export class MissileFireControl extends Component {
                 this.gameObject.velocity.copy(e.velocity);
                 
                 this.gameObject.addComponent(new SmokeEmitter(this.gameObject));
-                this.gameObject.addComponent(new LaserGuidance(this.gameObject));
+                this.gameObject.addComponent(new LaserGuidance(this.gameObject, e.target));
                 this.gameObject.addComponent(new Physics(this.gameObject, new Hellfire(this.gameObject)));
                 
                 this.goa.add(this.gameObject);
@@ -43,7 +43,12 @@ export class MissileFireControl extends Component {
 }
 
 export class LaserGuidance extends Component {
-    constructor(gameObject){
+    constructor(gameObject, target){
         super(gameObject);
+        this._target = target;
+    }
+
+    update(dt){
+        
     }
 }
