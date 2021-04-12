@@ -17,6 +17,9 @@ export class MissileODE extends ODE {
         this.pitch = 0;
         this.mass  = params.mass;
         this.rocketDiameter = params.diameter;
+
+        this.wing_lift      = 0.0;
+        this.rudder_lift    = 0.0;
     }
 
     getRightHandSide(s, q, deltaQ, ds, qScale){
@@ -43,8 +46,8 @@ export class MissileODE extends ODE {
         let density = 0.00348*pressure/temperature;
         
         let thrust  = 2000.0;
-        let lift    = 0.0; // up down
-        let lift2   = 0.0; // left right
+        //let lift    = 0.0; // up down
+        //let lift2   = 0.0; // left right
 
         const cd = 0.5;
         let area = 0.25*Math.PI*this.rocketDiameter*this.rocketDiameter;
@@ -85,17 +88,13 @@ export class MissileODE extends ODE {
         //let Fy = sinYaw*cosPitch*(thrust - drag) + (-cosYaw*sinRoll - sinYaw*sinPitch*cosRoll)*lift;
         //let Fz = sinPitch*(thrust - drag)        +   cosPitch*cosRoll*lift;
 
-        // x = roll
-        // y = pitch
-        // z = yaw
         const a = thrust - drag;
-        const b = lift2;
-        const c = lift;
+        const b = this.rudder_lift;
+        const c = this.wing_lift;
 
         let Fx = (cosYaw*cosPitch)*a+(-sinYaw*cosRoll-cosYaw*sinPitch*sinRoll)*b+( sinYaw*sinRoll-cosYaw*sinPitch*cosRoll)*c;
         let Fy = (sinYaw*cosPitch)*a+( cosYaw*cosRoll-sinYaw*sinPitch*sinRoll)*b+(-cosYaw*sinRoll-sinYaw*sinPitch*cosRoll)*c;
         let Fz =        (sinPitch)*a+                       (cosPitch*sinRoll)*b+                       (cosPitch*cosRoll)*c;
-
 
 
         Fz += this.mass * -9.81;

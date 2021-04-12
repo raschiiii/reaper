@@ -145,19 +145,19 @@ export class FlightmodelODE extends ODE {
         }
 
         // works
-        let Fx = cosYaw*cosPitch*(thrust - drag) + ( sinYaw*sinRoll - cosYaw*sinPitch*cosRoll)*lift;
-        let Fy = sinYaw*cosPitch*(thrust - drag) + (-cosYaw*sinRoll - sinYaw*sinPitch*cosRoll)*lift;
-        let Fz = sinPitch*       (thrust - drag) + cosPitch*cosRoll*lift;
+        //let Fx = cosYaw*cosPitch*(thrust - drag) + ( sinYaw*sinRoll - cosYaw*sinPitch*cosRoll)*lift;
+        //let Fy = sinYaw*cosPitch*(thrust - drag) + (-cosYaw*sinRoll - sinYaw*sinPitch*cosRoll)*lift;
+        //let Fz = sinPitch*       (thrust - drag) + cosPitch*cosRoll*lift;
 
         // x = roll
         // y = pitch
         // z = yaw
-        //const a = thrust - drag;
-        //const b = 0;
-        //const c = lift;
-        //let Fx = (cosYaw*cosPitch)*a + (-sinYaw*cosRoll - cosYaw*sinPitch*sinRoll)*b + ( sinYaw*sinRoll - cosYaw*sinPitch*cosRoll)*c;
-        //let Fy = (sinYaw*cosPitch)*a + ( cosYaw*cosRoll - sinYaw*sinPitch*sinRoll)*b + (-cosYaw*sinRoll - sinYaw*sinPitch*cosRoll)*c;
-        //let Fz =        (sinPitch)*a +                          (cosPitch*sinRoll)*b +                          (cosPitch*cosRoll)*c;
+        const a = thrust - drag;
+        const b = 0;
+        const c = lift;
+        let Fx = (cosYaw*cosPitch)*a+(-sinYaw*cosRoll-cosYaw*sinPitch*sinRoll)*b+( sinYaw*sinRoll-cosYaw*sinPitch*cosRoll)*c;
+        let Fy = (sinYaw*cosPitch)*a+( cosYaw*cosRoll-sinYaw*sinPitch*sinRoll)*b+(-cosYaw*sinRoll-sinYaw*sinPitch*cosRoll)*c;
+        let Fz =        (sinPitch)*a+                       (cosPitch*sinRoll)*b+                       (cosPitch*cosRoll)*c;
 
         Fz = Fz + this.mass * -9.81;
     
