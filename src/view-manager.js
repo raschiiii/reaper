@@ -102,6 +102,7 @@ export class ViewManager {
         }
     }
 
+    // deprecated
     toggle2(){
         const n = this._goa.array.length;
         const old = this._goa.array[this._activeIndex];
@@ -118,6 +119,7 @@ export class ViewManager {
         this.setActive(this._activeIndex)
     }
 
+    // deprecated
     setActive(n){
 
         if (this._activeIndex != -1){
