@@ -59,19 +59,26 @@ export class OrbitViewManager {
     toggle(){
         const n = this._goa.array.length;
         const old = this._goa.array[this._activeIndex];
-        old.removeComponent(PlayerView);
-        old.removeComponent(PlayerInput);
+        
+        if (old){
+            old.removeComponent(PlayerView);
+            old.removeComponent(PlayerInput);
+        }
 
+        
         this._activeIndex = (this._activeIndex + 1) % n; 
+        
+        //console.log(`n: ${n}, active: ${this._activeIndex}`)
+        
         this.setActive(this._activeIndex)
     }
 
     setActive(n){
 
         if (this._activeIndex != -1){
-            const old = this._goa.array[this._activeIndex];
-            old.removeComponent(PlayerView);
-            old.removeComponent(PlayerInput);
+            const old1 = this._goa.array[this._activeIndex];
+            old1.removeComponent(PlayerView);
+            old1.removeComponent(PlayerInput);
         }
 
         let gameObject = this._goa.array[n];

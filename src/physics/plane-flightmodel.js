@@ -32,9 +32,9 @@ export class PropPlane extends FlightmodelODE {
             a: 1.83,
             b: -1.32
         });
-
+        
         let alpha = document.querySelector('#alpha');
-        let bank = document.querySelector('#bank');
+        let bank  = document.querySelector('#bank');
 
         let that = this;
         let thrustSlider = document.querySelector('#slider3');

@@ -216,7 +216,11 @@ let assets = {
                 if (gameObject.lifetime != undefined){
                     gameObject.lifetime -= dt;
                     if (gameObject.lifetime <= 0){
+                        
+                        //console.log(`liftime <= 0: ${gameObject.id}`)
+
                         if (viewManager.activeGameObject == gameObject.id){
+                            console.log(`toggle away from ${gameObject.id}, ${viewManager.activeGameObject}`)
                             viewManager.toggle();
                         }
                         goa.remove(gameObject);
