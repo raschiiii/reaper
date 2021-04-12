@@ -15,10 +15,6 @@ export class MissileFireControl extends Component {
 
         this.gameObject.subscribe("fire", (e) => {
             if (e.hardpoint == this.id){
-                
-                //console.log("firing missile")
-                //console.log(e);
-
                 let tmp = new THREE.Vector3();
 
                 const transform = this.gameObject.transform;
@@ -45,10 +41,9 @@ export class MissileFireControl extends Component {
 export class LaserGuidance extends Component {
     constructor(gameObject, target){
         super(gameObject);
-        this._target = target;
-        
-        this._debug         = document.querySelector('#display1');
+        this._target      = target;
         this._dirToTarget = new THREE.Vector3();
+        this._debug       = document.querySelector('#display1');
     }
 
     // negativ is to far right, positiv to far left
@@ -87,19 +82,16 @@ export class LaserGuidance extends Component {
             let rudderDeflection =  5000 * yawAngle;
             let wingDeflection   = -7000 * pitchAngle;
 
-            this._debug.innerText = `distanceToTarget: ${distance.toFixed(2) * 10}\n yaw=${ yawAngle }, pitch=${ pitchAngle }, deflection=${ wingDeflection }`;
- 
-            //this._debug.innerText = `angle=${ yawAngle }, deflection=${ rudderDeflection }`;
+            this._debug.innerText = `distanceToTarget: ${distance.toFixed(2) * 10}
+             yaw=${ yawAngle }, pitch=${ pitchAngle }, deflection=${ wingDeflection }`;
+           
+             //this._debug.innerText = `angle=${ yawAngle }, deflection=${ rudderDeflection }`;
             //this._debug.innerText = `angle=${ pitchAngle }, deflection=${ wingDeflection }`;
 
             this.gameObject.publish("guidance", {
                 rudder: rudderDeflection,
-                wing:   wingDeflection
-            })
-
-        }
-
-
-         
+                wing: wingDeflection
+            });
+        }         
     }
 }
