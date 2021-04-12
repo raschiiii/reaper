@@ -45,7 +45,7 @@ export class MissileODE extends ODE {
         let pressure = 101325.0*Math.pow(grp, 5.25);
         let density = 0.00348*pressure/temperature;
         
-        let thrust  = 2000.0;
+        let thrust  = 3000.0;
 
         const cd = 0.5;
         let area = 0.25*Math.PI*this.rocketDiameter*this.rocketDiameter;

@@ -91,7 +91,7 @@ export class Factory {
         let obj = new GameObject(this.scene);
         obj.position.copy(pos);
 
-        obj.addComponent(new Box(obj, { castShadow: true }));
+        obj.addComponent(new Box(obj, { castShadow: true, size: 10 }));
         obj.addComponent(new AABB(obj));
         //obj.addComponent(new BasicPhysics(obj, {}));
 

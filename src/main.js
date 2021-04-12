@@ -152,8 +152,8 @@ let assets = {
     const terrain       = factory.createTerrain();
     const heightmap     = terrain.getComponent(TerrainManager);
 
-    factory.createTestCube(new THREE.Vector3( 0, heightmap.getHeight(0,0),    0));
-    factory.createTestCube(new THREE.Vector3(20, heightmap.getHeight(20,20), 20));
+    factory.createTestCube(new THREE.Vector3( 800, heightmap.getHeight(800,200),    200));
+    factory.createTestCube(new THREE.Vector3(800, heightmap.getHeight(800, 0), 0));
 
     goa._addQueued();
     //viewManager.setActive(0);

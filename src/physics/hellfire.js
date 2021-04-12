@@ -18,6 +18,11 @@ export class Hellfire extends MissileODE  {
 
         const steering_lift = 2000;
 
+        this.gameObject.subscribe("guidance", (event) => {
+            this.wing_lift      = event.wing;
+            this.rudder_lift    = event.rudder;
+        })
+
         this.gameObject.subscribe("keydown", (event) => {            
             switch (event.code){
                 case "KeyW": this.wing_lift   =  steering_lift; break;
