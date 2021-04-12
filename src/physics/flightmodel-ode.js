@@ -145,7 +145,14 @@ export class FlightmodelODE extends ODE {
 
         let Fx = cosYaw*cosPitch*(thrust - drag) + ( sinYaw*sinRoll - cosYaw*sinPitch*cosRoll)*lift;
         let Fy = sinYaw*cosPitch*(thrust - drag) + (-cosYaw*sinRoll - sinYaw*sinPitch*cosRoll)*lift;
-        let Fz = sinPitch*(thrust - drag) + cosPitch*cosRoll*lift;
+        let Fz = sinPitch*       (thrust - drag) + cosPitch*cosRoll*lift;
+
+        //let F = new THREE.Vector3(thrust - drag, 0, lift);
+        //F.applyEuler(new THREE.Euler(-this.roll, this.yaw, this.pitch, "XYZ"))
+        //F.applyEuler(new THREE.Euler(this.roll, this.yaw, this.pitch, "YZX"))
+        //let Fx = F.x;
+        //let Fy = F.y;
+        //let Fz = F.z;
 
         Fz = Fz + this.mass * -9.81;
     

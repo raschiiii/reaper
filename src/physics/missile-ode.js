@@ -44,6 +44,7 @@ export class MissileODE extends ODE {
         
         let thrust  = 2000.0;
         let lift    = 0.0;
+        let lift2   = 0.0;
 
         const cd = 0.5;
         let area = 0.25*Math.PI*this.rocketDiameter*this.rocketDiameter;
@@ -82,7 +83,7 @@ export class MissileODE extends ODE {
 
         let Fx = cosYaw*cosPitch*(thrust - drag) + ( sinYaw*sinRoll - cosYaw*sinPitch*cosRoll)*lift;
         let Fy = sinYaw*cosPitch*(thrust - drag) + (-cosYaw*sinRoll - sinYaw*sinPitch*cosRoll)*lift;
-        let Fz = sinPitch*(thrust - drag)        + cosPitch*cosRoll*lift;
+        let Fz = sinPitch*(thrust - drag)        +   cosPitch*cosRoll*lift;
 
         Fz += this.mass * -9.81;
 

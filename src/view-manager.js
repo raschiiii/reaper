@@ -60,25 +60,21 @@ export class ViewManager {
     _init(){
         this._activeIndex = 0;
         const newActive = this._goa.array[this._activeIndex];
-
         this.activeGameObject = newActive.id;
-
         newActive.addComponent(new PlayerView(newActive, this._camera))
         newActive.addComponent(new PlayerInput(newActive));
-
-        console.log(`active: ${this.activeGameObject}`)
     }
 
     toggle(){
         const n = this._goa.array.length;
-        let i   = this._activeIndex;
+        let   i = this._activeIndex;
 
         const oldActive = this._goa.array[i];
         if (oldActive){
             oldActive.removeComponent(PlayerView);
             oldActive.removeComponent(PlayerInput);
         } else {
-            console.log("error")
+            console.error("error")
         }
 
         i = ( i + 1) % n;
@@ -87,7 +83,7 @@ export class ViewManager {
         let newActive = this._goa.array[i];
         
         if (newActive == undefined) {
-            console.log("error");
+            console.error("error");
             return;
         }
 
@@ -95,53 +91,14 @@ export class ViewManager {
 
         if (!newActive.getComponent(PlayerView)){
             newActive.addComponent(new PlayerView(newActive, this._camera))
+        } else {
+            console.error("error");
         }
         
         if (!newActive.getComponent(PlayerInput)){
             newActive.addComponent(new PlayerInput(newActive));
-        }
-    }
-
-    // deprecated
-    toggle2(){
-        const n = this._goa.array.length;
-        const old = this._goa.array[this._activeIndex];
-        
-        if (old){
-            old.removeComponent(PlayerView);
-            old.removeComponent(PlayerInput);
-        }
-
-        this._activeIndex = (this._activeIndex + 1) % n; 
-        
-        //console.log(`n: ${n}, active: ${this._activeIndex}`)
-        
-        this.setActive(this._activeIndex)
-    }
-
-    // deprecated
-    setActive(n){
-
-        if (this._activeIndex != -1){
-            const old1 = this._goa.array[this._activeIndex];
-            old1.removeComponent(PlayerView);
-            old1.removeComponent(PlayerInput);
-        }
-
-        let gameObject = this._goa.array[n];
-        
-        if (gameObject == undefined) return;
-
-        this.activeGameObject = gameObject.id;
-        this._activeIndex = n;
-        
-
-        if (!gameObject.getComponent(PlayerView)){
-            gameObject.addComponent(new PlayerView(gameObject, this._camera))
-        }
-        
-        if (!gameObject.getComponent(PlayerInput)){
-            gameObject.addComponent(new PlayerInput(gameObject));
+        } else {
+            console.error("error");
         }
     }
 }
