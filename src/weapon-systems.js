@@ -32,13 +32,13 @@ export class MissileFireControl extends Component {
                 this.gameObject.position.copy(tmp);
                 this.gameObject.velocity.copy(e.velocity);
                 
-                this.gameObject.addComponent(new SmokeEmitter(this.gameObject));
+                //this.gameObject.addComponent(new SmokeEmitter(this.gameObject));
                 this.gameObject.addComponent(new LaserGuidance(this.gameObject, e.target));
                 this.gameObject.addComponent(new Physics(this.gameObject, new Hellfire(this.gameObject)));
                 
                 this.goa.add(this.gameObject);
             }
-        })
+        });
     }
 }
 
@@ -46,9 +46,39 @@ export class LaserGuidance extends Component {
     constructor(gameObject, target){
         super(gameObject);
         this._target = target;
+        
+        this._debug         = document.querySelector('#display1');
+        this._dirToTarget = new THREE.Vector3();
+    }
+
+    _yawAngle(velocity, direction){
+        return Math.atan2(direction.z,direction.x) - Math.atan2(velocity.z,velocity.x)
+    }
+
+    _pitchAngle(velocity, direction){
+        
+        let vh = Math.sqrt(vx*vx + vy*vy);
+
     }
 
     update(dt){
-        
+        if (this._target){
+            this._dirToTarget.subVectors(this._target, this.gameObject.position);
+            this._dirToTarget.normalize();
+            
+            let v1 = this.gameObject.velocity.clone();
+            v1.normalize();
+
+            let v2 = this._dirToTarget.clone();
+            v2.normalize();
+
+            const yawAngle   = this._yawAngle(v1, v2);
+            const pitchAngle = this._pitchAngle(v1, v2);
+
+            this._debug.innerText = `${ yawAngle }, ${ pitchAngle }`;
+        }
+
+
+         
     }
 }

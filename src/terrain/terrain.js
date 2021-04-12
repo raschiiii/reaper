@@ -257,7 +257,6 @@ export class TerrainManager extends Component {
         });
 
         this._count = 0;
-        this._debug         = document.querySelector('#display1');
     }
 
     _updateVisible() {
@@ -327,7 +326,7 @@ export class TerrainManager extends Component {
 
     update(dt) {
         this._updateVisibleQuadtree();
-        this._debug.innerText = `chunks: ${this._count}`
+        //this._debug.innerText = `chunks: ${this._count}`
     }
 
     _createChunk(offset, dimensions) {
