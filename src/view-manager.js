@@ -48,15 +48,61 @@ export class PlayerView extends Component {
     }
 }
 
-export class OrbitViewManager {
+export class ViewManager {
     constructor(goa, camera){
-        this._goa  = goa;
-        this._activeIndex = -1;
-        this.activeGameObject = null;
-        this._camera = camera;
+        this._goa               = goa;
+        this._activeIndex       = -1;
+        this.activeGameObject   = null;
+        this._camera            = camera;
+
+    }
+
+    _init(){
+        this._activeIndex = 0;
+        const newActive = this._goa.array[this._activeIndex];
+
+        this.activeGameObject = newActive.id;
+
+        newActive.addComponent(new PlayerView(newActive, this._camera))
+        newActive.addComponent(new PlayerInput(newActive));
+
+        console.log(`active: ${this.activeGameObject}`)
     }
 
     toggle(){
+        const n = this._goa.array.length;
+        let i   = this._activeIndex;
+
+        const oldActive = this._goa.array[i];
+        if (oldActive){
+            oldActive.removeComponent(PlayerView);
+            oldActive.removeComponent(PlayerInput);
+        } else {
+            console.log("error")
+        }
+
+        i = ( i + 1) % n;
+        this._activeIndex = i;
+
+        let newActive = this._goa.array[i];
+        
+        if (newActive == undefined) {
+            console.log("error");
+            return;
+        }
+
+        this.activeGameObject = newActive.id;
+
+        if (!newActive.getComponent(PlayerView)){
+            newActive.addComponent(new PlayerView(newActive, this._camera))
+        }
+        
+        if (!newActive.getComponent(PlayerInput)){
+            newActive.addComponent(new PlayerInput(newActive));
+        }
+    }
+
+    toggle2(){
         const n = this._goa.array.length;
         const old = this._goa.array[this._activeIndex];
         
@@ -65,7 +111,6 @@ export class OrbitViewManager {
             old.removeComponent(PlayerInput);
         }
 
-        
         this._activeIndex = (this._activeIndex + 1) % n; 
         
         //console.log(`n: ${n}, active: ${this._activeIndex}`)

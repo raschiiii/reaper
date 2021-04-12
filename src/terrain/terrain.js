@@ -319,7 +319,6 @@ export class TerrainManager extends Component {
         }
 
         for (const key in this._chunks) {
-            console.log("destroy")
             this._count--;
             this._chunks[key].chunk.destroy();
         }

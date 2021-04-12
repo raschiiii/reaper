@@ -11,7 +11,7 @@ import { AABB } from './collision.js';
 import { Factory } from './factory.js';
 import { HashGrid } from './hashgrid.js';
 import { Explosion } from './particles.js';
-import { OrbitViewManager } from './orbit-camera.js';
+import { ViewManager } from './view-manager.js';
 import { TerrainManager } from './terrain/terrain.js';
 import { GameObjectArray } from './game-object-array.js';
 
@@ -145,7 +145,7 @@ let assets = {
     const goa           = new GameObjectArray()
     const grid          = new HashGrid(2);
     const factory       = new Factory(assets, scene, goa, camera, grid, sensor, listener);
-    const viewManager   = new OrbitViewManager(goa, camera);
+    const viewManager   = new ViewManager(goa, camera);
     const explosions    = new Explosion(scene, 'assets/textures/explosion2.png', listener)
 
     const aircraft      = factory.createAircraft(new THREE.Vector3(0, 300, 0), new THREE.Vector3(10, 0, 0));
@@ -156,7 +156,8 @@ let assets = {
     factory.createTestCube(new THREE.Vector3(20, heightmap.getHeight(20,20), 20));
 
     goa._addQueued();
-    viewManager.setActive(0);
+    //viewManager.setActive(0);
+    viewManager._init();
 
     document.addEventListener('keydown', (e) => {
         switch(e.code){
