@@ -65,6 +65,29 @@ export class ViewManager {
         newActive.addComponent(new PlayerInput(newActive));
     }
 
+    setActive(i){
+        const newActive = this._goa.array[i];
+
+        if (!newActive) {
+            console.error("error");
+            return;
+        }
+        
+        const oldActive = this._goa.array[this._activeIndex];
+        if (oldActive){
+            oldActive.removeComponent(PlayerView);
+            oldActive.removeComponent(PlayerInput);
+        } else {
+            console.error("error")
+        }
+
+        this.activeGameObject = newActive.id;
+        this._activeIndex = i;
+
+        newActive.addComponent(new PlayerView(newActive, this._camera))
+        newActive.addComponent(new PlayerInput(newActive));
+    }
+
     toggle(){
         const n = this._goa.array.length;
         let   i = this._activeIndex;

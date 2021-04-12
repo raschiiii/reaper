@@ -15,7 +15,7 @@ import { LocalAxis } from './testing.js';
 import { AirplaneModel, SimpleModel } from './model.js';
 import { TerrainManager } from './terrain/terrain.js';
 import { FireControlSystem, Hardpoints, Sensor } from './aircraft-systems.js';
-import { MissileFireControl } from './weapon-systems.js';
+import { LaserGuidance, MissileFireControl } from './weapon-systems.js';
 import { Hellfire } from './physics/hellfire.js';
 import { SmokeEmitter } from './particles.js';
 

@@ -316,16 +316,18 @@ export class Smoke extends ParticleSystem {
     constructor(parent, source = new THREE.Vector3()){
         super(parent, {
             numParticles: 1000, 
-            particleLifetime: 3,
-            particlesPerSecond: 300, 
+            particleLifetime: 2,
+            particlesPerSecond: 500, 
             texture: 'assets/textures/smoke.png',
             blending: THREE.NormalBlending,
             alphaDegrading: 0.5
 
         });
 
-        this._spread = 0.1
-        this._source = source;
+        this.startSize  = 0.1;
+        this._spread    = 0.25;
+        this.scaleValue = 1;
+        this._source    = source;
     }
 
     _createParticle(unused){
@@ -335,9 +337,9 @@ export class Smoke extends ParticleSystem {
 
         this._particles[unused].velocity.set(0.1, 0.3, 0);
         this._particles[unused].lifetime = this.particleLifetime;
-        this._particles[unused].size = this.startSize;
-        this._particles[unused].color = new THREE.Color();
-        this._particles[unused].alpha = 1;
+        this._particles[unused].size     = this.startSize * Math.random();
+        this._particles[unused].color    = new THREE.Color();
+        this._particles[unused].alpha    = 1 * Math.random();
     }
 }
 

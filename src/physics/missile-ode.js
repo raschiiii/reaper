@@ -46,8 +46,6 @@ export class MissileODE extends ODE {
         let density = 0.00348*pressure/temperature;
         
         let thrust  = 2000.0;
-        //let lift    = 0.0; // up down
-        //let lift2   = 0.0; // left right
 
         const cd = 0.5;
         let area = 0.25*Math.PI*this.rocketDiameter*this.rocketDiameter;
@@ -66,7 +64,6 @@ export class MissileODE extends ODE {
             cosPitch = 1.0;
             sinPitch = 0.0;
             this.pitch = 0;
-        
         } else {
             this.pitch = Math.atan(vz / vh);
             cosPitch = Math.cos(this.pitch)
@@ -77,16 +74,11 @@ export class MissileODE extends ODE {
             cosYaw = 1.0;
             sinYaw = 0.0;
             this.yaw = 0;
-
         } else {
             cosYaw = vx/vh;
             sinYaw = vy/vh;
             this.yaw = Math.atan2(vx, vy) - Math.PI / 2
         }
-
-        //let Fx = cosYaw*cosPitch*(thrust - drag) + ( sinYaw*sinRoll - cosYaw*sinPitch*cosRoll)*lift;
-        //let Fy = sinYaw*cosPitch*(thrust - drag) + (-cosYaw*sinRoll - sinYaw*sinPitch*cosRoll)*lift;
-        //let Fz = sinPitch*(thrust - drag)        +   cosPitch*cosRoll*lift;
 
         const a = thrust - drag;
         const b = this.rudder_lift;
@@ -95,7 +87,6 @@ export class MissileODE extends ODE {
         let Fx = (cosYaw*cosPitch)*a+(-sinYaw*cosRoll-cosYaw*sinPitch*sinRoll)*b+( sinYaw*sinRoll-cosYaw*sinPitch*cosRoll)*c;
         let Fy = (sinYaw*cosPitch)*a+( cosYaw*cosRoll-sinYaw*sinPitch*sinRoll)*b+(-cosYaw*sinRoll-sinYaw*sinPitch*cosRoll)*c;
         let Fz =        (sinPitch)*a+                       (cosPitch*sinRoll)*b+                       (cosPitch*cosRoll)*c;
-
 
         Fz += this.mass * -9.81;
 
