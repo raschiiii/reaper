@@ -107,6 +107,7 @@ export class FlightmodelODE extends ODE {
         }
 
         let lift = 0.5*cl*density*vtotal*vtotal*this.wingArea;
+        let lift2 = 0;
 
         let aspectRatio = this.wingSpan*this.wingSpan/this.wingArea;
         let cd = this.cdp + cl*cl/(Math.PI*aspectRatio*this.eff);
@@ -143,16 +144,23 @@ export class FlightmodelODE extends ODE {
             this.yaw = Math.atan2(vx, vy) - Math.PI / 2
         }
 
-        let Fx = cosYaw*cosPitch*(thrust - drag) + ( sinYaw*sinRoll - cosYaw*sinPitch*cosRoll)*lift;
-        let Fy = sinYaw*cosPitch*(thrust - drag) + (-cosYaw*sinRoll - sinYaw*sinPitch*cosRoll)*lift;
-        let Fz = sinPitch*       (thrust - drag) + cosPitch*cosRoll*lift;
+        // works
+        //let Fx = cosYaw*cosPitch*(thrust - drag) + ( sinYaw*sinRoll - cosYaw*sinPitch*cosRoll)*lift;
+        //let Fy = sinYaw*cosPitch*(thrust - drag) + (-cosYaw*sinRoll - sinYaw*sinPitch*cosRoll)*lift;
+        //let Fz = sinPitch*       (thrust - drag) + cosPitch*cosRoll*lift;
 
-        //let F = new THREE.Vector3(thrust - drag, 0, lift);
-        //F.applyEuler(new THREE.Euler(-this.roll, this.yaw, this.pitch, "XYZ"))
-        //F.applyEuler(new THREE.Euler(this.roll, this.yaw, this.pitch, "YZX"))
-        //let Fx = F.x;
-        //let Fy = F.y;
-        //let Fz = F.z;
+
+        const a = thrust - drag;
+        const b = 0;
+        const c = lift;
+
+        // x = roll
+        // y = pitch
+        // z = yaw
+
+        let Fx = (cosYaw*cosPitch)*a + (-sinYaw*cosRoll - cosYaw*sinPitch*sinRoll)*b + ( sinYaw*sinRoll - cosYaw*sinPitch*cosRoll)*c;
+        let Fy = (sinYaw*cosPitch)*a + ( cosYaw*cosRoll - sinYaw*sinPitch*sinRoll)*b + (-cosYaw*sinRoll - sinYaw*sinPitch*cosRoll)*c;
+        let Fz =        (sinPitch)*a +                          (cosPitch*sinRoll)*b +                          (cosPitch*cosRoll)*c;
 
         Fz = Fz + this.mass * -9.81;
     
