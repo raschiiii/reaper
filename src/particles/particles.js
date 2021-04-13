@@ -71,7 +71,7 @@ export class Explosion extends ParticleSystem {
         }		
     }
 
-	update(dt){
+	update(dt, camera){
         if (this.on){
             this.counter += dt;
             if (this.counter >= this.duration){
@@ -80,6 +80,9 @@ export class Explosion extends ParticleSystem {
                 this.counter = 0;
             }
         }
+
+        this._points.material.uniforms.pointMultiplier.value = 
+            (window.innerHeight / (2.0 * Math.tan(0.5 * 60.0 * Math.PI / 180.0))) * camera.zoom;
 
         this._updateParticles(dt);
         this._updateGeometry();

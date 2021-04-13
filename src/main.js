@@ -146,7 +146,7 @@ let assets = {
     const grid          = new HashGrid(2);
     const factory       = new Factory(assets, scene, goa, camera, grid, sensor, listener);
     const viewManager   = new ViewManager(goa, camera);
-    //const explosions    = new Explosion(scene, 'assets/textures/explosion2.png', listener)
+    const explosions    = new Explosion(scene, 'assets/textures/explosion2.png', listener)
 
     const aircraft      = factory.createAircraft(new THREE.Vector3(0, 300, 0), new THREE.Vector3(10, 0, 0));
     const terrain       = factory.createTerrain();
@@ -186,13 +186,11 @@ let assets = {
         then = now;
         if (dt > 0.1 || isNaN(dt)) dt = 0.1;
 
-        //debug.innerText = `pos: ${aircraft.position.x.toFixed(2)}, ${aircraft.position.y.toFixed(2)}, ${aircraft.position.z.toFixed(2)}\nvel: ${aircraft.velocity.x.toFixed(2)}, ${aircraft.velocity.y.toFixed(2)}, ${aircraft.velocity.z.toFixed(2)}`;
-
         if (!paused){
             goa.forEach(gameObject => {
-                //gameObject.update(dt, sensorView ? sensor : camera);
+                
                 gameObject.update(dt, {
-                    camera: sensorView ? sensor : camera
+                    camera: sensorView ? sensor : camera // pass active camera
                 });
 
                 let aabb = gameObject.getComponent(AABB);
@@ -208,14 +206,13 @@ let assets = {
                             gameObject.position.x, terrainHeight, gameObject.position.z
                         );
                         
-                        //explosions.impact(impactPoint);
+                        explosions.impact(impactPoint);
 
                         gameObject.publish("collision", { 
                             depth: [ 0, terrainHeight - gameObject.position.y, 0 ]
                         });
                     }
                 }
-
 
                 if (gameObject.lifetime != undefined){
                     gameObject.lifetime -= dt;
@@ -233,7 +230,7 @@ let assets = {
                 }
             });
             
-            //explosions.update(dt, sensor);
+            explosions.update(dt, sensorView ? sensor : camera);
             terrain.update(dt);
         }
 
