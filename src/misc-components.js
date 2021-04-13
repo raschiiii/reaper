@@ -1,9 +1,10 @@
 import * as THREE from './three/build/three.module.js';
 import { GLTFLoader } from './three/examples/jsm/loaders/GLTFLoader.js';
 
-import { Smoke, SmokeEmitter } from './particles.js';
 import { Physics } from './physics/physics.js';
 import { Component } from './component.js';
+import { AABB } from './collision.js';
+import { SmokeEmitter, SmokeTrailEmitter } from './particles/particle-emitter.js';
 
 // allows a gameObject to subscribe to the events of another gameobject
 export class EventRelay extends Component {
@@ -30,13 +31,15 @@ export class Explosive extends Component {
         this.gameObject.subscribe("collision", () => {
             if (!hasExploded){
                 hasExploded = true;
-                this.gameObject.lifetime = 0;
-                const physics = this.gameObject.getComponent(Physics);
-                if (physics) this.gameObject.removeComponent(Physics);
 
-                const smoke = this.gameObject.getComponent(SmokeEmitter);
-                if (smoke) this.gameObject.removeComponent(SmokeEmitter);
+                this.gameObject.lifetime = 10;
 
+                this.gameObject.removeComponent(Physics);
+                this.gameObject.removeComponent(AABB);
+                this.gameObject.removeComponent(SmokeTrailEmitter);
+
+                this.gameObject.addComponent(new SmokeEmitter(this.gameObject));
+                
             }
         });
     }

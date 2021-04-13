@@ -10,7 +10,7 @@ import { UnrealBloomPass } from './three/examples/jsm/postprocessing/UnrealBloom
 import { AABB } from './collision.js';
 import { Factory } from './factory.js';
 import { HashGrid } from './hashgrid.js';
-import { Explosion } from './particles.js';
+import { Explosion } from './particles/particles.js';
 import { ViewManager } from './view-manager.js';
 import { TerrainManager } from './terrain/terrain.js';
 import { GameObjectArray } from './game-object-array.js';
@@ -50,7 +50,7 @@ cameraRenderer.addPass(new RenderPass(scene, camera));
 
 const sensorRenderer = new EffectComposer(renderer);
 sensorRenderer.addPass(new RenderPass(scene, sensor));
-sensorRenderer.addPass(new FilmPass(0.35, 0.5, 2048, false));
+//sensorRenderer.addPass(new FilmPass(0.35, 0.5, 2048, false));
 
 const stats = new Stats();
 document.body.appendChild(stats.dom);
@@ -156,7 +156,6 @@ let assets = {
     factory.createTestCube(new THREE.Vector3(800, heightmap.getHeight(800, 0), 0));
 
     goa._addQueued();
-    //viewManager.setActive(0);
     viewManager._init();
 
     document.addEventListener('keydown', (e) => {
@@ -198,21 +197,22 @@ let assets = {
                     for (let otherObject of grid.possible_aabb_collisions(aabb)){
                         if (otherObject != gameObject) aabb.collide(otherObject); 
                     }
+
+                    const terrainHeight = heightmap.getHeight(gameObject.position.x, gameObject.position.z);
+                    if (gameObject.position.y < terrainHeight){
+                        
+                        const impactPoint = new THREE.Vector3( 
+                            gameObject.position.x, terrainHeight, gameObject.position.z
+                        );
+                        
+                        explosions.impact(impactPoint);
+
+                        gameObject.publish("collision", { 
+                            depth: [ 0, terrainHeight - gameObject.position.y, 0 ]
+                        });
+                    }
                 }
 
-                const terrainHeight = heightmap.getHeight(gameObject.position.x, gameObject.position.z);
-                if (gameObject.position.y < terrainHeight){
-                    
-                    const impactPoint = new THREE.Vector3( 
-                        gameObject.position.x, terrainHeight, gameObject.position.z
-                    );
-                    
-                    explosions.impact(impactPoint);
-
-                    gameObject.publish("collision", { 
-                        depth: [ 0, terrainHeight - gameObject.position.y, 0 ]
-                    });
-                }
 
                 if (gameObject.lifetime != undefined){
                     gameObject.lifetime -= dt;
