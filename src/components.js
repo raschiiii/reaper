@@ -31,15 +31,13 @@ export class Explosive extends Component {
         this.gameObject.subscribe("collision", () => {
             if (!hasExploded){
                 hasExploded = true;
-
                 this.gameObject.lifetime = 10;
 
-                this.gameObject.removeComponent(Physics);
                 this.gameObject.removeComponent(AABB);
+                this.gameObject.removeComponent(Physics);
                 this.gameObject.removeComponent(SmokeTrailEmitter);
 
                 this.gameObject.addComponent(new SmokeEmitter(this.gameObject));
-                
             }
         });
     }
@@ -48,14 +46,12 @@ export class Explosive extends Component {
 export class Sound extends Component {
     constructor(gameObject, listener, buffer, params){
         super(gameObject);
-
         this.sound = new THREE.PositionalAudio(listener);
         this.sound.setBuffer( buffer );
         this.sound.setLoop( params.loop );
         this.sound.setVolume( params.volume );
         this.sound.setRefDistance( 20 );
         this.gameObject.transform.add( this.sound );
-
         if (params.autoplay) this.sound.play();
         
         this.gameObject.subscribe("paused", (event) => {

@@ -5,7 +5,7 @@ import { Box } from './shapes.js';
 import { BasicPhysics } from './physics/basic-physics.js';
 import { PlayerView } from './view-manager.js';
 import { AABB } from './collision.js';
-import { EventRelay, Explosive, Sound } from './misc-components.js';
+import { EventRelay, Explosive, Sound } from './components.js';
 import { Physics } from './physics/physics.js';
 import { SpringODE } from './physics/spring-ode.js';
 import { GravityODE } from './physics/gravity-ode.js';
