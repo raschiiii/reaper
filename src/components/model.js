@@ -1,6 +1,6 @@
-import * as THREE from "./three/build/three.module.js";
-import { Component } from "./engine/component.js";
-import { GLTFLoader } from "./three/examples/jsm/loaders/GLTFLoader.js";
+import * as THREE from "../three/build/three.module.js";
+import { Component } from "../engine/component.js";
+import { GLTFLoader } from "../three/examples/jsm/loaders/GLTFLoader.js";
 
 export class SimpleModel extends Component {
   constructor(gameObject, gltf, params) {

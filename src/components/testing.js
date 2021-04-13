@@ -1,5 +1,5 @@
-import { Component } from "./engine/component.js";
-import * as THREE from "./three/build/three.module.js";
+import { Component } from "../engine/component.js";
+import * as THREE from "../three/build/three.module.js";
 
 export class LocalAxis extends Component {
     constructor(gameObject) {

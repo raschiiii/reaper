@@ -2,7 +2,7 @@ import * as THREE from "./three/build/three.module.js";
 import { Component } from "./engine/component.js";
 
 import { OrbitControls } from "./three/examples/jsm/controls/OrbitControls.js";
-import { PlayerInput } from "./input.js";
+import { PlayerInput } from "./components/input.js";
 
 export class PlayerView extends Component {
     constructor(gameObject, camera) {

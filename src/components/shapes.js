@@ -1,5 +1,5 @@
-import * as THREE from "./three/build/three.module.js";
-import { Component } from "./engine/component.js";
+import * as THREE from "../three/build/three.module.js";
+import { Component } from "../engine/component.js";
 
 export class Box extends Component {
     constructor(gameObject, params) {

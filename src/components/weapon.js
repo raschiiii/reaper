@@ -1,10 +1,8 @@
-import * as THREE from './three/build/three.module.js';
-import { Component } from './engine/component.js';
-import { BasicPhysics } from './physics/basic-physics.js';
-import { Physics } from './physics/physics.js';
-import { GravityODE } from './physics/gravity-ode.js';
-import { Hellfire } from './physics/hellfire.js';
-import { SmokeTrailEmitter } from './particles/particle-emitter.js';
+import * as THREE from '../three/build/three.module.js';
+import { Component } from '../engine/component.js';
+import { Physics } from '../physics/physics.js';
+import { Hellfire } from '../physics/hellfire.js';
+import { SmokeTrailEmitter } from '../particles/particle-emitter.js';
 
 export class LaserGuidance extends Component {
     constructor(gameObject, id, goa){
