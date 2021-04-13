@@ -146,7 +146,7 @@ let assets = {
     const grid          = new HashGrid(2);
     const factory       = new Factory(assets, scene, goa, camera, grid, sensor, listener);
     const viewManager   = new ViewManager(goa, camera);
-    const explosions    = new Explosion(scene, 'assets/textures/explosion2.png', listener)
+    //const explosions    = new Explosion(scene, 'assets/textures/explosion2.png', listener)
 
     const aircraft      = factory.createAircraft(new THREE.Vector3(0, 300, 0), new THREE.Vector3(10, 0, 0));
     const terrain       = factory.createTerrain();
@@ -190,7 +190,10 @@ let assets = {
 
         if (!paused){
             goa.forEach(gameObject => {
-                gameObject.update(dt);
+                //gameObject.update(dt, sensorView ? sensor : camera);
+                gameObject.update(dt, {
+                    camera: sensorView ? sensor : camera
+                });
 
                 let aabb = gameObject.getComponent(AABB);
                 if (aabb){
@@ -205,7 +208,7 @@ let assets = {
                             gameObject.position.x, terrainHeight, gameObject.position.z
                         );
                         
-                        explosions.impact(impactPoint);
+                        //explosions.impact(impactPoint);
 
                         gameObject.publish("collision", { 
                             depth: [ 0, terrainHeight - gameObject.position.y, 0 ]
@@ -230,7 +233,7 @@ let assets = {
                 }
             });
             
-            explosions.update(dt);
+            //explosions.update(dt, sensor);
             terrain.update(dt);
         }
 

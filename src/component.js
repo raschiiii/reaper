@@ -7,6 +7,6 @@ export class Component {
 		this.gameObject = gameObject
 		this.name = this.constructor.name;
 	}
-	update(dt){}
+	update(dt, params){}
 	destroy(){}
 }

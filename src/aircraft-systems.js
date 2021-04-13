@@ -22,9 +22,14 @@ export class Sensor extends Component {
         this._target = new THREE.Vector3(0,-5,0);
 
         const that = this;
+        this._zoom = 0;
         this._zoomSlider = document.querySelector('#slider4');
         this._zoomSlider.oninput = function() {
+
             that._camera.zoom = this.value;
+            //that._camera.fov = 75 * (1 / this.value);
+            //that._zoom = this.value * 20;
+           
             that._camera.updateProjectionMatrix();
         }
         

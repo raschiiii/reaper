@@ -48,13 +48,13 @@ export class ParticleSystem {
 
 		this.numParticles 		= params.numParticles;
         this.startSize          = params.startSize;
-        //this.startSize          = 0.1;
 		this.particleLifetime   = params.particleLifetime;
         this.active             = true;
         this.alphaDegrading     = params.alphaDegrading;
         this.scaleValue         = params.scaleValue;
 
-        this._particles = []
+        this._particles = [];
+        this._zoom = 1;
 
 		for ( let i = 0; i < this.numParticles; i++ ) {
             this._particles.push({
@@ -73,13 +73,12 @@ export class ParticleSystem {
 			    value: new THREE.TextureLoader().load(params.texture) // TODO update this
 			},
 			pointMultiplier: {
-			    value: window.innerHeight / (2.0 * Math.tan(0.5 * 60.0 * Math.PI / 180.0))
+			    value: (window.innerHeight / (2.0 * Math.tan(0.5 * 60.0 * Math.PI / 180.0))) * this._zoom
 			}
 		};
 
 
         // depth test with log depth buffer does not work correctly in linux/firefox
-        // 
 		this._material = new THREE.ShaderMaterial({
 			uniforms: uniforms,
 			vertexShader: 	_VS,
@@ -95,8 +94,6 @@ export class ParticleSystem {
 		this._geometry.computeBoundingSphere()
 		this._geometry.boundingSphere.set(this._cache, 16000);
 		this._points = new THREE.Points(this._geometry, this._material);
-
-        
 
         this._updateGeometry();
 		parent.add(this._points);
@@ -196,7 +193,10 @@ export class ParticleSystem {
 		}
     }
 
-	update(dt){
+	update(dt, camera){
+        this._points.material.uniforms.pointMultiplier.value = 
+            (window.innerHeight / (2.0 * Math.tan(0.5 * 60.0 * Math.PI / 180.0))) * camera.zoom;
+
         this._createParticles(dt);
         this._updateParticles(dt);
         this._updateGeometry();

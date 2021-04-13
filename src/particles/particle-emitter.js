@@ -10,9 +10,9 @@ export class ParticleEmitter extends Component {
         this._smoke = smoke; 
     }
 
-    update(dt){
+    update(dt, params){
         this.gameObject.transform.getWorldPosition(this._smoke._source);
-        this._smoke.update(dt);
+        this._smoke.update(dt, params.camera);
     }
 
     destroy(){

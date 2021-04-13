@@ -54,9 +54,9 @@ export class GameObject {
 		return this.components.find(c => c.name == component.name);
 	}
 
-	update(dt){
+	update(dt, params){
 		for (const component of this.components){
-			component.update(dt)
+			component.update(dt, params)
 		}
 	}
 
