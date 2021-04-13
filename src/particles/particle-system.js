@@ -1,7 +1,5 @@
 import * as THREE from "../three/build/three.module.js";
 
-import { Component } from "../component.js";
-
 const _VS = `
 uniform float pointMultiplier;
 attribute float size;

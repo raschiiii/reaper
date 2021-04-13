@@ -1,5 +1,4 @@
-import * as THREE from "./three/build/three.module.js";
-import { GLTFLoader } from "./three/examples/jsm/loaders/GLTFLoader.js";
+import * as THREE from "../three/build/three.module.js";
 
 // base class for all components
 export class Component {

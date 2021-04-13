@@ -1,6 +1,6 @@
 import * as THREE from "./three/build/three.module.js";
 
-import { Component } from "./components.js";
+import { Component } from "../engine/components.js";
 
 export class FlightModel_PfGD extends Component {
     constructor(gameObject) {

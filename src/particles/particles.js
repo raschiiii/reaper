@@ -1,6 +1,5 @@
 import * as THREE from "../three/build/three.module.js";
 
-import { Component } from "../component.js";
 import { ParticleSystem } from "./particle-system.js";
 
 export class Explosion extends ParticleSystem {

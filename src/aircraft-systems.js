@@ -1,5 +1,5 @@
 import * as THREE from "./three/build/three.module.js";
-import { Component } from "./component.js";
+import { Component } from "./engine/component.js";
 
 export class Sensor extends Component {
     constructor(gameObject, camera) {

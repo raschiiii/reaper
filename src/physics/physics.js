@@ -1,4 +1,4 @@
-import { Component } from "../component.js";
+import { Component } from "../engine/component.js";
 import * as THREE from "../three/build/three.module.js";
 
 /*

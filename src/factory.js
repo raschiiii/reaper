@@ -1,6 +1,6 @@
 import * as THREE from "./three/build/three.module.js";
 
-import { GameObject } from "./game-object.js";
+import { GameObject } from "./engine/game-object.js";
 import { Box } from "./shapes.js";
 import { BasicPhysics } from "./physics/basic-physics.js";
 import { PlayerView } from "./view-manager.js";

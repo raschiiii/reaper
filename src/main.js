@@ -13,7 +13,7 @@ import { HashGrid } from "./collision/hashgrid.js";
 import { Explosion } from "./particles/particles.js";
 import { ViewManager } from "./view-manager.js";
 import { TerrainManager } from "./terrain/terrain.js";
-import { GameObjectArray } from "./game-object-array.js";
+import { GameObjectArray } from "./engine/game-object-array.js";
 
 // Debug
 const pauseDisplay = document.querySelector("#paused");
