@@ -4,8 +4,8 @@ import Stats from './three/examples/jsm/libs/stats.module.js'
 import { GLTFLoader } from './three/examples/jsm/loaders/GLTFLoader.js';
 import {EffectComposer} from './three/examples/jsm/postprocessing/EffectComposer.js';
 import {RenderPass}     from './three/examples/jsm/postprocessing/RenderPass.js';
-import {FilmPass}       from './three/examples/jsm/postprocessing/FilmPass.js';
-import { UnrealBloomPass } from './three/examples/jsm/postprocessing/UnrealBloomPass.js';
+//import {FilmPass}       from './three/examples/jsm/postprocessing/FilmPass.js';
+//import { UnrealBloomPass } from './three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
 import { AABB } from './collision.js';
 import { Factory } from './factory.js';
@@ -18,6 +18,7 @@ import { GameObjectArray } from './game-object-array.js';
 // Debug
 const pauseDisplay  = document.querySelector('#paused');
 const hud           = document.querySelector('#hud-img');
+const canvas        = document.querySelector("#canvas");
 
 const width  = 640;
 const height = 480;
@@ -28,7 +29,6 @@ const sensor = new THREE.PerspectiveCamera(75, width / height, 0.01, 15000);
 const listener = new THREE.AudioListener();
 camera.add(listener);
 
-const canvas = document.querySelector("#canvas");
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color( 0xcce0ff );
