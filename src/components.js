@@ -3,7 +3,7 @@ import { GLTFLoader } from "./three/examples/jsm/loaders/GLTFLoader.js";
 
 import { Physics } from "./physics/physics.js";
 import { Component } from "./component.js";
-import { AABB } from "./collision.js";
+import { AABB } from "./collision/collision.js";
 import {
     SmokeEmitter,
     SmokeTrailEmitter,

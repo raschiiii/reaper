@@ -4,12 +4,12 @@ import Stats from "./three/examples/jsm/libs/stats.module.js";
 import { GLTFLoader } from "./three/examples/jsm/loaders/GLTFLoader.js";
 import { EffectComposer } from "./three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "./three/examples/jsm/postprocessing/RenderPass.js";
-//import {FilmPass}       from './three/examples/jsm/postprocessing/FilmPass.js';
+import {FilmPass}       from './three/examples/jsm/postprocessing/FilmPass.js';
 //import { UnrealBloomPass } from './three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
-import { AABB } from "./collision.js";
+import { AABB } from "./collision/collision.js";
 import { Factory } from "./factory.js";
-import { HashGrid } from "./hashgrid.js";
+import { HashGrid } from "./collision/hashgrid.js";
 import { Explosion } from "./particles/particles.js";
 import { ViewManager } from "./view-manager.js";
 import { TerrainManager } from "./terrain/terrain.js";
@@ -50,7 +50,7 @@ cameraRenderer.addPass(new RenderPass(scene, camera));
 
 const sensorRenderer = new EffectComposer(renderer);
 sensorRenderer.addPass(new RenderPass(scene, sensor));
-//sensorRenderer.addPass(new FilmPass(0.35, 0.5, 2048, false));
+sensorRenderer.addPass(new FilmPass(0.35, 0.5, 2048, false));
 
 const stats = new Stats();
 document.body.appendChild(stats.dom);
