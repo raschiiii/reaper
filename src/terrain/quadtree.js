@@ -1,4 +1,4 @@
-import * as THREE from '../three/build/three.module.js';
+import * as THREE from "../three/build/three.module.js";
 
 const _MIN_NODE_SIZE = 500;
 
@@ -58,26 +58,27 @@ export class QuadTree {
 
         // Bottom right
         const b2 = new THREE.Box2(
-        new THREE.Vector2(midpoint.x, child.bounds.min.y),
-        new THREE.Vector2(child.bounds.max.x, midpoint.y));
+            new THREE.Vector2(midpoint.x, child.bounds.min.y),
+            new THREE.Vector2(child.bounds.max.x, midpoint.y)
+        );
 
         // Top left
         const b3 = new THREE.Box2(
-        new THREE.Vector2(child.bounds.min.x, midpoint.y),
-        new THREE.Vector2(midpoint.x, child.bounds.max.y));
+            new THREE.Vector2(child.bounds.min.x, midpoint.y),
+            new THREE.Vector2(midpoint.x, child.bounds.max.y)
+        );
 
         // Top right
         const b4 = new THREE.Box2(midpoint, child.bounds.max);
 
-        const children = [b1, b2, b3, b4].map(
-            b => {
-                return {
-                    bounds: b,
-                    children: [],
-                    center: b.getCenter(new THREE.Vector2()),
-                    size: b.getSize(new THREE.Vector2())
-                };
-            });
+        const children = [b1, b2, b3, b4].map((b) => {
+            return {
+                bounds: b,
+                children: [],
+                center: b.getCenter(new THREE.Vector2()),
+                size: b.getSize(new THREE.Vector2()),
+            };
+        });
 
         return children;
     }

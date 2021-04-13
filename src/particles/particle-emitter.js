@@ -1,41 +1,39 @@
-import * as THREE from '../three/build/three.module.js';
+import * as THREE from "../three/build/three.module.js";
 
-import { Component } from '../component.js'
-import { ParticleSystem } from './particle-system.js';
-import { Smoke, SmokeTrail } from './particles.js'
+import { Component } from "../component.js";
+import { ParticleSystem } from "./particle-system.js";
+import { Smoke, SmokeTrail } from "./particles.js";
 
 export class ParticleEmitter extends Component {
-    constructor(gameObject, smoke){
+    constructor(gameObject, smoke) {
         super(gameObject);
-        this._smoke = smoke; 
+        this._smoke = smoke;
     }
 
-    update(dt, params){
+    update(dt, params) {
         this.gameObject.transform.getWorldPosition(this._smoke._source);
         this._smoke.update(dt, params.camera);
     }
 
-    destroy(){
+    destroy() {
         this._smoke.destroy();
     }
 }
 
 export class SmokeTrailEmitter extends ParticleEmitter {
-    constructor(gameObject){
+    constructor(gameObject) {
         super(gameObject, new SmokeTrail(gameObject.root));
     }
 }
 
 export class SmokeEmitter extends ParticleEmitter {
-    constructor(gameObject){
+    constructor(gameObject) {
         super(gameObject, new Smoke(gameObject.root));
     }
 }
 
 export class DebugEmitter extends ParticleEmitter {
-    constructor(gameObject, smoke){
+    constructor(gameObject, smoke) {
         super(gameObject, smoke);
     }
 }
-
-

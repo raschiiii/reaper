@@ -1,22 +1,22 @@
-import * as THREE from './three/build/three.module.js';
-import { Component } from './component.js';
+import * as THREE from "./three/build/three.module.js";
+import { Component } from "./component.js";
 
-import { OrbitControls } from './three/examples/jsm/controls/OrbitControls.js';
-import { PlayerInput } from './input.js';
+import { OrbitControls } from "./three/examples/jsm/controls/OrbitControls.js";
+import { PlayerInput } from "./input.js";
 
 export class PlayerView extends Component {
-    constructor(gameObject, camera){
+    constructor(gameObject, camera) {
         super(gameObject);
 
-        this._speed = document.querySelector('#speed');
-        this._altitude = document.querySelector('#altitude');
+        this._speed = document.querySelector("#speed");
+        this._altitude = document.querySelector("#altitude");
 
         this.camera = camera;
 
-        this.oldPos   = new THREE.Vector3();
-        this.moved    = new THREE.Vector3();
+        this.oldPos = new THREE.Vector3();
+        this.moved = new THREE.Vector3();
         this.worldPos = new THREE.Vector3();
-       
+
         this.gameObject.transform.getWorldPosition(this.worldPos);
 
         this.oldPos.copy(this.worldPos);
@@ -26,12 +26,15 @@ export class PlayerView extends Component {
             this.worldPos.z - 1
         );
 
-        this.controls = new OrbitControls(this.camera, document.querySelector('#screen'));
+        this.controls = new OrbitControls(
+            this.camera,
+            document.querySelector("#screen")
+        );
         this.controls.target.copy(this.gameObject.position);
         this.controls.update();
     }
 
-    update(dt){
+    update(dt) {
         this.gameObject.transform.getWorldPosition(this.worldPos);
         this.moved.subVectors(this.worldPos, this.oldPos);
         this.oldPos.copy(this.worldPos);
@@ -39,72 +42,75 @@ export class PlayerView extends Component {
         this.controls.target.copy(this.worldPos);
         this.controls.update();
 
-        this._speed.innerText       = `${ (this.gameObject.velocity.length() * 10).toFixed(2) } km/h`;
-        this._altitude.innerText    = `${ (this.gameObject.position.y * 10).toFixed(2) } m`;
+        this._speed.innerText = `${(
+            this.gameObject.velocity.length() * 10
+        ).toFixed(2)} km/h`;
+        this._altitude.innerText = `${(this.gameObject.position.y * 10).toFixed(
+            2
+        )} m`;
     }
 
-    destroy(){
+    destroy() {
         this.controls.dispose();
     }
 }
 
 export class ViewManager {
-    constructor(goa, camera){
-        this._goa               = goa;
-        this._activeIndex       = -1;
-        this.activeGameObject   = null;
-        this._camera            = camera;
-
+    constructor(goa, camera) {
+        this._goa = goa;
+        this._activeIndex = -1;
+        this.activeGameObject = null;
+        this._camera = camera;
     }
 
-    _init(){
+    _init() {
         this._activeIndex = 0;
         const newActive = this._goa.array[this._activeIndex];
         this.activeGameObject = newActive.id;
-        newActive.addComponent(new PlayerView(newActive, this._camera))
+        newActive.addComponent(new PlayerView(newActive, this._camera));
         newActive.addComponent(new PlayerInput(newActive));
     }
 
-    setActive(i){
+    setActive(i) {
         const newActive = this._goa.array[i];
 
         if (!newActive) {
             console.error("error");
             return;
         }
-        
+
         const oldActive = this._goa.array[this._activeIndex];
-        if (oldActive){
+        if (oldActive) {
             oldActive.removeComponent(PlayerView);
             oldActive.removeComponent(PlayerInput);
         } else {
-            console.error("error")
+            console.error("error");
         }
 
         this.activeGameObject = newActive.id;
         this._activeIndex = i;
 
-        newActive.addComponent(new PlayerView(newActive, this._camera))
+        newActive.addComponent(new PlayerView(newActive, this._camera));
         newActive.addComponent(new PlayerInput(newActive));
     }
 
-    toggle(){
+    toggle() {
         const n = this._goa.array.length;
-        let   i = this._activeIndex;
+        let i = this._activeIndex;
 
         const oldActive = this._goa.array[i];
-        if (oldActive){
+        if (oldActive) {
             oldActive.removeComponent(PlayerView);
             oldActive.removeComponent(PlayerInput);
         } else {
-            console.error("error")
+            console.error("error");
         }
 
-        i = ( i + 1) % n;
+        i = (i + 1) % n;
         this._activeIndex = i;
 
         let newActive = this._goa.array[i];
-        
+
         if (newActive == undefined) {
             console.error("error");
             return;
@@ -112,17 +118,16 @@ export class ViewManager {
 
         this.activeGameObject = newActive.id;
 
-        if (!newActive.getComponent(PlayerView)){
-            newActive.addComponent(new PlayerView(newActive, this._camera))
+        if (!newActive.getComponent(PlayerView)) {
+            newActive.addComponent(new PlayerView(newActive, this._camera));
         } else {
             console.error("error");
         }
-        
-        if (!newActive.getComponent(PlayerInput)){
+
+        if (!newActive.getComponent(PlayerInput)) {
             newActive.addComponent(new PlayerInput(newActive));
         } else {
             console.error("error");
         }
     }
 }
-

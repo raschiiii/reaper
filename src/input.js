@@ -1,11 +1,11 @@
-import * as THREE from './three/build/three.module.js';
-import { OrbitControls } from './three/examples/jsm/controls/OrbitControls.js';
+import * as THREE from "./three/build/three.module.js";
+import { OrbitControls } from "./three/examples/jsm/controls/OrbitControls.js";
 
-import { Component } from './component.js';
+import { Component } from "./component.js";
 
 // only the active GameObject gets User input
 export class PlayerInput extends Component {
-    constructor(gameObject){
+    constructor(gameObject) {
         super(gameObject);
 
         this._keyDown = (event) => {
@@ -15,19 +15,15 @@ export class PlayerInput extends Component {
 
         this._keyUp = (event) => {
             this.gameObject.publish("keyup", event);
-        }
+        };
 
         document.addEventListener("keydown", this._keyDown, false);
-        document.addEventListener("keyup",   this._keyUp,   false);
+        document.addEventListener("keyup", this._keyUp, false);
     }
 
-    destroy(){
+    destroy() {
         //console.log(`remove Component from ${this.gameObject.id}`)
         document.removeEventListener("keydown", this._keyDown, false);
-        document.removeEventListener("keyup",   (e) => this._keyUp(e),   false);
+        document.removeEventListener("keyup", (e) => this._keyUp(e), false);
     }
-
 }
-
-
-

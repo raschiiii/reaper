@@ -1,11 +1,10 @@
-import * as THREE from '../three/build/three.module.js';
-import { FlightmodelODE } from './flightmodel-ode.js';
-import { ODESolver } from './physics.js';
+import * as THREE from "../three/build/three.module.js";
+import { FlightmodelODE } from "./flightmodel-ode.js";
+import { ODESolver } from "./physics.js";
 
 export class PropPlane extends FlightmodelODE {
-    constructor(gameObject){
+    constructor(gameObject) {
         super(gameObject, {
-
             // switch coordiantes
             x: gameObject.position.x * 10.0,
             y: gameObject.position.z * 10.0,
@@ -30,29 +29,29 @@ export class PropPlane extends FlightmodelODE {
             enginePower: 119310.0,
             propDiameter: 1.905,
             a: 1.83,
-            b: -1.32
+            b: -1.32,
         });
-        
-        let alpha = document.querySelector('#alpha');
-        let bank  = document.querySelector('#bank');
+
+        let alpha = document.querySelector("#alpha");
+        let bank = document.querySelector("#bank");
 
         let that = this;
-        let thrustSlider = document.querySelector('#slider3');
-        thrustSlider.oninput = function() {
+        let thrustSlider = document.querySelector("#slider3");
+        thrustSlider.oninput = function () {
             that.throttle = this.value;
-            throttle.innerText = that.throttle
-        } 
+            throttle.innerText = that.throttle;
+        };
 
-        let bankSlider = document.querySelector('#slider2');
-        bankSlider.oninput = function() {
-            that.bank  = this.value / 10 
-            bank.innerText = that.bank / 10
-        } 
+        let bankSlider = document.querySelector("#slider2");
+        bankSlider.oninput = function () {
+            that.bank = this.value / 10;
+            bank.innerText = that.bank / 10;
+        };
 
-        let aoaSlider = document.querySelector('#slider1');
-        aoaSlider.oninput = function() {
-            that.alpha  = this.value / 10
-            alpha.innerText = that.alpha
-        } 
+        let aoaSlider = document.querySelector("#slider1");
+        aoaSlider.oninput = function () {
+            that.alpha = this.value / 10;
+            alpha.innerText = that.alpha;
+        };
     }
 }

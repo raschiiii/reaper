@@ -4,6 +4,7 @@ import { BasicPhysics } from './physics/basic-physics.js';
 import { Physics } from './physics/physics.js';
 import { GravityODE } from './physics/gravity-ode.js';
 import { Hellfire } from './physics/hellfire.js';
+import { SmokeTrailEmitter } from './particles/particle-emitter.js';
 
 export class LaserGuidance extends Component {
     constructor(gameObject, id, goa){
@@ -32,8 +33,7 @@ export class LaserGuidance extends Component {
                 this.gameObject.position.copy(tmp);
                 this.gameObject.velocity.copy(e.velocity);
                 
-                //this.gameObject.addComponent(new SmokeTrailEmitter(this.gameObject));
-                //this.gameObject.addComponent(new LaserGuidance(this.gameObject, e.target));
+                this.gameObject.addComponent(new SmokeTrailEmitter(this.gameObject));
                 this.gameObject.addComponent(new Physics(this.gameObject, new Hellfire(this.gameObject)));
                 
                 this.goa.add(this.gameObject);
