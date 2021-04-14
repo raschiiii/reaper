@@ -2,9 +2,9 @@
 
 A retro 90's style combat flight simulator for the MQ-9 Reaper military drone playable in the browser.
 
-![MQ-9 Reaper](https://upload.wikimedia.org/wikipedia/commons/a/a1/MQ-9_Reaper_during_Exercise_Northern_Strike_2019.png)
-
-<img width="480" src="https://upload.wikimedia.org/wikipedia/commons/a/a1/MQ-9_Reaper_during_Exercise_Northern_Strike_2019.png">
+<p align="center"> 
+    <img width="480" src="https://upload.wikimedia.org/wikipedia/commons/a/a1/MQ-9_Reaper_during_Exercise_Northern_Strike_2019.png">
+</p>
 
 ## Aircraft
 * MQ-9 Reaper
