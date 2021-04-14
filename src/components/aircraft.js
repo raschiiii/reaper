@@ -24,6 +24,8 @@ export class Sensor extends Component {
         this._track = false;
         this._target = new THREE.Vector3(0, -5, 0);
 
+        let down = false;
+
         const that = this;
         this._zoom = 0;
         this._zoomSlider = document.querySelector("#slider4");
@@ -33,15 +35,21 @@ export class Sensor extends Component {
             that._camera.updateProjectionMatrix();
         };
 
-        this.gameObject.subscribe("mousemove", (event) => {
-            this._sensorRotation.y -= (event.movementX * 0.01 / this._camera.zoom);
-            this._sensorRotation.x -= (event.movementY * 0.01 / this._camera.zoom);
+        this.gameObject.subscribe("pointermove", (event) => {
+            if (down){
+                this._sensorRotation.y -= (event.movementX * 0.01 / this._camera.zoom);
+                this._sensorRotation.x -= (event.movementY * 0.01 / this._camera.zoom);
+            }
         });
-
+        this.gameObject.subscribe("pointerdown", (event) => {
+            down = true;
+        });
+        this.gameObject.subscribe("pointerup", (event) => {
+            down = false;
+        });
         this.gameObject.subscribe("wheel", (event) => {
-            console.log(event.deltaY)
+            //console.log(event.deltaY)
             this._camera.zoom -= event.deltaY * .5;
-
             if (this._camera.zoom < 1.0) this._camera.zoom = 1.0;
             this._camera.updateProjectionMatrix();
         });

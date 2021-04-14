@@ -11,6 +11,7 @@ export class PlayerInput extends Component {
         console.log("add EventListeners");
 
         this._screen = document.querySelector("#screen");
+        this._canvas = document.querySelector('#canvas');
 
         this._keyDown = (event) => {
             this.gameObject.publish("keydown", event);
@@ -21,25 +22,41 @@ export class PlayerInput extends Component {
         };
 
         this._mousemove = (event) => {
-            this.gameObject.publish("mousemove", event);
+            this.gameObject.publish("pointermove", event);
         };
 
         this._wheel = (event) => {
-            console.log("wheel event");
             this.gameObject.publish("wheel", event);
+        };
+
+        this._mouseUp = (event) => {
+            //console.log("Up");
+            this.gameObject.publish("pointerup", event);
+        };
+
+        this._mouseDown = (event) => {
+            //console.log("Down");
+            this.gameObject.publish("pointerdown", event);
         };
 
         document.addEventListener("keydown", this._keyDown, false);
         document.addEventListener("keyup", this._keyUp, false);
-        document.addEventListener("mousemove", this._mousemove, false);
+        
+        this._screen.addEventListener("pointermove", this._mousemove, false);
+        this._screen.addEventListener("pointerdown", this._mouseDown, false);
+        this._screen.addEventListener("pointerup", this._mouseUp, false);
+
         this._screen.addEventListener("wheel", this._wheel, false);
     }
 
     destroy() {
-        console.log("remove EventListeners");
         document.removeEventListener("keydown", this._keyDown, false);
         document.removeEventListener("keyup", this._keyUp, false);
-        document.removeEventListener("mousemove", this._mousemove, false);
+        
+        this._screen.removeEventListener("pointermove", this._mousemove, false);
+        this._screen.removeEventListener("pointerdown", this._mouseDown, false);
+        this._screen.removeEventListener("pointerup", this._mouseUp, false);
+
         this._screen.removeEventListener("wheel", this._wheel, false);
     }
 }
