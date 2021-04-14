@@ -30,21 +30,19 @@ export class PlayerInput extends Component {
         };
 
         this._mouseUp = (event) => {
-            //console.log("Up");
             this.gameObject.publish("pointerup", event);
         };
 
         this._mouseDown = (event) => {
-            //console.log("Down");
             this.gameObject.publish("pointerdown", event);
         };
 
         document.addEventListener("keydown", this._keyDown, false);
         document.addEventListener("keyup", this._keyUp, false);
         
-        this._screen.addEventListener("pointermove", this._mousemove, false);
-        this._screen.addEventListener("pointerdown", this._mouseDown, false);
-        this._screen.addEventListener("pointerup", this._mouseUp, false);
+        document.body.addEventListener("pointermove", this._mousemove, false);
+        document.body.addEventListener("pointerdown", this._mouseDown, false);
+        document.body.addEventListener("pointerup", this._mouseUp, false);
 
         this._screen.addEventListener("wheel", this._wheel, false);
     }
@@ -53,9 +51,9 @@ export class PlayerInput extends Component {
         document.removeEventListener("keydown", this._keyDown, false);
         document.removeEventListener("keyup", this._keyUp, false);
         
-        this._screen.removeEventListener("pointermove", this._mousemove, false);
-        this._screen.removeEventListener("pointerdown", this._mouseDown, false);
-        this._screen.removeEventListener("pointerup", this._mouseUp, false);
+        document.body.removeEventListener("pointermove", this._mousemove, false);
+        document.body.removeEventListener("pointerdown", this._mouseDown, false);
+        document.body.removeEventListener("pointerup", this._mouseUp, false);
 
         this._screen.removeEventListener("wheel", this._wheel, false);
     }
