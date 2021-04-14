@@ -11,7 +11,7 @@ export class PlayerInput extends Component {
         console.log("add EventListeners");
 
         this._screen = document.querySelector("#screen");
-        this._canvas = document.querySelector('#canvas');
+        this._canvas = document.querySelector("#canvas");
 
         this._keyDown = (event) => {
             this.gameObject.publish("keydown", event);
@@ -22,6 +22,7 @@ export class PlayerInput extends Component {
         };
 
         this._mousemove = (event) => {
+            event.preventDefault();
             this.gameObject.publish("pointermove", event);
         };
 
@@ -30,19 +31,23 @@ export class PlayerInput extends Component {
         };
 
         this._mouseUp = (event) => {
-            this.gameObject.publish("pointerup", event);
+            event.preventDefault();
+            //console.log("pointerup");
+            this.gameObject.publish("pointerup", event, false);
         };
 
         this._mouseDown = (event) => {
-            this.gameObject.publish("pointerdown", event);
+            event.preventDefault();
+            //console.log("pointerdown");
+            this.gameObject.publish("pointerdown", event, false);
         };
 
         document.addEventListener("keydown", this._keyDown, false);
         document.addEventListener("keyup", this._keyUp, false);
-        
-        document.body.addEventListener("pointermove", this._mousemove, false);
-        document.body.addEventListener("pointerdown", this._mouseDown, false);
-        document.body.addEventListener("pointerup", this._mouseUp, false);
+
+        this._screen.addEventListener("pointermove", this._mousemove, false);
+        this._screen.addEventListener("pointerdown", this._mouseDown, false);
+        this._screen.addEventListener("pointerup", this._mouseUp, false);
 
         this._screen.addEventListener("wheel", this._wheel, false);
     }
@@ -50,10 +55,10 @@ export class PlayerInput extends Component {
     destroy() {
         document.removeEventListener("keydown", this._keyDown, false);
         document.removeEventListener("keyup", this._keyUp, false);
-        
-        document.body.removeEventListener("pointermove", this._mousemove, false);
-        document.body.removeEventListener("pointerdown", this._mouseDown, false);
-        document.body.removeEventListener("pointerup", this._mouseUp, false);
+
+        this._screen.removeEventListener("pointermove", this._mousemove, false);
+        this._screen.removeEventListener("pointerdown", this._mouseDown, false);
+        this._screen.removeEventListener("pointerup", this._mouseUp, false);
 
         this._screen.removeEventListener("wheel", this._wheel, false);
     }

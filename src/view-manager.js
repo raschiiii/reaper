@@ -26,12 +26,18 @@ export class PlayerView extends Component {
             this.worldPos.z - 1
         );
 
+
         this.controls = new OrbitControls(
             this.camera,
-            document.querySelector('#screen')
+            document.querySelector("#screen")
         );
         this.controls.target.copy(this.gameObject.position);
         this.controls.update();
+        
+        this.gameObject.subscribe("sensor", (event) => {
+            this.controls.enabled = !event.enabled;
+            //console.log(event.enabled);
+        });
     }
 
     update(dt) {
@@ -45,9 +51,9 @@ export class PlayerView extends Component {
         this._speed.innerText = `${(
             this.gameObject.velocity.length() * 10
         ).toFixed(2)} km/h`;
-        this._altitude.innerText = `${(this.gameObject.position.y * 10).toFixed(
-            2
-        )} m`;
+        this._altitude.innerText = `${(
+            this.gameObject.position.y * 10
+        ).toFixed(2)} m`;
     }
 
     destroy() {
@@ -72,7 +78,6 @@ export class ViewManager {
     }
 
     setActive(i) {
-
         if (i == this._activeIndex) return;
 
         const newActive = this._goa.array[i];
@@ -105,7 +110,7 @@ export class ViewManager {
         if (oldActive) {
             oldActive.removeComponent(PlayerView);
             oldActive.removeComponent(PlayerInput);
-        } 
+        }
 
         i = (i + 1) % n;
         this._activeIndex = i;
