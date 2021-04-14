@@ -72,6 +72,9 @@ export class ViewManager {
     }
 
     setActive(i) {
+
+        if (i == this._activeIndex) return;
+
         const newActive = this._goa.array[i];
 
         if (!newActive) {

@@ -195,6 +195,8 @@ async function init() {
                     viewManager.setActive(0);
                     hud.style.display = sensorView ? "block" : "none";
                     aircraft.publish("sensor", { enabled: sensorView });
+
+                    console.log(aircraft)
                     break;
 
                 case "Digit2":

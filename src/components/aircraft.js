@@ -27,13 +27,16 @@ export class Sensor extends Component {
         const that = this;
         this._zoom = 0;
         this._zoomSlider = document.querySelector("#slider4");
+
         this._zoomSlider.oninput = function () {
             that._camera.zoom = this.value;
-            //that._camera.fov = 75 * (1 / this.value);
-            //that._zoom = this.value * 20;
-
             that._camera.updateProjectionMatrix();
         };
+
+        this.gameObject.subscribe("mousemove", (event) => {
+            this._sensorRotation.y -= event.movementX * 0.01;
+            this._sensorRotation.x -= event.movementY * 0.01;
+        });
 
         this.gameObject.subscribe(
             "keydown",
@@ -49,7 +52,7 @@ export class Sensor extends Component {
                         this._track = false;
                         this._sensorRotation.copy(this._camera.rotation);
                         break;
-
+                    /*
                     case "KeyW":
                         this._sensorRotation.x += sensitivity;
                         break;
@@ -65,6 +68,7 @@ export class Sensor extends Component {
                     case "KeyD":
                         this._sensorRotation.y -= sensitivity;
                         break;
+*/
                 }
             },
             false
