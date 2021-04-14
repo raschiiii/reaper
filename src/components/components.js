@@ -33,7 +33,7 @@ export class Explosive extends Component {
         this.gameObject.subscribe("collision", () => {
             if (!hasExploded) {
                 hasExploded = true;
-                this.gameObject.lifetime = 10;
+                this.gameObject.lifetime = 5;
 
                 this.gameObject.removeComponent(AABB);
                 this.gameObject.removeComponent(Physics);

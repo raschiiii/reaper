@@ -105,9 +105,7 @@ export class ViewManager {
         if (oldActive) {
             oldActive.removeComponent(PlayerView);
             oldActive.removeComponent(PlayerInput);
-        } else {
-            console.error("error");
-        }
+        } 
 
         i = (i + 1) % n;
         this._activeIndex = i;
@@ -116,6 +114,7 @@ export class ViewManager {
 
         if (newActive == undefined) {
             console.error("error");
+            this.toggle();
             return;
         }
 

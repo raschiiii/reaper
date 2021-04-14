@@ -194,7 +194,6 @@ async function init() {
                     sensorView = !sensorView;
                     viewManager.setActive(0);
                     hud.style.display = sensorView ? "block" : "none";
-                    //aircraft.publish("sensor", { enabled: sensorView });
                     break;
 
                 case "Digit2":
@@ -248,6 +247,7 @@ function animate(now) {
                 gameObject.lifetime -= dt;
                 if (gameObject.lifetime <= 0) {
                     if (viewManager.activeGameObject == gameObject.id) {
+                        console.log("toggle away")
                         viewManager.toggle();
                     }
                     goa.remove(gameObject);

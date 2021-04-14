@@ -171,9 +171,9 @@ export class Smoke extends ParticleSystem {
 export class SmokeTrail extends ParticleSystem {
     constructor(parent, source = new THREE.Vector3()) {
         super(parent, {
-            numParticles: 1000,
+            numParticles: 500,
             particleLifetime: 2,
-            particlesPerSecond: 500,
+            particlesPerSecond: 200,
             texture: "assets/textures/smoke.png",
             blending: THREE.NormalBlending,
             alphaDegrading: 1.0,
