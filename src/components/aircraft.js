@@ -35,26 +35,31 @@ export class Sensor extends Component {
             that._camera.updateProjectionMatrix();
         };
 
+        this.enabled = false;
         
         this.gameObject.subscribe("sensor", (event) => {
             //console.log(event);
+            this.enabled = event.enabled;
         });
 
         this.gameObject.subscribe("pointermove", (event) => {
+            if (!this.enabled) return;
             if (down){
-                //console.log("move")
                 this._sensorRotation.y -= (event.movementX * 0.01 / this._camera.zoom);
                 this._sensorRotation.x -= (event.movementY * 0.01 / this._camera.zoom);
             }
         });
+
         this.gameObject.subscribe("pointerdown", (event) => {
-            //console.log("down")
+            if (!this.enabled) return;
             down = true;
         });
+
         this.gameObject.subscribe("pointerup", (event) => {
-            //console.log("not down")
+            if (!this.enabled) return;
             down = false;
         });
+
         this.gameObject.subscribe("wheel", (event) => {
             this._camera.zoom -= event.deltaY * .5;
             if (this._camera.zoom < 1.0) this._camera.zoom = 1.0;
