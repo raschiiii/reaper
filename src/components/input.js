@@ -10,7 +10,7 @@ export class PlayerInput extends Component {
 
         console.log("add EventListeners");
 
-        this._canvas = document.querySelector("#canvas");
+        this._screen = document.querySelector("#screen");
 
         this._keyDown = (event) => {
             this.gameObject.publish("keydown", event);
@@ -25,21 +25,21 @@ export class PlayerInput extends Component {
         };
 
         this._wheel = (event) => {
-            console.log("wheel");
+            console.log("wheel event");
             this.gameObject.publish("wheel", event);
         };
 
         document.addEventListener("keydown", this._keyDown, false);
         document.addEventListener("keyup", this._keyUp, false);
         document.addEventListener("mousemove", this._mousemove, false);
-        this._canvas.addEventListener("wheel", this._wheel);
+        this._screen.addEventListener("wheel", this._wheel, false);
     }
 
     destroy() {
-        console.log("remove EventListeners")
+        console.log("remove EventListeners");
         document.removeEventListener("keydown", this._keyDown, false);
         document.removeEventListener("keyup", this._keyUp, false);
         document.removeEventListener("mousemove", this._mousemove, false);
-        this._canvas.removeEventListener("wheel", this._wheel);
+        this._screen.removeEventListener("wheel", this._wheel, false);
     }
 }

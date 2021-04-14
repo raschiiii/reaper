@@ -34,8 +34,16 @@ export class Sensor extends Component {
         };
 
         this.gameObject.subscribe("mousemove", (event) => {
-            this._sensorRotation.y -= event.movementX * 0.01;
-            this._sensorRotation.x -= event.movementY * 0.01;
+            this._sensorRotation.y -= (event.movementX * 0.01 / this._camera.zoom);
+            this._sensorRotation.x -= (event.movementY * 0.01 / this._camera.zoom);
+        });
+
+        this.gameObject.subscribe("wheel", (event) => {
+            console.log(event.deltaY)
+            this._camera.zoom -= event.deltaY * .5;
+
+            if (this._camera.zoom < 1.0) this._camera.zoom = 1.0;
+            this._camera.updateProjectionMatrix();
         });
 
         this.gameObject.subscribe(

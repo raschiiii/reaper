@@ -176,9 +176,9 @@ export class SmokeTrail extends ParticleSystem {
             particlesPerSecond: 500,
             texture: "assets/textures/smoke.png",
             blending: THREE.NormalBlending,
-            alphaDegrading: 0.5,
+            alphaDegrading: 1.0,
             startSize: 0.1,
-            scaleValue: 1,
+            scaleValue: .5,
         });
 
         this._spread = 0.25;
