@@ -210,16 +210,14 @@ class TerrainChunk {
             10
         );
 
-        /*
         const _material = new THREE.MeshStandardMaterial({
             color: Math.floor(Math.random() * 50000),
             wireframe: false,
             side: THREE.DoubleSide,
-            flatShading: true
+            flatShading: true,
         });
-        */
 
-        this._plane = new THREE.Mesh(_geometry, material);
+        this._plane = new THREE.Mesh(_geometry, _material);
 
         let vertices = this._plane.geometry.attributes.position.array;
 

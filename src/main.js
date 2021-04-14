@@ -176,7 +176,7 @@ let assets = {
     );
 
     const aircraft = factory.createAircraft(
-        new THREE.Vector3(0, 100, 0),
+        new THREE.Vector3(0, 300, 0),
         new THREE.Vector3(10, 0, 0)
     );
     const terrain = factory.createTerrain();
