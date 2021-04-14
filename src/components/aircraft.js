@@ -36,17 +36,18 @@ export class Sensor extends Component {
         };
 
         this.enabled = false;
-        
+
         this.gameObject.subscribe("sensor", (event) => {
-            //console.log(event);
             this.enabled = event.enabled;
         });
 
         this.gameObject.subscribe("pointermove", (event) => {
             if (!this.enabled) return;
-            if (down){
-                this._sensorRotation.y -= (event.movementX * 0.01 / this._camera.zoom);
-                this._sensorRotation.x -= (event.movementY * 0.01 / this._camera.zoom);
+            if (down) {
+                this._sensorRotation.y -=
+                    (event.movementX * 0.01) / this._camera.zoom;
+                this._sensorRotation.x -=
+                    (event.movementY * 0.01) / this._camera.zoom;
             }
         });
 
@@ -61,7 +62,7 @@ export class Sensor extends Component {
         });
 
         this.gameObject.subscribe("wheel", (event) => {
-            this._camera.zoom -= event.deltaY * .5;
+            this._camera.zoom -= event.deltaY * 0.5;
             if (this._camera.zoom < 1.0) this._camera.zoom = 1.0;
             this._camera.updateProjectionMatrix();
         });

@@ -32,13 +32,11 @@ export class PlayerInput extends Component {
 
         this._mouseUp = (event) => {
             event.preventDefault();
-            //console.log("pointerup");
             this.gameObject.publish("pointerup", event, false);
         };
 
         this._mouseDown = (event) => {
             event.preventDefault();
-            //console.log("pointerdown");
             this.gameObject.publish("pointerdown", event, false);
         };
 
