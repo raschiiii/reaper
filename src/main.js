@@ -4,7 +4,7 @@ import Stats from "./three/examples/jsm/libs/stats.module.js";
 import { GLTFLoader } from "./three/examples/jsm/loaders/GLTFLoader.js";
 import { EffectComposer } from "./three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "./three/examples/jsm/postprocessing/RenderPass.js";
-import {FilmPass}       from './three/examples/jsm/postprocessing/FilmPass.js';
+import { FilmPass } from "./three/examples/jsm/postprocessing/FilmPass.js";
 //import { UnrealBloomPass } from './three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
 import { AABB } from "./collision/collision.js";
@@ -25,7 +25,6 @@ const height = 480;
 
 const camera = new THREE.PerspectiveCamera(75, width / height, 0.01, 15000);
 const sensor = new THREE.PerspectiveCamera(75, width / height, 0.01, 15000);
-
 const listener = new THREE.AudioListener();
 camera.add(listener);
 
@@ -33,6 +32,7 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xcce0ff);
 //scene.fog = new THREE.Fog( 0xcce0ff, 500, 10000 );
 
+// Renderer
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
     logarithmicDepthBuffer: true,
@@ -43,19 +43,19 @@ renderer.setClearColor("red");
 renderer.shadowMap.enabled = true;
 renderer.physicallyCorrectLights = true;
 renderer.shadowMap.type = THREE.BasicShadowMap;
-//renderer.shadowMap.type             = THREE.PCFSoftShadowMap;
 
+// Composer
 const cameraRenderer = new EffectComposer(renderer);
 cameraRenderer.addPass(new RenderPass(scene, camera));
-
 const sensorRenderer = new EffectComposer(renderer);
 sensorRenderer.addPass(new RenderPass(scene, sensor));
 sensorRenderer.addPass(new FilmPass(0.35, 0.5, 2048, false));
 
+// Stats
 const stats = new Stats();
 document.body.appendChild(stats.dom);
 
-// Create lights
+// Lights
 const sun = new THREE.DirectionalLight(0x404040, 6);
 sun.position.set(1000, 5000, 1000);
 sun.castShadow = true;
@@ -69,18 +69,8 @@ sun.shadow.camera.top = 50;
 sun.shadow.camera.right = 50;
 scene.add(sun);
 scene.add(sun.target);
-
-//const helper = new THREE.CameraHelper(sun.shadow.camera);
-//scene.add( helper );
-
-const light = new THREE.AmbientLight(0x404040, 4.0);
-scene.add(light);
-
-//const axesHelper = new THREE.AxesHelper( 50 );
-//scene.add( axesHelper );
-
-let paused = false;
-let sensorView = false;
+const ambientLight = new THREE.AmbientLight(0x404040, 4.0);
+scene.add(ambientLight);
 
 let assets = {
     gltf: {
@@ -103,7 +93,13 @@ let assets = {
     },
 };
 
-(async () => {
+init();
+
+let paused = false,
+    sensorView = false;
+let grid, goa, aircraft, terrain, heightmap, viewManager, factory, explosions;
+
+async function init() {
     const promises = [];
 
     let loader = null;
@@ -157,30 +153,22 @@ let assets = {
 
     await Promise.all(promises);
 
-    const goa = new GameObjectArray();
-    const grid = new HashGrid(2);
-    const factory = new Factory(
-        assets,
-        scene,
-        goa,
-        camera,
-        grid,
-        sensor,
-        listener
-    );
-    const viewManager = new ViewManager(goa, camera);
-    const explosions = new Explosion(
+    goa = new GameObjectArray();
+    grid = new HashGrid(2);
+    factory = new Factory(assets, scene, goa, camera, grid, sensor, listener);
+    viewManager = new ViewManager(goa, camera);
+    explosions = new Explosion(
         scene,
         "assets/textures/explosion2.png",
         listener
     );
 
-    const aircraft = factory.createAircraft(
+    aircraft = factory.createAircraft(
         new THREE.Vector3(0, 300, 0),
         new THREE.Vector3(10, 0, 0)
     );
-    const terrain = factory.createTerrain();
-    const heightmap = terrain.getComponent(TerrainManager);
+    terrain = factory.createTerrain();
+    heightmap = terrain.getComponent(TerrainManager);
 
     factory.createTestCube(
         new THREE.Vector3(800, heightmap.getHeight(800, 200), 200)
@@ -217,79 +205,67 @@ let assets = {
         false
     );
 
-    let dt = 0,
-        then = 0;
-    const animate = function (now) {
-        now *= 0.001;
-        dt = now - then;
-        then = now;
-        if (dt > 0.1 || isNaN(dt)) dt = 0.1;
+    animate();
+}
 
-        if (!paused) {
-            goa.forEach((gameObject) => {
-                gameObject.update(dt, {
-                    camera: sensorView ? sensor : camera, // pass active camera
-                });
+let dt = 0,
+    then = 0;
+function animate(now) {
+    now *= 0.001;
+    dt = now - then;
+    then = now;
+    if (dt > 0.1 || isNaN(dt)) dt = 0.1;
 
-                let aabb = gameObject.getComponent(AABB);
-                if (aabb) {
-                    for (let otherObject of grid.possible_aabb_collisions(
-                        aabb
-                    )) {
-                        if (otherObject != gameObject)
-                            aabb.collide(otherObject);
-                    }
-
-                    const terrainHeight = heightmap.getHeight(
-                        gameObject.position.x,
-                        gameObject.position.z
-                    );
-                    if (gameObject.position.y < terrainHeight) {
-                        const impactPoint = new THREE.Vector3(
-                            gameObject.position.x,
-                            terrainHeight,
-                            gameObject.position.z
-                        );
-
-                        explosions.impact(impactPoint);
-
-                        gameObject.publish("collision", {
-                            depth: [
-                                0,
-                                terrainHeight - gameObject.position.y,
-                                0,
-                            ],
-                        });
-                    }
-                }
-
-                if (gameObject.lifetime != undefined) {
-                    gameObject.lifetime -= dt;
-                    if (gameObject.lifetime <= 0) {
-                        if (viewManager.activeGameObject == gameObject.id) {
-                            // console.log(`toggle away from ${gameObject.id},
-                            //     ${viewManager.activeGameObject}`)
-                            viewManager.toggle();
-                        }
-                        goa.remove(gameObject);
-                        gameObject.destroy();
-                    }
-                }
+    if (!paused) {
+        goa.forEach((gameObject) => {
+            gameObject.update(dt, {
+                camera: sensorView ? sensor : camera, // active camera
             });
 
-            explosions.update(dt, sensorView ? sensor : camera);
-            terrain.update(dt);
-        }
+            let aabb = gameObject.getComponent(AABB);
+            if (aabb) {
+                for (let otherObject of grid.possible_aabb_collisions(aabb)) {
+                    if (otherObject != gameObject) aabb.collide(otherObject);
+                }
+                const terrainHeight = heightmap.getHeight(
+                    gameObject.position.x,
+                    gameObject.position.z
+                );
+                if (gameObject.position.y < terrainHeight) {
+                    const impactPoint = new THREE.Vector3(
+                        gameObject.position.x,
+                        terrainHeight,
+                        gameObject.position.z
+                    );
+                    explosions.impact(impactPoint);
+                    gameObject.publish("collision", {
+                        depth: [0, terrainHeight - gameObject.position.y, 0],
+                    });
+                }
+            }
 
-        stats.update();
+            if (gameObject.lifetime != undefined) {
+                gameObject.lifetime -= dt;
+                if (gameObject.lifetime <= 0) {
+                    if (viewManager.activeGameObject == gameObject.id) {
+                        viewManager.toggle();
+                    }
+                    goa.remove(gameObject);
+                    gameObject.destroy();
+                }
+            }
+        });
 
-        if (sensorView) {
-            sensorRenderer.render(dt);
-        } else {
-            cameraRenderer.render(dt);
-        }
-        requestAnimationFrame(animate);
-    };
+        explosions.update(dt, sensorView ? sensor : camera);
+        terrain.update(dt);
+    }
 
-    animate();
-})();
+    stats.update();
+
+    if (sensorView) {
+        sensorRenderer.render(dt);
+    } else {
+        cameraRenderer.render(dt);
+    }
+    requestAnimationFrame(animate);
+}
