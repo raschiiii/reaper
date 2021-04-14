@@ -2,21 +2,14 @@ import * as THREE from "./three/build/three.module.js";
 
 import { GameObject } from "./engine/game-object.js";
 import { Box } from "./components/shapes.js";
-import { BasicPhysics } from "./physics/basic-physics.js";
-import { PlayerView } from "./view-manager.js";
 import { AABB } from "./collision/collision.js";
 import { EventRelay, Explosive, Sound } from "./components/components.js";
 import { Physics } from "./physics/physics.js";
-import { SpringODE } from "./physics/spring-ode.js";
-import { GravityODE } from "./physics/gravity-ode.js";
 import { PropPlane } from "./physics/plane-flightmodel.js";
-import { TestODE } from "./physics/test-ode.js";
-import { LocalAxis } from "./components/testing.js";
 import { AirplaneModel, SimpleModel } from "./components/model.js";
 import { TerrainManager } from "./terrain/terrain.js";
 import { FireControlSystem, Hardpoints, Sensor } from "./components/aircraft.js";
 import { LaserGuidance } from "./components/weapon.js";
-import { Hellfire } from "./physics/hellfire.js";
 import { SmokeEmitter } from "./particles/particle-emitter.js";
 
 export class Factory {

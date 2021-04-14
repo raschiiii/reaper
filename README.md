@@ -1,9 +1,10 @@
 # REAPER 1.0 
 
+A retro 90's style combat flight simulator for the MQ-9 Reaper military drone playable in the browser.
+
 ![MQ-9 Reaper](https://upload.wikimedia.org/wikipedia/commons/a/a1/MQ-9_Reaper_during_Exercise_Northern_Strike_2019.png)
 
-## Backstory
-You are part of the New York Air National Guard 174th Attack Wing, who transitioned from F-16 Falcon.
+<img width="480" src="https://upload.wikimedia.org/wikipedia/commons/a/a1/MQ-9_Reaper_during_Exercise_Northern_Strike_2019.png">
 
 ## Aircraft
 * MQ-9 Reaper
@@ -16,9 +17,8 @@ You are part of the New York Air National Guard 174th Attack Wing, who transitio
 * GBU-54 Laser Joint Direct Attack Munitions
 * Sidewinder
 
-## Physics for Game Developers
-https://resources.oreilly.com/examples/9780596000066/
-https://www.oreilly.com/catalog/errata.csp?isbn=9780596000066
-
-## Physics for Game Programmers
-
+## Enemies
+* Vehicles
+* Anti Air Artillery
+* Surface to Air Missiles
+* Tanks
