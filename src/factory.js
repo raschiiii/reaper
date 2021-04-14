@@ -5,7 +5,7 @@ import { Box } from "./components/shapes.js";
 import { AABB } from "./collision/collision.js";
 import { EventRelay, Explosive, Sound } from "./components/components.js";
 import { Physics } from "./physics/physics.js";
-import { PropPlane } from "./physics/plane-flightmodel.js";
+import { Plane } from "./physics/plane.js";
 import { AirplaneModel, SimpleModel } from "./components/model.js";
 import { TerrainManager } from "./terrain/terrain.js";
 import { FireControlSystem, Hardpoints, Sensor } from "./components/aircraft.js";
@@ -45,7 +45,7 @@ export class Factory {
         );
 
         //obj.addComponent(new Physics(obj, new SpringODE(obj, 1.0, 1.5, 20, -2.7)));
-        obj.addComponent(new Physics(obj, new PropPlane(obj)));
+        obj.addComponent(new Physics(obj, new Plane(obj)));
 
         obj.addComponent(new Sensor(obj, this.sensor));
         obj.addComponent(new FireControlSystem(obj));

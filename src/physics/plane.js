@@ -2,7 +2,7 @@ import * as THREE from "../three/build/three.module.js";
 import { FlightmodelODE } from "./flightmodel-ode.js";
 import { ODESolver } from "./physics.js";
 
-export class PropPlane extends FlightmodelODE {
+export class Plane extends FlightmodelODE {
     constructor(gameObject) {
         super(gameObject, {
             // switch coordiantes
@@ -53,5 +53,26 @@ export class PropPlane extends FlightmodelODE {
             that.alpha = this.value / 10;
             alpha.innerText = that.alpha;
         };
+
+        this.gameObject.subscribe("keydown", (event) => {
+            console.log("key")
+            switch (event.code){
+                case "KeyA":
+                    this.bank += 0.025;
+                    break;
+                
+                case "KeyD":
+                    this.bank -= 0.025;
+                    break;
+
+                case "KeyW":
+                    this.alpha -= 1;
+                    break;
+
+                case "KeyS":
+                    this.alpha += 1;
+                    break;
+            }
+        });
     }
 }
