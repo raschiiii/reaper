@@ -6,6 +6,10 @@ export class Sensor extends Component {
         super(gameObject);
 
         this._camera = camera;
+        this._target = new THREE.Vector3(0, -5, 0);
+        this._track = false;
+        let down = false;
+        this.enabled = false;
 
         this._sensorRotation = new THREE.Euler(0, -Math.PI / 2, 0, "YZX");
         this._camera.rotation.copy(this._sensorRotation);
@@ -13,29 +17,12 @@ export class Sensor extends Component {
         this._cameraDummy = new THREE.Object3D();
         this._cameraDummy.position.x += 0.45;
         this._cameraDummy.position.y -= 0.1;
-
         this.gameObject.transform.add(this._cameraDummy);
 
         this._raycaster = new THREE.Raycaster(
             new THREE.Vector3(),
             new THREE.Vector3(0, -1, 0)
         );
-
-        this._track = false;
-        this._target = new THREE.Vector3(0, -5, 0);
-
-        let down = false;
-
-        const that = this;
-        this._zoom = 0;
-        this._zoomSlider = document.querySelector("#slider4");
-
-        this._zoomSlider.oninput = function () {
-            that._camera.zoom = this.value;
-            that._camera.updateProjectionMatrix();
-        };
-
-        this.enabled = false;
 
         this.gameObject.subscribe("sensor", (event) => {
             this.enabled = event.enabled;
@@ -69,10 +56,8 @@ export class Sensor extends Component {
 
         this.gameObject.subscribe(
             "keydown",
-            (e) => {
-                const sensitivity = 0.1 / this._camera.zoom;
-
-                switch (e.code) {
+            (event) => {
+                switch (event.code) {
                     case "KeyL":
                         this.laserTrack();
                         break;
@@ -81,23 +66,6 @@ export class Sensor extends Component {
                         this._track = false;
                         this._sensorRotation.copy(this._camera.rotation);
                         break;
-                    /*
-                    case "KeyW":
-                        this._sensorRotation.x += sensitivity;
-                        break;
-
-                    case "KeyS":
-                        this._sensorRotation.x -= sensitivity;
-                        break;
-
-                    case "KeyA":
-                        this._sensorRotation.y += sensitivity;
-                        break;
-
-                    case "KeyD":
-                        this._sensorRotation.y -= sensitivity;
-                        break;
-*/
                 }
             },
             false

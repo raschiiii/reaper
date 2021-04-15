@@ -10,9 +10,9 @@ export class Plane extends FlightmodelODE {
             y: gameObject.position.z * 10.0,
             z: gameObject.position.y * 10.0,
 
-            vx: gameObject.velocity.x * 10,
-            vy: gameObject.velocity.z * 10,
-            vz: gameObject.velocity.y * 10,
+            vx: gameObject.velocity.x * 10.0,
+            vy: gameObject.velocity.z * 10.0,
+            vz: gameObject.velocity.y * 10.0,
 
             wingArea: 16.2,
             wingSpan: 10.9,
@@ -55,12 +55,12 @@ export class Plane extends FlightmodelODE {
         };
 
         this.gameObject.subscribe("keydown", (event) => {
-            console.log("key")
-            switch (event.code){
+            console.log("key");
+            switch (event.code) {
                 case "KeyA":
                     this.bank += 0.025;
                     break;
-                
+
                 case "KeyD":
                     this.bank -= 0.025;
                     break;

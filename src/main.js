@@ -248,7 +248,7 @@ function animate(now) {
                 gameObject.lifetime -= dt;
                 if (gameObject.lifetime <= 0) {
                     if (viewManager.activeGameObject == gameObject.id) {
-                        console.log("toggle away")
+                        console.log("toggle away");
                         viewManager.toggle();
                     }
                     goa.remove(gameObject);
