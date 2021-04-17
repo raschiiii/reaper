@@ -93,11 +93,10 @@ let assets = {
     },
 };
 
-init();
-
-let paused = false,
-    sensorView = false;
-let grid, goa, aircraft, terrain, heightmap, viewManager, factory, explosions;
+let paused = false;
+let sensorView = false;
+let grid, goa, aircraft, terrain, heightmap;
+let viewManager, factory, explosions;
 
 async function init() {
     const promises = [];
@@ -208,8 +207,8 @@ async function init() {
     animate();
 }
 
-let dt = 0,
-    then = 0;
+let dt = 0;
+let then = 0;
 function animate(now) {
     now *= 0.001;
     dt = now - then;
@@ -270,3 +269,5 @@ function animate(now) {
     }
     requestAnimationFrame(animate);
 }
+
+init();
