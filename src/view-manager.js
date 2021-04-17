@@ -123,16 +123,7 @@ export class ViewManager {
 
         this.activeGameObject = newActive.id;
 
-        if (!newActive.getComponent(PlayerView)) {
-            newActive.addComponent(new PlayerView(newActive, this._camera));
-        } else {
-            console.error("error");
-        }
-
-        if (!newActive.getComponent(PlayerInput)) {
-            newActive.addComponent(new PlayerInput(newActive));
-        } else {
-            console.error("error");
-        }
+        newActive.addComponent(new PlayerView(newActive, this._camera));
+        newActive.addComponent(new PlayerInput(newActive));
     }
 }
