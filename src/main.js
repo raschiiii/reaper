@@ -17,7 +17,7 @@ import { GameObjectArray } from "./engine/game-object-array.js";
 
 // Debug
 const pauseDisplay = document.querySelector("#paused");
-const hud = document.querySelector("#hud-img");
+const hud = document.querySelector("#sensor");
 const canvas = document.querySelector("#canvas");
 
 const width = 640;

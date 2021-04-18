@@ -28,7 +28,7 @@ export class PlayerView extends Component {
 
         this.controls = new OrbitControls(
             this.camera,
-            document.querySelector("#screen")
+            document.body
         );
         this.controls.target.copy(this.gameObject.position);
         this.controls.update();

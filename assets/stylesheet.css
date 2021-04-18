@@ -4,6 +4,8 @@ body {
     width: 100vw;
     margin: 0;
     box-sizing: border-box;
+
+    font-family: 'Courier New', Courier, monospace;
 }
 
 .hud-element {
@@ -11,8 +13,7 @@ body {
     color: white;
 }
 
-#hud-img {
-    position: absolute;
+#sensor {
     left: 0px;
     top: 0px;
     display: none;

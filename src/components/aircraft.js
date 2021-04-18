@@ -54,15 +54,13 @@ export class Sensor extends Component {
             this._camera.updateProjectionMatrix();
         });
 
-        this.gameObject.subscribe(
-            "keydown",
-            (event) => {
+        this.gameObject.subscribe("keydown", (event) => {
                 switch (event.code) {
-                    case "KeyL":
+                    case "KeyT":
                         this.laserTrack();
                         break;
 
-                    case "KeyK":
+                    case "KeyV":
                         this._track = false;
                         this._sensorRotation.copy(this._camera.rotation);
                         break;
@@ -97,18 +95,10 @@ export class Sensor extends Component {
     }
 
     update(dt) {
-        let o = new THREE.Vector3();
-        this._cameraDummy.getWorldPosition(o);
-
+        let cameraPos = new THREE.Vector3();
+        this._cameraDummy.getWorldPosition(cameraPos);
         this._camera.rotation.copy(this._sensorRotation);
-
-        // let dir = new THREE.Vector3(0,0,-1);
-        // dir.applyEuler(this._camera.rotation);
-        // dir.normalize();
-        // dir.multiplyScalar(this._zoom);
-        // o.add(dir);
-
-        this._camera.position.copy(o);
+        this._camera.position.copy(cameraPos);
 
         if (this._track) {
             this._camera.lookAt(this._target);

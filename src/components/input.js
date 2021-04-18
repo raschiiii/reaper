@@ -1,17 +1,9 @@
-import * as THREE from "../three/build/three.module.js";
-import { OrbitControls } from "../three/examples/jsm/controls/OrbitControls.js";
-
 import { Component } from "../engine/component.js";
 
 // only the active GameObject gets User input
 export class PlayerInput extends Component {
     constructor(gameObject) {
         super(gameObject);
-
-        console.log("add EventListeners");
-
-        this._screen = document.querySelector("#screen");
-        this._canvas = document.querySelector("#canvas");
 
         this._keyDown = (event) => {
             this.gameObject.publish("keydown", event);
@@ -32,32 +24,28 @@ export class PlayerInput extends Component {
 
         this._mouseUp = (event) => {
             event.preventDefault();
-            this.gameObject.publish("pointerup", event, false);
+            this.gameObject.publish("pointerup", event);
         };
 
         this._mouseDown = (event) => {
             event.preventDefault();
-            this.gameObject.publish("pointerdown", event, false);
+            this.gameObject.publish("pointerdown", event);
         };
 
         document.addEventListener("keydown", this._keyDown, false);
         document.addEventListener("keyup", this._keyUp, false);
-
-        this._screen.addEventListener("pointermove", this._mousemove, false);
-        this._screen.addEventListener("pointerdown", this._mouseDown, false);
-        this._screen.addEventListener("pointerup", this._mouseUp, false);
-
-        this._screen.addEventListener("wheel", this._wheel, false);
+        document.addEventListener("pointermove", this._mousemove, false);
+        document.addEventListener("pointerdown", this._mouseDown, false);
+        document.addEventListener("pointerup", this._mouseUp, false);
+        document.addEventListener("wheel", this._wheel, false);
     }
 
     destroy() {
         document.removeEventListener("keydown", this._keyDown, false);
         document.removeEventListener("keyup", this._keyUp, false);
-
-        this._screen.removeEventListener("pointermove", this._mousemove, false);
-        this._screen.removeEventListener("pointerdown", this._mouseDown, false);
-        this._screen.removeEventListener("pointerup", this._mouseUp, false);
-
-        this._screen.removeEventListener("wheel", this._wheel, false);
+        document.removeEventListener("pointermove", this._mousemove, false);
+        document.removeEventListener("pointerdown", this._mouseDown, false);
+        document.removeEventListener("pointerup", this._mouseUp, false);
+        document.removeEventListener("wheel", this._wheel, false);
     }
 }
