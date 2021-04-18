@@ -2,11 +2,12 @@ import * as THREE from "../three/build/three.module.js";
 import { ODE } from "./physics.js";
 
 export class FlightmodelODE extends ODE {
+    
     constructor(gameObject, params) {
         super(gameObject, 6);
 
-        this.display2 = document.querySelector("#display2");
-        this.display1 = document.querySelector("#throttle");
+        //this.display2 = document.querySelector("#display2");
+        //this.display1 = document.querySelector("#throttle");
 
         this.s = 0;
         this.q[0] = params.vx;
@@ -43,14 +44,12 @@ export class FlightmodelODE extends ODE {
 
         this.bank = 0;
         this.alpha = 0;
-        this.throttle = 0;
+        this.throttle = 100;
         this.flap = 0;
 
         this.roll = 0;
         this.pitch = 0;
         this.yaw = 0;
-
-        this.display2 = document.querySelector("#display2");
     }
 
     getRightHandSide(s, q, deltaQ, ds, qScale) {
@@ -84,8 +83,6 @@ export class FlightmodelODE extends ODE {
         //let thrust = this.throttle*factor*this.enginePower*(this.a + this.b*advanceRatio*advanceRatio)/(this.engineRps*this.propDiameter);
 
         let thrust = this.throttle * 5;
-
-        this.display2.innerText = `thrust ${thrust.toFixed(2)}`;
 
         let cl;
         if (this.alpha < this.alphaClMax) {
@@ -140,14 +137,6 @@ export class FlightmodelODE extends ODE {
             this.yaw = Math.atan2(vx, vy) - Math.PI / 2;
         }
 
-        // works
-        //let Fx = cosYaw*cosPitch*(thrust - drag) + ( sinYaw*sinRoll - cosYaw*sinPitch*cosRoll)*lift;
-        //let Fy = sinYaw*cosPitch*(thrust - drag) + (-cosYaw*sinRoll - sinYaw*sinPitch*cosRoll)*lift;
-        //let Fz = sinPitch*       (thrust - drag) + cosPitch*cosRoll*lift;
-
-        // x = roll
-        // y = pitch
-        // z = yaw
         const a = thrust - drag;
         const b = 0;
         const c = lift;

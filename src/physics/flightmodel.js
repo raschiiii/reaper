@@ -1,6 +1,5 @@
 import * as THREE from "../three/build/three.module.js";
 import { FlightmodelODE } from "./flightmodel-ode.js";
-import { ODESolver } from "./physics.js";
 
 export class Flightmodel extends FlightmodelODE {
     constructor(gameObject) {
@@ -33,7 +32,6 @@ export class Flightmodel extends FlightmodelODE {
         });
 
         this.gameObject.subscribe("keydown", (event) => {
-            console.log("key");
             switch (event.code) {
                 case "KeyA":
                     this.bank += 0.025;
