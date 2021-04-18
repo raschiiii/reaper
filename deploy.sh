@@ -12,10 +12,10 @@ zip -ur $build src/components/ src/engine/ src/collision/
 
 zip -ur $build src/three/build/three.module.js 
 zip -ur $build src/three/examples/jsm/libs/stats.module.js 
+zip -ur $build src/three/examples/jsm/controls/OrbitControls.js
+zip -ur $build src/three/examples/jsm/loaders/GLTFLoader.js 
 zip -ur $build src/three/examples/jsm/postprocessing/* 
-zip -ur $build src/three/examples/jsm/controls/* 
-zip -ur $build src/three/examples/jsm/loaders/* 
 zip -ur $build src/three/examples/jsm/shaders/* 
 
 scp $build $remote
-rm $build
+rm -f $build

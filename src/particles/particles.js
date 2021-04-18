@@ -145,7 +145,7 @@ export class Smoke extends ParticleSystem {
             particlesPerSecond: 10,
             texture: "./assets/textures/smoke.png",
             blending: THREE.NormalBlending,
-            alphaDegrading: 0,
+            alphaDegrading: 0.05,
             startSize: 0.1,
             scaleValue: 0.2,
         });
@@ -164,7 +164,7 @@ export class Smoke extends ParticleSystem {
         this._particles[unused].lifetime = this.particleLifetime;
         this._particles[unused].size = this.startSize * Math.random();
         this._particles[unused].color = new THREE.Color();
-        this._particles[unused].alpha = 1 * Math.random();
+        this._particles[unused].alpha = Math.random();
     }
 }
 

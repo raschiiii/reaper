@@ -210,14 +210,14 @@ class TerrainChunk {
             10
         );
 
-        const _material = new THREE.MeshStandardMaterial({
+        /*const _material = new THREE.MeshStandardMaterial({
             color: Math.floor(Math.random() * 50000),
             wireframe: false,
             side: THREE.DoubleSide,
             flatShading: true,
-        });
+        });*/
 
-        this._plane = new THREE.Mesh(_geometry, _material);
+        this._plane = new THREE.Mesh(_geometry, material);
 
         let vertices = this._plane.geometry.attributes.position.array;
 
@@ -365,5 +365,9 @@ export class TerrainManager extends Component {
 
     getHeight(x, z) {
         return this._heightmap.get(x, z);
+    }
+
+    placeAt(x, z){
+        return new THREE.Vector3(x, this.getHeight(x,z), z);
     }
 }
