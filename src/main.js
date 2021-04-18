@@ -19,6 +19,7 @@ import { GameObjectArray } from "./engine/game-object-array.js";
 const pauseDisplay = document.querySelector("#paused");
 const hud = document.querySelector("#sensor");
 const canvas = document.querySelector("#canvas");
+const info = document.querySelector('#info');
 
 const width = 640;
 const height = 480;
@@ -193,6 +194,8 @@ async function init() {
                     sensorView = !sensorView;
                     viewManager.setActive(0);
                     hud.style.display = sensorView ? "block" : "none";
+                    info.style.display = sensorView ? "none" : "block";
+                    
                     aircraft.publish("sensor", { enabled: sensorView });
                     break;
 

@@ -1,8 +1,8 @@
 import * as THREE from "../three/build/three.module.js";
+
 import { ODE } from "./physics.js";
 
 export class FlightmodelODE extends ODE {
-    
     constructor(gameObject, params) {
         super(gameObject, 6);
 
@@ -177,3 +177,6 @@ export class FlightmodelODE extends ODE {
         return new THREE.Euler(-this.roll, this.yaw, this.pitch, "YZX");
     }
 }
+
+
+

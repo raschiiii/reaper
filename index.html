@@ -15,15 +15,25 @@
         <title>Fear the Reaper</title>
     </head>
 	<body>
-        <div id="screen">
-            <canvas id="canvas" width="640" height="480"></canvas>
-        </div>
+        <canvas id="canvas" width="640" height="480"></canvas>
 
         <div class="hud-element" id="sensor">
             <img src="assets/textures/HUD.png" alt="">
+
+            <div class="hud-element" style="left: 510px; top: 350px;">
+                <span>ALT</span><br>
+                <span>SPD</span><br>
+            </div>
+
+            <div class="hud-element" style="left: 510px; top: 50px;">
+                <span>RNG</span><br>
+                <span>N</span><br>
+                <span>E</span><br>
+            </div>
         </div>
         
         <div class="hud-element" id="info">
+            
             <span id="speed">Speed</span><br>
             <span id="altitude">Alt</span><br>
             <span id="display1">display1</span><br>
