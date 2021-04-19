@@ -57,12 +57,12 @@ export class Sensor extends Component {
         this.gameObject.subscribe("keydown", (event) => {
                 switch (event.code) {
                     case "KeyT":
-                        this.laserTrack();
-                        break;
-
-                    case "KeyV":
-                        this._track = false;
-                        this._sensorRotation.copy(this._camera.rotation);
+                        if (!this._track){
+                            this.laserTrack();
+                        } else {
+                            this._track = false;
+                            this._sensorRotation.copy(this._camera.rotation);
+                        }
                         break;
                 }
             },

@@ -19,7 +19,7 @@ import { GameObjectArray } from "./engine/game-object-array.js";
 const pauseDisplay = document.querySelector("#paused");
 const hud = document.querySelector("#sensor");
 const canvas = document.querySelector("#canvas");
-const info = document.querySelector('#info');
+const info = document.querySelector("#info");
 
 const width = 640;
 const height = 480;
@@ -37,12 +37,13 @@ scene.background = new THREE.Color(0xcce0ff);
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
     logarithmicDepthBuffer: true,
+    antialias: false
 });
 
 renderer.setSize(width, height);
 renderer.setClearColor("red");
-renderer.shadowMap.enabled = true;
 renderer.physicallyCorrectLights = true;
+renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.BasicShadowMap;
 
 // Composer
@@ -182,8 +183,8 @@ async function init() {
 
     document.addEventListener(
         "keydown",
-        (e) => {
-            switch (e.code) {
+        (event) => {
+            switch (event.code) {
                 case "KeyP":
                     paused = !paused;
                     pauseDisplay.style.display = paused ? "block" : "none";
@@ -195,7 +196,7 @@ async function init() {
                     viewManager.setActive(0);
                     hud.style.display = sensorView ? "block" : "none";
                     info.style.display = sensorView ? "none" : "block";
-                    
+
                     aircraft.publish("sensor", { enabled: sensorView });
                     break;
 
@@ -224,7 +225,7 @@ function animate(now) {
                 camera: sensorView ? sensor : camera, // active camera
             });
 
-            let aabb = gameObject.getComponent(AABB);
+            const aabb = gameObject.getComponent(AABB);
             if (aabb) {
                 for (let otherObject of grid.possible_aabb_collisions(aabb)) {
                     if (otherObject != gameObject) aabb.collide(otherObject);
@@ -250,7 +251,6 @@ function animate(now) {
                 gameObject.lifetime -= dt;
                 if (gameObject.lifetime <= 0) {
                     if (viewManager.activeGameObject == gameObject.id) {
-                        console.log("toggle away");
                         viewManager.toggle();
                     }
                     goa.remove(gameObject);

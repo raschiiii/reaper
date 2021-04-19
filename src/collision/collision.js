@@ -36,6 +36,7 @@ export class AABB extends Component {
     collide(aabb) {
         if (aabb.box.intersectsBox(this.box)) {
             let d0, d1;
+
             d0 = this.box.max.x - aabb.box.min.x;
             d1 = aabb.box.max.x - this.box.min.x;
             let x = d0 < d1 ? d0 : -d1;
@@ -63,8 +64,9 @@ export class AABB extends Component {
                 this.gameObject.position.setZ(this.gameObject.position.z-z)  
                 this.gameObject.velocity.setZ(0)
             }
-            */
+        */
 
+            console.log("collision");
             this.gameObject.publish("collision", { depth: [x, y, z] });
 
             return true;

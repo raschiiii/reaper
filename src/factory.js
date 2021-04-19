@@ -8,7 +8,11 @@ import { Physics } from "./physics/physics.js";
 import { Flightmodel } from "./physics/flightmodel.js";
 import { AirplaneModel, SimpleModel } from "./components/model.js";
 import { TerrainManager } from "./terrain/terrain.js";
-import { FireControlSystem, Hardpoints, Sensor } from "./components/aircraft.js";
+import {
+    FireControlSystem,
+    Hardpoints,
+    Sensor,
+} from "./components/aircraft.js";
 import { LaserGuidance } from "./components/weapon.js";
 import { SmokeEmitter } from "./particles/particle-emitter.js";
 
@@ -82,7 +86,6 @@ export class Factory {
         obj.addComponent(new LaserGuidance(obj, hardpointId, this.goa));
         obj.addComponent(new AABB(obj));
 
-        //this.goa.add(obj);
         return obj;
     }
 
@@ -91,9 +94,11 @@ export class Factory {
         obj.position.copy(pos);
 
         obj.addComponent(new Box(obj, { castShadow: true }));
-        obj.addComponent(new AABB(obj));
         obj.addComponent(new SmokeEmitter(obj));
-        //obj.addComponent(new BasicPhysics(obj, {}));
+        const aabb = obj.addComponent(
+            new AABB(obj, new THREE.Vector3(10, 10, 10))
+        );
+        this.grid.insert(aabb);
 
         this.goa.add(obj);
         return obj;
