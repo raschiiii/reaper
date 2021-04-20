@@ -27,5 +27,5 @@ Vapour Interactive
 
 ## THREE.js
 
-The `three/` must be put into the `js/` folder.
+`three/` must be put into the `js/` folder.
 
