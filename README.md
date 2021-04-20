@@ -24,3 +24,8 @@ Vapour Interactive
 * Anti Air Artillery
 * Surface to Air Missiles
 * Tanks
+
+## THREE.js
+
+The `three/` must be put into the `js/` folder.
+
