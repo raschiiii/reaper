@@ -3,8 +3,6 @@
 *.blend
 *.blend1
 
-deploy.sh
-
 js/three/
 resources/
 test/
