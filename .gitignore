@@ -3,7 +3,7 @@
 *.blend
 *.blend1
 
-src/three/
+js/three/
 resources/
 test/
 .idea/
