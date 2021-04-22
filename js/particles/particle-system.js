@@ -26,15 +26,6 @@ void main() {
     gl_FragColor = texture2D(diffuseTexture, coords) * vColour;
 }`;
 
-const default_params = {
-    particlesPerSecond: 10,
-    numParticles: 1000,
-    startSize: 0.1,
-    particleLifetime: 5,
-    alphaDegrading: 1,
-    scaleValue: 1,
-};
-
 export class ParticleSystem {
     constructor(parent, params) {
         this._lastUsedParticle = 0;

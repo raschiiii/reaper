@@ -96,7 +96,7 @@ export class Explosion extends ParticleSystem {
     }
 }
 
-export class BulletImpact extends ParticleSystem {
+export class Impact extends ParticleSystem {
     constructor(parent, texturePath) {
         super(parent, {
             numParticles: 100,
@@ -156,7 +156,7 @@ export class Smoke extends ParticleSystem {
             particlesPerSecond: 0.5,
             texture: "./assets/textures/hexagon.png",
             blending: THREE.NormalBlending,
-            alphaDegrading: 0.05,
+            alphaDegrading: 0.0,
             startSize: 0.1,
             scaleValue: 0.2
  
@@ -164,6 +164,10 @@ export class Smoke extends ParticleSystem {
 
         });
         this._source = source;
+
+        this.startColor = new THREE.Color(0xff0000);
+        this.endColor = new THREE.Color(0x00ff00);
+
     }
 
     _createParticle(unused) {
@@ -177,9 +181,46 @@ export class Smoke extends ParticleSystem {
         this._particles[unused].velocity.set(0.0, 0.7, 0);
         this._particles[unused].lifetime = this.particleLifetime;
         this._particles[unused].size = this.startSize * Math.random();
-        this._particles[unused].color = new THREE.Color("red");
+        this._particles[unused].color = new THREE.Color();
         this._particles[unused].alpha = 1;
+
     }
+
+    _updateParticles(dt) {
+        for (let i = 0; i < this.numParticles; i++) {
+            if (this._particles[i].lifetime > 0) {
+                this._particles[i].lifetime -= dt;
+
+                if (this._particles[i].lifetime > 0) {
+                    this._particles[i].position.x +=
+                        this._particles[i].velocity.x * dt;
+                    this._particles[i].position.y +=
+                        this._particles[i].velocity.y * dt;
+                    this._particles[i].position.z +=
+                        this._particles[i].velocity.z * dt;
+
+                    if (this._gravity)
+                        this._particles[i].velocity.y -= 9.81 * dt;
+
+                    this._particles[i].size += this.scaleValue * dt;
+                    this._particles[i].alpha -= this.alphaDegrading * dt;
+
+                    this._particles[i].color.lerpColors(
+                        this.startColor, this.endColor,
+                        this._particles[i].lifetime / this.particleLifetime
+                    );
+
+                    console.log(this._particles[i].lifetime / this.particleLifetime)
+
+                } else {
+                    this._particles[i].position.copy(this._cache);
+                    this._particles[i].alpha = 0;
+                }
+            }
+        }
+    }
+
+
 }
 
 export class SmokeTrail extends ParticleSystem {
