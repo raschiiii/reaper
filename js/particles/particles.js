@@ -140,14 +140,28 @@ export class BulletImpact extends ParticleSystem {
 export class Smoke extends ParticleSystem {
     constructor(parent, source = new THREE.Vector3()) {
         super(parent, {
+            /*
             numParticles: 1000,
             particleLifetime: 15,
             particlesPerSecond: 10,
-            texture: "./assets/textures/smoke.png",
+            texture: "./assets/textures/hexagon.png",
             blending: THREE.NormalBlending,
             alphaDegrading: 0.05,
             startSize: 0.1,
-            scaleValue: 0.2,
+            scaleValue: 0.2
+            */
+
+            numParticles: 200,
+            particleLifetime: 15,
+            particlesPerSecond: 0.5,
+            texture: "./assets/textures/hexagon.png",
+            blending: THREE.NormalBlending,
+            alphaDegrading: 0.05,
+            startSize: 0.1,
+            scaleValue: 0.2
+ 
+
+
         });
         this._source = source;
     }
@@ -160,11 +174,11 @@ export class Smoke extends ParticleSystem {
         this._particles[unused].position.z =
             this._source.z + 0.25 * Math.random() - 0.125;
 
-        this._particles[unused].velocity.set(0.1, 0.5, 0);
+        this._particles[unused].velocity.set(0.0, 0.7, 0);
         this._particles[unused].lifetime = this.particleLifetime;
         this._particles[unused].size = this.startSize * Math.random();
-        this._particles[unused].color = new THREE.Color();
-        this._particles[unused].alpha = Math.random();
+        this._particles[unused].color = new THREE.Color("red");
+        this._particles[unused].alpha = 1;
     }
 }
 
@@ -174,7 +188,7 @@ export class SmokeTrail extends ParticleSystem {
             numParticles: 500,
             particleLifetime: 2,
             particlesPerSecond: 200,
-            texture: "assets/textures/smoke.png",
+            texture: "assets/textures/hexagon.png",
             blending: THREE.NormalBlending,
             alphaDegrading: 1.0,
             startSize: 0.1,

@@ -30,7 +30,6 @@ export class ODE {
 
     update(dt) {
         ODESolver.rungeKutta4(this, dt);
-        //console.log(this)
     }
 }
 
@@ -62,12 +61,13 @@ export class Physics extends Component {
 
     update(dt) {
         this.ode.update(dt);
+       
         this.gameObject.position.copy(this.ode.position);
         this.gameObject.velocity.copy(this.ode.velocity);
-        this.gameObject.position.multiplyScalar(0.1);
+        this.gameObject.transform.setRotationFromEuler(this.ode.rotation);
 
+        this.gameObject.position.multiplyScalar(0.1);
         this.gameObject.velocity.multiplyScalar(0.1);
 
-        this.gameObject.transform.setRotationFromEuler(this.ode.rotation);
     }
 }

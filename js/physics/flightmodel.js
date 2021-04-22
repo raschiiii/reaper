@@ -31,6 +31,10 @@ export class Flightmodel extends FlightmodelODE {
             b: -1.32,
         });
 
+
+        this.display1 = document.querySelector('#display1');
+        this.display2 = document.querySelector('#display2');
+
         this.gameObject.subscribe("keydown", (event) => {
             switch (event.code) {
                 case "KeyA":
@@ -48,7 +52,25 @@ export class Flightmodel extends FlightmodelODE {
                 case "KeyS":
                     this.alpha += 1;
                     break;
+
+                case "ShiftLeft":
+                    this.throttle += 10;
+                    break;
+
+                case "CapsLock":
+                    this.throttle -= 10;
+                    break;
             }
         });
+    }
+
+    update(dt){
+        super.update(dt);
+
+        if (this.alpha > 0) this.alpha -= 0.5 * dt;
+        if (this.alpha < 0) this.alpha += 0.5 * dt;
+
+        this.display1.innerText = `${this.alpha}`
+        this.display2.innerText = `${this.throttle}`
     }
 }
