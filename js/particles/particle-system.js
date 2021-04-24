@@ -147,35 +147,37 @@ export class ParticleSystem {
     }
 
     _createParticle(unused) {
-        this._particles[unused].position.set(0, 1, 0);
-        this._particles[unused].velocity.set(0, 1, 0);
-        this._particles[unused].lifetime = this.params.particleLifetime;
-        this._particles[unused].size = this.params.startSize;
-        this._particles[unused].color = new THREE.Color();
-        this._particles[unused].alpha = 1;
+        const particle = this._particles[unused];
+        particle.position.set(0, 1, 0);
+        particle.velocity.set(0, 1, 0);
+        particle.lifetime = this.params.particleLifetime;
+        particle.size = this.params.startSize;
+        particle.color = new THREE.Color();
+        particle.alpha = 1;
     }
 
     _updateParticles(dt) {
         for (let i = 0; i < this.params.numParticles; i++) {
-            if (this._particles[i].lifetime > 0) {
-                this._particles[i].lifetime -= dt;
 
-                if (this._particles[i].lifetime > 0) {
-                    this._particles[i].position.x +=
-                        this._particles[i].velocity.x * dt;
-                    this._particles[i].position.y +=
-                        this._particles[i].velocity.y * dt;
-                    this._particles[i].position.z +=
-                        this._particles[i].velocity.z * dt;
+            const particle = this._particles[i];
+
+            if (particle.lifetime > 0) {
+                particle.lifetime -= dt;
+
+                if (particle.lifetime > 0) {
+                    particle.position.x += particle.velocity.x * dt;
+                    particle.position.y += particle.velocity.y * dt;
+                    particle.position.z += particle.velocity.z * dt;
 
                     if (this._gravity)
-                        this._particles[i].velocity.y -= 9.81 * dt;
+                        particle.velocity.y -= 9.81 * dt;
 
-                    this._particles[i].size += this.params.scaleValue * dt;
-                    this._particles[i].alpha -= this.params.alphaDegrading * dt;
+                    particle.size += this.params.scaleValue * dt;
+                    particle.alpha -= this.params.alphaDegrading * dt;
+
                 } else {
-                    this._particles[i].position.copy(this._cache);
-                    this._particles[i].alpha = 0;
+                    particle.position.copy(this._cache);
+                    particle.alpha = 0;
                 }
             }
         }

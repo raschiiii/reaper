@@ -113,20 +113,23 @@ export class Explosion2 extends ParticleSystem {
     impact(pos) {
         for (let i = 0; i < this.params.particlesPerImpact; i++) {
             let unused = this._findUnusedParticle();
-            this._particles[unused].position.copy(pos);
+
+            const particle = this._particles[unused];
+
+            particle.position.copy(pos);
 
             let t1 = 0,
                 t2 = 0;
-            this._particles[unused].velocity.set(
+            particle.velocity.set(
                 t1 * Math.random() - t2,
                 t1 * Math.random() - t2 * 2,
                 t1 * Math.random() - t2
             );
 
-            this._particles[unused].lifetime = this.params.particleLifetime;
-            this._particles[unused].size = i + 1;
-            this._particles[unused].alpha = 0.5;
-            this._particles[unused].color = new THREE.Color("orange");
+            particle.lifetime = this.params.particleLifetime;
+            particle.size = i + 1;
+            particle.alpha = 0.5;
+            particle.color = new THREE.Color("orange");
         }
     }
 
@@ -184,17 +187,6 @@ export class Impact extends ParticleSystem {
 export class Smoke extends ParticleSystem {
     constructor(parent, source = new THREE.Vector3()) {
         super(parent, {
-            /*
-            numParticles: 1000,
-            particleLifetime: 15,
-            particlesPerSecond: 10,
-            texture: "./assets/textures/hexagon.png",
-            blending: THREE.NormalBlending,
-            alphaDegrading: 0.05,
-            startSize: 0.1,
-            scaleValue: 0.2
-            */
-
             numParticles: 200,
             particleLifetime: 15,
             particlesPerSecond: 0.5,
@@ -203,8 +195,7 @@ export class Smoke extends ParticleSystem {
             alphaDegrading: 0.0,
             startSize: 0.1,
             scaleValue: 0.2,
-
-            lerpV: 0.1,
+            colorTransition: 7.0
         });
         this._source = source;
 
@@ -212,21 +203,19 @@ export class Smoke extends ParticleSystem {
         this.endColor = new THREE.Color("grey");
     }
 
-    _createParticle(unused) {
-        this._particles[unused].position.x =
-            this._source.x + 0.25 * Math.random() - 0.125;
-        this._particles[unused].position.y =
-            this._source.y + 0.25 * Math.random() - 0.125;
-        this._particles[unused].position.z =
-            this._source.z + 0.25 * Math.random() - 0.125;
+    _createParticle(i) {
+        const particle = this._particles[i];
 
-        this._particles[unused].velocity.set(0.0, 0.7, 0);
-        this._particles[unused].lifetime = this.params.particleLifetime;
-        this._particles[unused].size = this.params.startSize * Math.random();
-        this._particles[unused].color = new THREE.Color();
-        this._particles[unused].alpha = 0.5;
+        particle.position.x = this._source.x + 0.25 * Math.random() - 0.125;
+        particle.position.y = this._source.y + 0.25 * Math.random() - 0.125;
+        particle.position.z = this._source.z + 0.25 * Math.random() - 0.125;
 
-        this._particles[unused].lerpValue = 0.0;
+        particle.velocity.set(0.0, 0.7, 0);
+        particle.lifetime = this.params.particleLifetime;
+        particle.size = this.params.startSize * Math.random();
+        particle.color = new THREE.Color();
+        particle.alpha = 1.0;
+        particle.lerpValue = 0.0;
     }
 
     _updateParticles(dt) {
@@ -245,25 +234,16 @@ export class Smoke extends ParticleSystem {
 
                     particle.size += this.params.scaleValue * dt;
                     particle.alpha -= this.params.alphaDegrading * dt;
-                    particle.lerpValue += (1.0 / 7.0) * dt;
 
-                    //particle.lerpValue = Math.min(particle.lerpValue, 1.0);
+                    particle.lerpValue += (1.0 / this.params.colorTransition) * dt;
+                    particle.lerpValue = Math.min(particle.lerpValue, 1.0);
+
                     particle.color.lerpColors(
                         this.startColor,
                         this.endColor,
                         particle.lerpValue
                     );
 
-                    /*
-                    this._particles[i].color.lerpColors(
-                        this.startColor,
-                        this.endColor,
-                        this._particles[i].lifetime /
-                            this.params.particleLifetime
-                    );
-                    */
-
-                    //console.log(this._particles[i].lifetime / this.params.particleLifetime)dd
                 } else {
                     particle.position.copy(this._cache);
                     particle.alpha = 0;
