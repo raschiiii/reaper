@@ -203,11 +203,13 @@ export class Smoke extends ParticleSystem {
             alphaDegrading: 0.0,
             startSize: 0.1,
             scaleValue: 0.2,
+
+            lerpV: 0.1,
         });
         this._source = source;
 
-        this.startColor = new THREE.Color(0xff0000);
-        this.endColor = new THREE.Color(0x00ff00);
+        this.startColor = new THREE.Color("orange");
+        this.endColor = new THREE.Color("grey");
     }
 
     _createParticle(unused) {
@@ -223,38 +225,48 @@ export class Smoke extends ParticleSystem {
         this._particles[unused].size = this.params.startSize * Math.random();
         this._particles[unused].color = new THREE.Color();
         this._particles[unused].alpha = 0.5;
+
+        this._particles[unused].lerpValue = 0.0;
     }
 
     _updateParticles(dt) {
         for (let i = 0; i < this.params.numParticles; i++) {
-            if (this._particles[i].lifetime > 0) {
-                this._particles[i].lifetime -= dt;
+            const particle = this._particles[i];
 
-                if (this._particles[i].lifetime > 0) {
-                    this._particles[i].position.x +=
-                        this._particles[i].velocity.x * dt;
-                    this._particles[i].position.y +=
-                        this._particles[i].velocity.y * dt;
-                    this._particles[i].position.z +=
-                        this._particles[i].velocity.z * dt;
+            if (particle.lifetime > 0) {
+                particle.lifetime -= dt;
 
-                    if (this._gravity)
-                        this._particles[i].velocity.y -= 9.81 * dt;
+                if (particle.lifetime > 0) {
+                    particle.position.x += particle.velocity.x * dt;
+                    particle.position.y += particle.velocity.y * dt;
+                    particle.position.z += particle.velocity.z * dt;
 
-                    this._particles[i].size += this.params.scaleValue * dt;
-                    this._particles[i].alpha -= this.params.alphaDegrading * dt;
+                    if (this._gravity) particle.velocity.y -= 9.81 * dt;
 
+                    particle.size += this.params.scaleValue * dt;
+                    particle.alpha -= this.params.alphaDegrading * dt;
+                    particle.lerpValue += (1.0 / 7.0) * dt;
+
+                    //particle.lerpValue = Math.min(particle.lerpValue, 1.0);
+                    particle.color.lerpColors(
+                        this.startColor,
+                        this.endColor,
+                        particle.lerpValue
+                    );
+
+                    /*
                     this._particles[i].color.lerpColors(
                         this.startColor,
                         this.endColor,
                         this._particles[i].lifetime /
                             this.params.particleLifetime
                     );
+                    */
 
                     //console.log(this._particles[i].lifetime / this.params.particleLifetime)dd
                 } else {
-                    this._particles[i].position.copy(this._cache);
-                    this._particles[i].alpha = 0;
+                    particle.position.copy(this._cache);
+                    particle.alpha = 0;
                 }
             }
         }
