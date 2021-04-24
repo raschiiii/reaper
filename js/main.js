@@ -10,7 +10,7 @@ import { FilmPass } from "./three/examples/jsm/postprocessing/FilmPass.js";
 import { AABB } from "./collision/collision.js";
 import { Factory } from "./factory.js";
 import { HashGrid } from "./collision/hashgrid.js";
-import { Explosion } from "./particles/particles.js";
+import { Explosion, Explosion2 } from "./particles/particles.js";
 import { ViewManager } from "./view-manager.js";
 import { TerrainManager } from "./terrain/terrain.js";
 import { GameObjectArray } from "./engine/game-object-array.js";
@@ -158,9 +158,9 @@ async function init() {
     grid = new HashGrid(2);
     factory = new Factory(assets, scene, goa, camera, grid, sensor, listener);
     viewManager = new ViewManager(goa, camera);
-    explosions = new Explosion(
+    explosions = new Explosion2(
         scene,
-        "assets/textures/explosion2.png",
+        "assets/textures/hexagon.png",
         listener
     );
 

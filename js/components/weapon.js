@@ -9,7 +9,7 @@ export class LaserGuidance extends Component {
         super(gameObject);
         this._target      = null;
         this._dirToTarget = new THREE.Vector3();
-        this._debug       = document.querySelector('#display1');
+        //this._debug       = document.querySelector('#display1');
 
         this.id  = id;
         this.goa = goa;
@@ -76,8 +76,8 @@ export class LaserGuidance extends Component {
             let rudderDeflection =  5000 * yawAngle;
             let wingDeflection   = -7000 * pitchAngle;
 
-            this._debug.innerText = `distanceToTarget: ${distance.toFixed(2) * 10}
-             yaw=${ yawAngle }, pitch=${ pitchAngle }, deflection=${ wingDeflection }`;
+            //this._debug.innerText = `distanceToTarget: ${distance.toFixed(2) * 10}
+            // yaw=${ yawAngle }, pitch=${ pitchAngle }, deflection=${ wingDeflection }`;
            
              //this._debug.innerText = `angle=${ yawAngle }, deflection=${ rudderDeflection }`;
             //this._debug.innerText = `angle=${ pitchAngle }, deflection=${ wingDeflection }`;
