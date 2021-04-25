@@ -30,7 +30,7 @@ camera.add(listener);
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xcce0ff);
-scene.fog = new THREE.Fog( 0xcce0ff, 500, 10000 );
+//scene.fog = new THREE.Fog( 0xcce0ff, 500, 10000 );
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({
@@ -77,7 +77,7 @@ scene.add(ambientLight);
 let assets = {
     gltf: {
         drone: {
-            url: "assets/objects/MQ-9v3.glb",
+            url: "assets/objects/MQ-9v2.glb",
         },
         hellfire: {
             url: "assets/objects/AGM-114.glb",
