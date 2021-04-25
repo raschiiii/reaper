@@ -1,12 +1,7 @@
-*.zip
-*.sh
-*.blend
-*.blend1
+.vs/
 
-server.py
-
+test/
 js/three/
 resources/
-test/
-.idea/
-.vs/
+
+server.py

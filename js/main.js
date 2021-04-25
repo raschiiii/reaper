@@ -5,7 +5,6 @@ import { GLTFLoader } from "./three/examples/jsm/loaders/GLTFLoader.js";
 import { EffectComposer } from "./three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "./three/examples/jsm/postprocessing/RenderPass.js";
 import { FilmPass } from "./three/examples/jsm/postprocessing/FilmPass.js";
-//import { UnrealBloomPass } from './three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
 import { AABB } from "./collision/collision.js";
 import { Factory } from "./factory.js";
@@ -37,7 +36,7 @@ scene.background = new THREE.Color(0xcce0ff);
 const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
   logarithmicDepthBuffer: true,
-  antialias: false,
+  antialias: true,
 });
 
 renderer.setSize(width, height);
@@ -71,6 +70,7 @@ sun.shadow.camera.top = 50;
 sun.shadow.camera.right = 50;
 scene.add(sun);
 scene.add(sun.target);
+
 const ambientLight = new THREE.AmbientLight(0x404040, 4.0);
 scene.add(ambientLight);
 
