@@ -250,6 +250,7 @@ export class TerrainManager extends Component {
 
         //this._heightmap = new RandomHeightMap();
         this._heightmap = new ImageHeightMap(params.heightmap);
+        //this._heightmap = new FixedHeightMap();
 
         this._camera = params.camera;
         this._chunks = {};
@@ -265,34 +266,6 @@ export class TerrainManager extends Component {
         });
 
         this._count = 0;
-    }
-
-    _updateVisible() {
-        const [xc, zc] = this._cell(this._camera.position);
-
-        const keys = {};
-
-        for (let x = -_FIXED_GRID_SIZE; x <= _FIXED_GRID_SIZE; x++) {
-            for (let z = -_FIXED_GRID_SIZE; z <= _FIXED_GRID_SIZE; z++) {
-                const k = this._key(xc + x, zc + z);
-                keys[k] = {
-                    position: [xc + x, zc + z],
-                };
-            }
-        }
-
-        for (const key in keys) {
-            if (key in this._chunks) continue;
-            const [xp, zp] = keys[key].position;
-            const offset = new THREE.Vector2(
-                xp * _MIN_CELL_SIZE,
-                zp * _MIN_CELL_SIZE
-            );
-            this._chunks[key] = {
-                position: [xp, zp],
-                chunk: this._createChunk(offset),
-            };
-        }
     }
 
     _updateVisibleQuadtree() {

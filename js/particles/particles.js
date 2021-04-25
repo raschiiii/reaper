@@ -100,12 +100,12 @@ export class Explosion2 extends ParticleSystem {
     constructor(parent) {
         super(parent, {
             numParticles: 100,
-            particleLifetime: 2,
+            particleLifetime: 1,
             particlesPerSecond: 20,
             texture: "../assets/textures/hexagon.png",
             blending: THREE.AdditiveBlending,
             alphaDegrading: 0.1,
-            scaleValue: 0.5,
+            scaleValue: 0.7,
             particlesPerImpact: 3,
         });
     }
