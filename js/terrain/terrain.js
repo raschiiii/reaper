@@ -340,7 +340,7 @@ export class TerrainManager extends Component {
         return this._heightmap.get(x, z);
     }
 
-    placeAt(x, z){
-        return new THREE.Vector3(x, this.getHeight(x,z), z);
+    placeAt(x, z) {
+        return new THREE.Vector3(x, this.getHeight(x, z), z);
     }
 }

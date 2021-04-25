@@ -6,12 +6,20 @@ body {
     box-sizing: border-box;
 
     font-family: 'Courier New', Courier, monospace;
+
+    display: flex;
+    justify-content: center;
 }
 
 .hud-element {
     position: absolute;
-    color: white;
 }
+
+.gui {
+    position: absolute;
+}
+
+
 
 #sensor {
     left: 0px;
