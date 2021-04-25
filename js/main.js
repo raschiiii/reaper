@@ -14,7 +14,7 @@ import { ViewManager } from "./view-manager.js";
 import { TerrainManager } from "./terrain/terrain.js";
 import { GameObjectArray } from "./engine/game-object-array.js";
 
-// Debug
+// DOM Elements
 const pauseDisplay = document.querySelector("#paused");
 const hud = document.querySelector("#sensor");
 const canvas = document.querySelector("#canvas");
@@ -30,7 +30,7 @@ camera.add(listener);
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xcce0ff);
-//scene.fog = new THREE.Fog( 0xcce0ff, 500, 10000 );
+scene.fog = new THREE.Fog( 0xcce0ff, 500, 10000 );
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({
@@ -95,32 +95,15 @@ let assets = {
     },
 };
 
-let paused = false;
-let sensorView = false;
+let paused = false, sensorView = false;
 let grid, goa, aircraft, terrain, heightmap;
 let viewManager, factory, explosions;
 
 async function init() {
+
     const promises = [];
 
-    let loader = null;
-    loader = new THREE.AudioLoader();
-    for (const resource of Object.values(assets.audio)) {
-        const p = new Promise((resolve, reject) => {
-            loader.load(
-                resource.url,
-                (data) => {
-                    resource.asset = data;
-                    resolve(resource);
-                },
-                null,
-                reject
-            );
-        });
-        promises.push(p);
-    }
-
-    const loadAssets = function (loader, asset) {
+    const load = function (loader, asset) {
         for (const resource of Object.values(asset)) {
             const p = new Promise((resolve, reject) => {
                 loader.load(
@@ -137,8 +120,9 @@ async function init() {
         }
     };
 
-    loadAssets(new THREE.TextureLoader(), assets.textures);
-    loadAssets(new GLTFLoader(), assets.gltf);
+    load(new GLTFLoader(), assets.gltf);
+    load(new THREE.AudioLoader(), assets.audio);
+    load(new THREE.TextureLoader(), assets.textures);
     await Promise.all(promises);
 
     goa = new GameObjectArray();
@@ -151,6 +135,7 @@ async function init() {
         new THREE.Vector3(0, 300, 0),
         new THREE.Vector3(10, 0, 0)
     );
+
     terrain = factory.createTerrain();
     heightmap = terrain.getComponent(TerrainManager);
 
@@ -179,7 +164,6 @@ async function init() {
                     viewManager.setActive(0);
                     hud.style.display = sensorView ? "block" : "none";
                     info.style.display = sensorView ? "none" : "block";
-
                     aircraft.publish("sensor", { enabled: sensorView });
                     break;
 
