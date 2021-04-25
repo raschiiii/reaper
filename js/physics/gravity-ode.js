@@ -2,7 +2,7 @@ import * as THREE from "../three/build/three.module.js";
 import { ODE } from "./physics.js";
 
 export class GravityODE extends ODE {
-    //constructor(gameObject, x0, y0, z0, vx0, vy0, vz0){
+    
     constructor(gameObject) {
         super(gameObject, 6);
 
@@ -14,16 +14,6 @@ export class GravityODE extends ODE {
         this.q[1] = gameObject.position.x * 10.0;
         this.q[3] = gameObject.position.z * 10.0;
         this.q[5] = gameObject.position.y * 10.0;
-
-        /*
-        this.q[0] = vx0;
-        this.q[2] = vy0;
-        this.q[4] = vz0;
-        
-        this.q[3] = y0;
-        this.q[1] = x0;
-        this.q[5] = z0;
-        */
 
         this.gameObject.subscribe("collision", (event) => {
             let x = event.depth[0];

@@ -26,39 +26,24 @@ void main() {
     gl_FragColor = texture2D(diffuseTexture, coords) * vColour;
 }`;
 
-const default_params = {
-    particlesPerSecond: 10,
-    numParticles: 1000,
-    startSize: 0.1,
-    particleLifetime: 5,
-    alphaDegrading: 1,
-    scaleValue: 1,
-};
-
 export class ParticleSystem {
     constructor(parent, params) {
+        this.params = params;
+
         this._lastUsedParticle = 0;
         this._elapsed = 0;
         this._gravity = false;
-        this._particlePerSec = params.particlesPerSecond;
         this._duration = 1.0 / params.particlesPerSecond;
         this._cache = new THREE.Vector3(0, 0, 0);
-
-        this.numParticles = params.numParticles;
-        this.startSize = params.startSize;
-        this.particleLifetime = params.particleLifetime;
         this.active = true;
-        this.alphaDegrading = params.alphaDegrading;
-        this.scaleValue = params.scaleValue;
-
         this._particles = [];
         this._zoom = 1;
 
-        for (let i = 0; i < this.numParticles; i++) {
+        for (let i = 0; i < this.params.numParticles; i++) {
             this._particles.push({
                 position: new THREE.Vector3(0, 0, 0),
                 lifetime: -1,
-                size: this.startSize,
+                size: this.params.startSize,
                 rotation: Math.random() * 2.0 * Math.PI,
                 color: new THREE.Color(),
                 velocity: new THREE.Vector3(),
@@ -106,7 +91,11 @@ export class ParticleSystem {
     }
 
     _findUnusedParticle() {
-        for (let i = this._lastUsedParticle; i < this.numParticles; i++) {
+        for (
+            let i = this._lastUsedParticle;
+            i < this.params.numParticles;
+            i++
+        ) {
             if (this._particles[i].lifetime <= 0) {
                 this._lastUsedParticle = i;
                 return i;
@@ -158,35 +147,37 @@ export class ParticleSystem {
     }
 
     _createParticle(unused) {
-        this._particles[unused].position.set(0, 1, 0);
-        this._particles[unused].velocity.set(0, 1, 0);
-        this._particles[unused].lifetime = this.particleLifetime;
-        this._particles[unused].size = this.startSize;
-        this._particles[unused].color = new THREE.Color();
-        this._particles[unused].alpha = 1;
+        const particle = this._particles[unused];
+        particle.position.set(0, 1, 0);
+        particle.velocity.set(0, 1, 0);
+        particle.lifetime = this.params.particleLifetime;
+        particle.size = this.params.startSize;
+        particle.color = new THREE.Color();
+        particle.alpha = 1;
     }
 
     _updateParticles(dt) {
-        for (let i = 0; i < this.numParticles; i++) {
-            if (this._particles[i].lifetime > 0) {
-                this._particles[i].lifetime -= dt;
+        for (let i = 0; i < this.params.numParticles; i++) {
 
-                if (this._particles[i].lifetime > 0) {
-                    this._particles[i].position.x +=
-                        this._particles[i].velocity.x * dt;
-                    this._particles[i].position.y +=
-                        this._particles[i].velocity.y * dt;
-                    this._particles[i].position.z +=
-                        this._particles[i].velocity.z * dt;
+            const particle = this._particles[i];
+
+            if (particle.lifetime > 0) {
+                particle.lifetime -= dt;
+
+                if (particle.lifetime > 0) {
+                    particle.position.x += particle.velocity.x * dt;
+                    particle.position.y += particle.velocity.y * dt;
+                    particle.position.z += particle.velocity.z * dt;
 
                     if (this._gravity)
-                        this._particles[i].velocity.y -= 9.81 * dt;
+                        particle.velocity.y -= 9.81 * dt;
 
-                    this._particles[i].size += this.scaleValue * dt;
-                    this._particles[i].alpha -= this.alphaDegrading * dt;
+                    particle.size += this.params.scaleValue * dt;
+                    particle.alpha -= this.params.alphaDegrading * dt;
+
                 } else {
-                    this._particles[i].position.copy(this._cache);
-                    this._particles[i].alpha = 0;
+                    particle.position.copy(this._cache);
+                    particle.alpha = 0;
                 }
             }
         }
@@ -197,8 +188,8 @@ export class ParticleSystem {
 
         if (this._elapsed >= this._duration && this.active) {
             let numNewParticles = Math.floor(this._elapsed / this._duration);
-            if (numNewParticles > this._particlePerSec)
-                numNewParticles = this._particlePerSec;
+            if (numNewParticles > this.params.particlesPerSecond)
+                numNewParticles = this.params.particlesPerSecond;
 
             for (let i = 0; i < numNewParticles; i++) {
                 this._createParticle(this._findUnusedParticle());
