@@ -3,7 +3,10 @@
 *.blend
 *.blend1
 
+server.py
+
 js/three/
 resources/
 test/
 .idea/
+.vs/
