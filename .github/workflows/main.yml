@@ -35,9 +35,9 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > ~/private.key
           sudo chmod 600 ~/private.key
           echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
-          scp -i ~/private.key files.ziip root@$HOST_IP:~
+          scp -i ~/private.key files.zip root@$HOST_IP:~
           
     env:
         SSH_PRIVATE_KEY: ${{secrets.SSH_KEY}}
         SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
-        HOST_IP: ${{secrets.HOST_IP}}
+        HOST_IP: jakobmaier.at
