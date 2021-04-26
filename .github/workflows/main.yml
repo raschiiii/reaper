@@ -19,6 +19,6 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: 22
         source: "."
-        target: "~/test/"
+        target: ${{ secrets.TARGET_DIR }}
 
 
