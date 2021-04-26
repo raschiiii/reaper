@@ -99,7 +99,7 @@ export class Explosion extends ParticleSystem {
 export class Explosion2 extends ParticleSystem {
     constructor(parent) {
         super(parent, {
-            numParticles: 100,
+            numParticles: 500,
             particleLifetime: 0.5,
             particlesPerSecond: 20,
             texture: "../assets/textures/hexagon.png",
@@ -143,9 +143,9 @@ export class Explosion2 extends ParticleSystem {
     }
 }
 
-
 export class Spark extends ParticleSystem {
-    constructor(parent) {1
+    constructor(parent) {
+        1;
         super(parent, {
             numParticles: 400,
             particleLifetime: 0.75,
@@ -156,7 +156,6 @@ export class Spark extends ParticleSystem {
             scaleValue: 0,
             particlesPerImpact: 30,
         });
-
         this._gravity = true;
     }
 
@@ -192,7 +191,6 @@ export class Spark extends ParticleSystem {
         this._updateGeometry();
     }
 }
-
 
 export class BasicSmoke extends ParticleSystem {
     constructor(parent, params, source = new THREE.Vector3()) {
