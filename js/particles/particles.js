@@ -195,12 +195,11 @@ export class Smoke extends ParticleSystem {
             alphaDegrading: 0.1,
             startSize: 0.1,
             scaleValue: 0.2,
-            colorTransition: 7.0
+            colorTransition: 5.0,
+            startColor: new THREE.Color("orange"),
+            endColor: new THREE.Color("grey")
         });
         this._source = source;
-
-        this.startColor = new THREE.Color("orange");
-        this.endColor = new THREE.Color("grey");
     }
 
     _createParticle(i) {
@@ -213,6 +212,7 @@ export class Smoke extends ParticleSystem {
         particle.velocity.set(0.0, 0.7, 0);
         particle.lifetime = this.params.particleLifetime;
         particle.size = this.params.startSize * Math.random();
+
         particle.color = new THREE.Color();
         particle.alpha = 1.0;
         particle.lerpValue = 0.0;
@@ -239,8 +239,8 @@ export class Smoke extends ParticleSystem {
                     particle.lerpValue = Math.min(particle.lerpValue, 1.0);
 
                     particle.color.lerpColors(
-                        this.startColor,
-                        this.endColor,
+                        this.params.startColor,
+                        this.params.endColor,
                         particle.lerpValue
                     );
 
@@ -263,10 +263,10 @@ export class SmokeTrail extends ParticleSystem {
             blending: THREE.NormalBlending,
             alphaDegrading: 1.0,
             startSize: 0.1,
-            scaleValue: 0.5,
+            scaleValue: 0.5
         });
 
-        this._spread = 0.25;
+        this._spread = 0.125;
         this._source = source;
     }
 
@@ -284,4 +284,7 @@ export class SmokeTrail extends ParticleSystem {
         this._particles[unused].color = new THREE.Color();
         this._particles[unused].alpha = 1 - Math.random() * 2;
     }
+
+
+
 }

@@ -31,26 +31,35 @@ export class Flightmodel extends FlightmodelODE {
             b: -1.32,
         });
 
+        this.keys = {
+            KeyA: false,
+            KeyD: false,
+            KeyW: false,
+            KeyS: false,
+            KeyW: false,
+            ShiftLeft: false,
+            CapsLock: false
+        };
 
-        this.display1 = document.querySelector('#display1');
-        this.display2 = document.querySelector('#display2');
+        this.display1 = document.querySelector("#display1");
+        this.display2 = document.querySelector("#display2");
 
         this.gameObject.subscribe("keydown", (event) => {
             switch (event.code) {
                 case "KeyA":
-                    this.bank += 0.025;
+                    this.keys.KeyA = true;
                     break;
 
                 case "KeyD":
-                    this.bank -= 0.025;
+                    this.keys.KeyD = true;
                     break;
 
                 case "KeyW":
-                    this.alpha -= 1;
+                    this.keys.KeyW = true;
                     break;
 
                 case "KeyS":
-                    this.alpha += 1;
+                    this.keys.KeyS = true;
                     break;
 
                 case "ShiftLeft":
@@ -62,15 +71,48 @@ export class Flightmodel extends FlightmodelODE {
                     break;
             }
         });
+
+        this.gameObject.subscribe("keyup", (event) => {
+            switch (event.code) {
+                case "KeyA":
+                    this.keys.KeyA = false;
+                    break;
+
+                case "KeyD":
+                    this.keys.KeyD = false;
+                    break;
+
+                case "KeyW":
+                    this.keys.KeyW = false;
+                    break;
+
+                case "KeyS":
+                    this.keys.KeyS = false;
+                    break;
+
+
+
+
+            }
+        });
     }
 
-    update(dt){
+    update(dt) {
         super.update(dt);
 
-        if (this.alpha > 0) this.alpha -= 0.5 * dt;
-        if (this.alpha < 0) this.alpha += 0.5 * dt;
+        const alphaSensitivity = 2.5;
+        if (this.keys.KeyW) this.alpha -= alphaSensitivity * dt;
+        if (this.keys.KeyS) this.alpha += alphaSensitivity * dt;
 
-        this.display1.innerText = `${this.alpha}`
-        this.display2.innerText = `${this.throttle}`
+        const bankSensitivity = 0.5;
+        if (this.keys.KeyA) this.bank += bankSensitivity * dt;
+        if (this.keys.KeyD) this.bank -= bankSensitivity * dt;
+
+
+        this.alpha += (-this.alpha) * dt;
+
+
+        this.display1.innerText = `alpha: ${this.alpha.toFixed(2)}`;
+        this.display2.innerText = `throttle: ${this.throttle.toFixed(2)}`;
     }
 }

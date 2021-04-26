@@ -14,7 +14,7 @@ import {
     Sensor,
 } from "./components/aircraft.js";
 import { LaserGuidance } from "./components/weapon.js";
-import { SmokeEmitter } from "./particles/particle-emitter.js";
+import { SmokeEmitter, SmokeTrailEmitter } from "./particles/particle-emitter.js";
 
 export class Factory {
     constructor(assets, scene, goa, camera, grid, sensor, listener) {
@@ -57,7 +57,7 @@ export class Factory {
         obj.addComponent(new AABB(obj));
         obj.addComponent(new Explosive(obj));
 
-        //obj.addComponent(new SmokeEmitter(obj));
+        obj.addComponent(new SmokeTrailEmitter(obj));
         //obj.addComponent(new LocalAxis(obj));
 
         const hardpoints = obj.addComponent(new Hardpoints(obj));

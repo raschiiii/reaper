@@ -49,7 +49,7 @@ export class Sensor extends Component {
         });
 
         this.gameObject.subscribe("wheel", (event) => {
-            this._camera.zoom -= event.deltaY * 0.5;
+            this._camera.zoom -= event.deltaY * 0.01;
             if (this._camera.zoom < 1.0) this._camera.zoom = 1.0;
             this._camera.updateProjectionMatrix();
         });
