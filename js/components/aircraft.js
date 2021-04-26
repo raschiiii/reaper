@@ -85,13 +85,16 @@ export class Sensor extends Component {
         if (intersects.length > 0) {
             this._target.copy(intersects[0].point);
             console.log("laser");
+            console.log(intersects)
             this.gameObject.publish("laser", { target: this._target });
             this._track = true;
         }
 
-        //for ( let i = 0; i < intersects.length; i ++ ) {
-        //    intersects[ i ].object.material.color.set( 0xff0000 );
-        //}
+        /*
+        for ( let i = 0; i < intersects.length; i ++ ) {
+            intersects[ i ].object.material.color.set( 0xff0000 );
+        }
+        */
     }
 
     update(dt) {

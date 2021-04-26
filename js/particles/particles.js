@@ -100,7 +100,7 @@ export class Explosion2 extends ParticleSystem {
     constructor(parent) {
         super(parent, {
             numParticles: 100,
-            particleLifetime: 1,
+            particleLifetime: 0.5,
             particlesPerSecond: 20,
             texture: "../assets/textures/hexagon.png",
             blending: THREE.AdditiveBlending,
@@ -184,38 +184,34 @@ export class Impact extends ParticleSystem {
     }
 }
 
-export class Smoke extends ParticleSystem {
-    constructor(parent, source = new THREE.Vector3()) {
-        super(parent, {
-            numParticles: 200,
-            particleLifetime: 15,
-            particlesPerSecond: 0.5,
-            texture: "./assets/textures/hexagon.png",
-            blending: THREE.NormalBlending,
-            alphaDegrading: 0.1,
-            startSize: 0.1,
-            scaleValue: 0.2,
-            colorTransition: 5.0,
-            startColor: new THREE.Color("orange"),
-            endColor: new THREE.Color("grey")
-        });
+export class BasicSmoke extends ParticleSystem {
+    constructor(parent, params, source = new THREE.Vector3()) {
+        super(parent, params);
         this._source = source;
     }
 
-    _createParticle(i) {
-        const particle = this._particles[i];
-
-        particle.position.x = this._source.x + 0.25 * Math.random() - 0.125;
-        particle.position.y = this._source.y + 0.25 * Math.random() - 0.125;
-        particle.position.z = this._source.z + 0.25 * Math.random() - 0.125;
-
-        particle.velocity.set(0.0, 0.7, 0);
+    _createParticle(unused) {
+        const particle = this._particles[unused];
+        particle.position.x =
+            this._source.x +
+            this.params.spread * Math.random() -
+            this.params.spread / 2;
+        particle.position.y =
+            this._source.y +
+            this.params.spread * Math.random() -
+            this.params.spread / 2;
+        particle.position.z =
+            this._source.z +
+            this.params.spread * Math.random() -
+            this.params.spread / 2;
+        particle.velocity.copy(this.params.velocity);
         particle.lifetime = this.params.particleLifetime;
         particle.size = this.params.startSize * Math.random();
-
         particle.color = new THREE.Color();
-        particle.alpha = 1.0;
         particle.lerpValue = 0.0;
+
+        particle.alpha = this.params.alphaStartValue;
+        //particle.alpha = 1 - Math.random();
     }
 
     _updateParticles(dt) {
@@ -235,7 +231,8 @@ export class Smoke extends ParticleSystem {
                     particle.size += this.params.scaleValue * dt;
                     particle.alpha -= this.params.alphaDegrading * dt;
 
-                    particle.lerpValue += (1.0 / this.params.colorTransition) * dt;
+                    particle.lerpValue +=
+                        (1.0 / this.params.colorTransition) * dt;
                     particle.lerpValue = Math.min(particle.lerpValue, 1.0);
 
                     particle.color.lerpColors(
@@ -243,7 +240,6 @@ export class Smoke extends ParticleSystem {
                         this.params.endColor,
                         particle.lerpValue
                     );
-
                 } else {
                     particle.position.copy(this._cache);
                     particle.alpha = 0;
@@ -253,38 +249,52 @@ export class Smoke extends ParticleSystem {
     }
 }
 
-export class SmokeTrail extends ParticleSystem {
+export class Smoke extends BasicSmoke {
     constructor(parent, source = new THREE.Vector3()) {
-        super(parent, {
-            numParticles: 500,
-            particleLifetime: 2,
-            particlesPerSecond: 200,
-            texture: "assets/textures/hexagon.png",
-            blending: THREE.NormalBlending,
-            alphaDegrading: 1.0,
-            startSize: 0.1,
-            scaleValue: 0.5
-        });
-
-        this._spread = 0.125;
-        this._source = source;
+        super(
+            parent,
+            {
+                numParticles: 200,
+                particleLifetime: 15,
+                particlesPerSecond: 1.5,
+                texture: "./assets/textures/hexagon.png",
+                blending: THREE.NormalBlending,
+                alphaDegrading: 0.1,
+                alphaStartValue: 1.0,
+                startSize: 0.1,
+                scaleValue: 0.2,
+                colorTransition: 5.0,
+                startColor: new THREE.Color("orange"),
+                endColor: new THREE.Color("grey"),
+                spread: 0,
+                velocity: new THREE.Vector3(0, 0.7, 0),
+            },
+            source
+        );
     }
+}
 
-    _createParticle(unused) {
-        this._particles[unused].position.x =
-            this._source.x + this._spread * Math.random() - this._spread / 2;
-        this._particles[unused].position.y =
-            this._source.y + this._spread * Math.random() - this._spread / 2;
-        this._particles[unused].position.z =
-            this._source.z + this._spread * Math.random() - this._spread / 2;
-
-        this._particles[unused].velocity.set(0.1, 0.3, 0);
-        this._particles[unused].lifetime = this.params.particleLifetime;
-        this._particles[unused].size = this.params.startSize * Math.random();
-        this._particles[unused].color = new THREE.Color();
-        this._particles[unused].alpha = 1 - Math.random() * 2;
+export class SmokeTrail extends BasicSmoke {
+    constructor(parent, source = new THREE.Vector3()) {
+        super(
+            parent,
+            {
+                numParticles: 500,
+                particleLifetime: 2,
+                particlesPerSecond: 100,
+                texture: "assets/textures/hexagon.png",
+                blending: THREE.NormalBlending,
+                alphaDegrading: 1.0,
+                alphaStartValue: 0.5,
+                startSize: 0.1,
+                scaleValue: 0.5,
+                colorTransition: 0.2,
+                startColor: new THREE.Color("orange"),
+                endColor: new THREE.Color("grey"),
+                spread: 0.125,
+                velocity: new THREE.Vector3(0.1, 0.3, 0),
+            },
+            source
+        );
     }
-
-
-
 }

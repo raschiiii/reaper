@@ -158,7 +158,6 @@ export class ParticleSystem {
 
     _updateParticles(dt) {
         for (let i = 0; i < this.params.numParticles; i++) {
-
             const particle = this._particles[i];
 
             if (particle.lifetime > 0) {
@@ -169,12 +168,10 @@ export class ParticleSystem {
                     particle.position.y += particle.velocity.y * dt;
                     particle.position.z += particle.velocity.z * dt;
 
-                    if (this._gravity)
-                        particle.velocity.y -= 9.81 * dt;
+                    if (this._gravity) particle.velocity.y -= 9.81 * dt;
 
                     particle.size += this.params.scaleValue * dt;
                     particle.alpha -= this.params.alphaDegrading * dt;
-
                 } else {
                     particle.position.copy(this._cache);
                     particle.alpha = 0;

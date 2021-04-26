@@ -57,7 +57,7 @@ export class Factory {
         obj.addComponent(new AABB(obj));
         obj.addComponent(new Explosive(obj));
 
-        obj.addComponent(new SmokeTrailEmitter(obj));
+        //obj.addComponent(new SmokeTrailEmitter(obj));
         //obj.addComponent(new LocalAxis(obj));
 
         const hardpoints = obj.addComponent(new Hardpoints(obj));
