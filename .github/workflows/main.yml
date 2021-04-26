@@ -22,7 +22,7 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         port: 22
-        source: "LICENSE, js/*, css/*, index.html, assets/*"
+        source: "LICENSE, index.html, js/*, css/*, assets/*"
         target: ${{ secrets.TARGET_DIR }}
 
 
