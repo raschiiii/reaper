@@ -9,7 +9,7 @@ import { FilmPass } from "./three/examples/jsm/postprocessing/FilmPass.js";
 import { AABB } from "./collision/collision.js";
 import { Factory } from "./factory.js";
 import { HashGrid } from "./collision/hashgrid.js";
-import { Explosion, Explosion2 } from "./particles/particles.js";
+import { Explosion, Explosion2, Spark } from "./particles/particles.js";
 import { ViewManager } from "./view-manager.js";
 import { TerrainManager } from "./terrain/terrain.js";
 import { GameObjectArray } from "./engine/game-object-array.js";
@@ -97,7 +97,7 @@ let assets = {
 
 let paused = false, sensorView = false;
 let grid, goa, aircraft, terrain, heightmap;
-let viewManager, factory, explosions;
+let viewManager, factory, explosions, spark;
 
 async function init() {
 
@@ -130,6 +130,7 @@ async function init() {
     factory = new Factory(assets, scene, goa, camera, grid, sensor, listener);
     viewManager = new ViewManager(goa, camera);
     explosions = new Explosion2(scene, "assets/textures/hexagon.png", listener);
+    spark = new Spark(scene)
 
     aircraft = factory.createAircraft(
         new THREE.Vector3(0, 300, 0),
@@ -207,7 +208,10 @@ function animate(now) {
                         terrainHeight,
                         gameObject.position.z
                     );
+                    
                     explosions.impact(impactPoint);
+                    spark.impact(impactPoint)
+                    
                     gameObject.publish("collision", {
                         depth: [0, terrainHeight - gameObject.position.y, 0],
                     });
@@ -227,6 +231,8 @@ function animate(now) {
         });
 
         explosions.update(dt, sensorView ? sensor : camera);
+        spark.update(dt, sensorView ? sensor : camera);
+
         terrain.update(dt);
     }
 

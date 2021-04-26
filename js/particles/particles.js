@@ -118,8 +118,8 @@ export class Explosion2 extends ParticleSystem {
 
             particle.position.copy(pos);
 
-            let t1 = 0,
-                t2 = 0;
+            let t1 = 5,
+                t2 = 2.5;
             particle.velocity.set(
                 t1 * Math.random() - t2,
                 t1 * Math.random() - t2 * 2,
@@ -127,7 +127,7 @@ export class Explosion2 extends ParticleSystem {
             );
 
             particle.lifetime = this.params.particleLifetime;
-            particle.size = i + 1;
+            particle.size = (i + 1) * 0.5;
             particle.alpha = 0.5;
             particle.color = new THREE.Color("orange");
         }
@@ -143,46 +143,56 @@ export class Explosion2 extends ParticleSystem {
     }
 }
 
-export class Impact extends ParticleSystem {
-    constructor(parent, texturePath) {
+
+export class Spark extends ParticleSystem {
+    constructor(parent) {1
         super(parent, {
-            numParticles: 100,
-            particleLifetime: 1,
-            particlesPerSecond: 1,
-            texture: texturePath,
+            numParticles: 400,
+            particleLifetime: 0.75,
+            particlesPerSecond: 20,
+            texture: "../assets/textures/rectangle.png",
             blending: THREE.AdditiveBlending,
+            alphaDegrading: 0.1,
+            scaleValue: 0,
+            particlesPerImpact: 30,
         });
 
         this._gravity = true;
-        this.alphaDegrading = 1;
-        this.scaleValue = 0.05;
-        this.particlesPerImpact = 5;
     }
 
     impact(pos) {
-        for (let i = 0; i < this.particlesPerImpact; i++) {
+        for (let i = 0; i < this.params.particlesPerImpact; i++) {
             let unused = this._findUnusedParticle();
-            this._particles[unused].position.copy(pos);
 
-            let t1 = 10,
-                t2 = 5;
-            this._particles[unused].velocity.set(
+            const particle = this._particles[unused];
+
+            particle.position.copy(pos);
+
+            let t1 = 20,
+                t2 = 10;
+            particle.velocity.set(
                 t1 * Math.random() - t2,
-                t1 * Math.random() - t2,
+                t1 * Math.random() - t2 * 2,
                 t1 * Math.random() - t2
             );
 
-            this._particles[unused].lifetime = this.particleLifetime;
-            this._particles[unused].size = 0.1;
-            this._particles[unused].alpha = 1;
+            particle.lifetime = this.params.particleLifetime;
+            particle.size = 0.1;
+            particle.alpha = 0.5;
+            particle.color = new THREE.Color("orange");
         }
     }
 
-    update(dt) {
+    update(dt, camera) {
+        this._points.material.uniforms.pointMultiplier.value =
+            (window.innerHeight /
+                (2.0 * Math.tan((0.5 * 60.0 * Math.PI) / 180.0))) *
+            camera.zoom;
         this._updateParticles(dt);
         this._updateGeometry();
     }
 }
+
 
 export class BasicSmoke extends ParticleSystem {
     constructor(parent, params, source = new THREE.Vector3()) {
@@ -263,7 +273,7 @@ export class Smoke extends BasicSmoke {
                 alphaStartValue: 1.0,
                 startSize: 0.1,
                 scaleValue: 0.2,
-                colorTransition: 5.0,
+                colorTransition: 3.0,
                 startColor: new THREE.Color("orange"),
                 endColor: new THREE.Color("grey"),
                 spread: 0,
