@@ -14,7 +14,7 @@ jobs:
       uses: appleboy/scp-action@master
 
       with:
-        host: example.com
+        host: jakobmaier.at
         username: root
         password: ${{ secrets.PASSWORD }}
         port: 22
