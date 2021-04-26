@@ -19,7 +19,10 @@ export class SimpleModel extends Component {
         this.model.scale.copy(scale);
 
         this.model.traverse(function (object) {
-            if (object.isMesh) object.castShadow = true;
+            if (object.isMesh) {
+                object.castShadow = true;
+                object.material.flatShading = true;
+            }
         });
 
         this.gameObject.transform.add(this.model);
@@ -50,7 +53,11 @@ export class AirplaneModel extends Component {
         this.model.scale.copy(scale);
 
         this.model.traverse(function (object) {
-            if (object.isMesh) object.castShadow = true;
+            if (object.isMesh) {
+                //console.log(object)
+                object.castShadow = true;
+                object.material.flatShading = true;
+            }
         });
 
         //console.log(this.model)

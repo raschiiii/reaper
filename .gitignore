@@ -1,7 +1,5 @@
 .vs/
-
 test/
 js/three/
 resources/
 
-server.py

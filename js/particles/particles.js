@@ -100,12 +100,12 @@ export class Explosion2 extends ParticleSystem {
     constructor(parent) {
         super(parent, {
             numParticles: 100,
-            particleLifetime: 5,
+            particleLifetime: 1,
             particlesPerSecond: 20,
             texture: "../assets/textures/hexagon.png",
-            blending: THREE.NormalBlending,
+            blending: THREE.AdditiveBlending,
             alphaDegrading: 0.1,
-            scaleValue: 0.5,
+            scaleValue: 0.7,
             particlesPerImpact: 3,
         });
     }
@@ -192,7 +192,7 @@ export class Smoke extends ParticleSystem {
             particlesPerSecond: 0.5,
             texture: "./assets/textures/hexagon.png",
             blending: THREE.NormalBlending,
-            alphaDegrading: 0.0,
+            alphaDegrading: 0.1,
             startSize: 0.1,
             scaleValue: 0.2,
             colorTransition: 7.0
