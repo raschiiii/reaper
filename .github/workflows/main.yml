@@ -1,5 +1,12 @@
 name: Deploy
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+      
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
@@ -13,5 +20,9 @@ jobs:
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
       - name: List files in the repository
         run: |
-          ls ${{ github.workspace }}
+          ls ${{ github.workspace }} |
+          ls .
+          
+      - name: zip files
+        run: zip files.zip README.md
       - run: echo "🍏 This job's status is ${{ job.status }}."
