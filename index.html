@@ -1,70 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:creator" content="@jakobmaier_">
-        <meta name="twitter:title" content="Reaper 1.0">
-        <meta name="twitter:description" content="Reaper 1.0 is a retro combat flight 
-            simulator for the MQ-9 Reaper drone.">
-		
-        <link rel="stylesheet" href="css/stylesheet.css">
-        <title>Fear the Reaper</title>
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:creator" content="@jakobmaier_" />
+        <meta name="twitter:title" content="Reaper 1.0" />
+        <meta
+            name="twitter:description"
+            content="Reaper 1.0 is a retro combat flight 
+            simulator for the MQ-9 Reaper drone."
+        />
+        <meta
+            name="description"
+            content="Reaper 1.0 is a retro combat flight 
+            simulator for the MQ-9 Reaper drone."
+        />
+        <link rel="stylesheet" href="css/stylesheet.css" />
+        <title>Reaper 1.0</title>
     </head>
-	<body>
-        <!--<canvas id="canvas"></canvas>-->
+    <body>
+        <canvas id="canvas" width="100vw" height="100vh"></canvas>
 
-        <div>
-            <img style="margin: auto 0;" src="assets/textures/HUD.png" alt="">
+        <div id="info" class="gui" style="left: 80vw; top: 5vh">
+            <span id="speed">Speed</span><br />
+            <span id="altitude">Alt</span><br />
+            <span id="throttle"></span><br />
+            <span id="display1">display1</span><br />
+            <span id="display2">display2</span><br />
         </div>
 
-        <div class="gui" style="left: 50vw; top: 50vh">
-            <span>laser tracking</span>
-        </div>
-
-        <div class="gui" style="left: 70vw; top: 50vh;">
-            <span>ALT</span><br>
-            <span>SPD</span><br>
-        </div>
-        
-        <div class="gui" style="left: 30vw; top: 50vh;">
-            <span>RNG</span><br>
-            <span>N</span><br>
-            <span>E</span><br>
-        </div>
-
-
-
-            
-       
-
-        <!-- 
-        <div class="hud-element" id="sensor">
-            <img src="assets/textures/HUD.png" alt="">
-
-            <div class="hud-element" style="left: 510px; top: 50px;">
-                <span>ALT</span><br>
-                <span>SPD</span><br>
-            </div>
-
-            <div class="hud-element" style="left: 510px; top: 350px;">
+        <div class="gui" style="left: 50vw; top: 60vh">
+            <div style="position: relative; left: -50%">
+                <p id="text">hello world!</p>
             </div>
         </div>
-    --> 
-        <!--
-        <div class="hud-element" id="info">
-            <span id="speed">Speed</span><br>
-            <span id="altitude">Alt</span><br>
-            <span id="display1">display1</span><br>
-            <span id="display2">display2</span><br>
-            <span id="throttle"></span><br> 
+
+        <div id="sensor" class="gui" style="left: 0vw; top: 0vh">
+            <img class="gui-img" src="assets/textures/HUD.png" />
+            <div class="gui" style="left: 70vw; top: 20vh">
+                <span>ALT</span><br />
+                <span>SPD</span><br />
+            </div>
+            <div class="gui" style="left: 70vw; top: 80vh">
+                <span>RNG</span><br />
+                <span>N</span><br />
+                <span>E</span><br />
+            </div>
+            <div class="gui" style="left: 30vw; top: 80vh">
+                <span>RNG</span><br />
+                <span>N</span><br />
+                <span>E</span><br />
+            </div>
+            <div class="gui" style="left: 30vw; top: 20vh">
+                <span>RNG</span><br />
+                <span>N</span><br />
+                <span>E</span><br />
+            </div>
         </div>
-        -->
-        <span class="hud-element" id="paused">Paused</span>
-        
-        <!--<script type="module" src="js/main.js"></script>-->
-	</body>
+
+        <div class="gui" style="left: 50vw; top: 30vh">
+            <div style="position: relative; left: -50%">
+                <h1 id="paused">Paused</h1>
+            </div>
+        </div>
+
+        <script type="module" src="js/main.js"></script>
+    </body>
 </html>

@@ -1,39 +1,36 @@
 html,
 body {
-    height: 100vh;
-    width: 100vw;
     margin: 0;
+    width: 100vw;
+    height: 100vh;
     box-sizing: border-box;
-
-    font-family: 'Courier New', Courier, monospace;
-
-    display: flex;
-    justify-content: center;
-}
-
-.hud-element {
-    position: absolute;
+    font-family: "Courier New", Courier, monospace;
 }
 
 .gui {
     position: absolute;
 }
 
-
-
-#sensor {
-    left: 0px;
-    top: 0px;
-    display: none;
+.gui-img {
+    position: absolute;
+    top: 50vh;
+    left: 50vw;
+    transform: translate(-50%, -50%);
 }
 
 #paused {
-    left: 320px;
-    top: 240px;
+    display: none;
+}
+
+#sensor {
+    display: none;
+}
+
+#text {
+    background-color: rgba(10, 10, 10, 0.3);
+    padding: 10px;
     display: none;
 }
 
 #info {
-    left: 510px;
-    top: 50px;
 }
