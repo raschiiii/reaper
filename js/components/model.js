@@ -54,15 +54,16 @@ export class AirplaneModel extends Component {
 
         this.model.traverse(function (object) {
             if (object.isMesh) {
-                //console.log(object)
+                console.log(object.material)
                 object.castShadow = true;
+                object.material.roughness = 1.0;
                 object.material.flatShading = true;
             }
         });
 
-        //console.log(this.model)
+        console.log(this.model.children);
 
-        this.propellor = this.model.children[4];
+        this.propellor = this.model.getObjectByName("Propellor");
         this.gameObject.transform.add(this.model);
     }
 
