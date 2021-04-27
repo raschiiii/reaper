@@ -20,10 +20,12 @@ export class PlayerView extends Component {
         this.gameObject.transform.getWorldPosition(this.worldPos);
 
         this.oldPos.copy(this.worldPos);
+
+        const defaultOffset = 1.5;
         this.camera.position.set(
-            this.worldPos.x - 1,
-            this.worldPos.y + 1,
-            this.worldPos.z - 1
+            this.worldPos.x - defaultOffset,
+            this.worldPos.y + defaultOffset,
+            this.worldPos.z - defaultOffset
         );
 
         this.controls = new OrbitControls(
