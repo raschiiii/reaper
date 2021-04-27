@@ -14,7 +14,10 @@ import {
     Sensor,
 } from "./components/aircraft.js";
 import { LaserGuidance } from "./components/weapon.js";
-import { SmokeEmitter, SmokeTrailEmitter } from "./particles/particle-emitter.js";
+import {
+    SmokeEmitter,
+    SmokeTrailEmitter,
+} from "./particles/particle-emitter.js";
 
 export class Factory {
     constructor(assets, scene, goa, camera, grid, sensor, listener) {

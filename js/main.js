@@ -95,12 +95,12 @@ let assets = {
     },
 };
 
-let paused = false, sensorView = false;
+let paused = false,
+    sensorView = false;
 let grid, goa, aircraft, terrain, heightmap;
 let viewManager, factory, explosions, spark;
 
 async function init() {
-
     const promises = [];
 
     const load = function (loader, asset) {
@@ -130,7 +130,7 @@ async function init() {
     factory = new Factory(assets, scene, goa, camera, grid, sensor, listener);
     viewManager = new ViewManager(goa, camera);
     explosions = new Explosion2(scene, "assets/textures/hexagon.png", listener);
-    spark = new Spark(scene)
+    spark = new Spark(scene);
 
     aircraft = factory.createAircraft(
         new THREE.Vector3(0, 300, 0),
@@ -208,10 +208,10 @@ function animate(now) {
                         terrainHeight,
                         gameObject.position.z
                     );
-                    
+
                     explosions.impact(impactPoint);
-                    spark.impact(impactPoint)
-                    
+                    spark.impact(impactPoint);
+
                     gameObject.publish("collision", {
                         depth: [0, terrainHeight - gameObject.position.y, 0],
                     });
