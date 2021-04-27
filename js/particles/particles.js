@@ -102,7 +102,7 @@ export class Explosion2 extends ParticleSystem {
             numParticles: 500,
             particleLifetime: 0.5,
             particlesPerSecond: 20,
-            texture: "../assets/textures/hexagon.png",
+            texture: "../../assets/textures/hexagon.png",
             blending: THREE.AdditiveBlending,
             alphaDegrading: 0.1,
             scaleValue: 0.7,
