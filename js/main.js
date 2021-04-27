@@ -36,7 +36,7 @@ scene.background = new THREE.Color(0xcce0ff);
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
     logarithmicDepthBuffer: true,
-    antialias: true,
+    antialias: false,
 });
 
 renderer.setSize(width, height);

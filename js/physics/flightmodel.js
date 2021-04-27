@@ -100,17 +100,19 @@ export class Flightmodel extends FlightmodelODE {
     update(dt) {
         super.update(dt);
 
-        const alphaSensitivity = 2.5;
+        const alphaSensitivity = 5.0;
         if (this.keys.KeyW) this.alpha -= alphaSensitivity * dt;
         if (this.keys.KeyS) this.alpha += alphaSensitivity * dt;
+
+        const alphaReturnFactor = 0.5;
+        this.alpha += (-this.alpha * alphaReturnFactor) * dt;
 
         const bankSensitivity = 0.5;
         if (this.keys.KeyA) this.bank += bankSensitivity * dt;
         if (this.keys.KeyD) this.bank -= bankSensitivity * dt;
 
-
-        this.alpha += (-this.alpha) * dt;
-
+        const bankReturnFactor = 0.25;
+        this.bank += (-this.bank * bankReturnFactor) * dt;
 
         this.display1.innerText = `alpha: ${this.alpha.toFixed(2)}`;
         this.display2.innerText = `throttle: ${this.throttle.toFixed(2)}`;

@@ -14,9 +14,18 @@ export class AABB extends Component {
         this._center = new THREE.Vector3(0, 0, 0);
         this.update(0);
 
-        //let geometry = new THREE.BoxGeometry(size.x, size.y, size.z)
-        //let material = new THREE.MeshBasicMaterial( {color: "#dadada", wireframe: true, transparent: true})
-        //this.gameObject.transform.add(new THREE.Mesh(geometry, material))
+        /*
+        this.gameObject.transform.add(
+            new THREE.Mesh(
+                new THREE.BoxGeometry(size.x, size.y, size.z),
+                new THREE.MeshBasicMaterial({
+                    color: "#dadada",
+                    wireframe: true,
+                    transparent: true,
+                })
+            )
+        );
+        */
     }
 
     get min() {

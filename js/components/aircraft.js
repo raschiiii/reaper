@@ -84,8 +84,6 @@ export class Sensor extends Component {
 
         if (intersects.length > 0) {
             this._target.copy(intersects[0].point);
-            console.log("laser");
-            console.log(intersects)
             this.gameObject.publish("laser", { target: this._target });
             this._track = true;
         }
@@ -151,7 +149,7 @@ export class FireControlSystem extends Component {
 
         this.gameObject.subscribe("laser", (e) => {
             this._target = e.target;
-            console.log("got laser target");
+            //console.log("got laser target");
         });
 
         this.gameObject.subscribe("keydown", (e) => {
