@@ -1,12 +1,10 @@
+<p align="center"> 
+    <img src="assets/images/image2.png">
+</p>
+
 # REAPER 1.0
 
 A retro 90's style combat flight simulator for the MQ-9 Reaper military drone playable in the browser.
-
-<p align="center"> 
-    <img src="assets/images/image.png">
-</p>
-
-Vapour Interactive
 
 ## Aircraft
 
