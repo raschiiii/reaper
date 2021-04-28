@@ -1,0 +1,31 @@
+{
+  "name": "reaper",
+  "version": "1.0.0",
+  "description": "Reaper 1.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "serve": "webpack serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gue-ni/reaper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gue-ni/reaper/issues"
+  },
+  "homepage": "https://github.com/gue-ni/reaper#readme",
+  "dependencies": {
+    "three": "^0.128.0"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^8.1.1",
+    "webpack": "^5.36.0",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^3.11.2"
+  }
+}
