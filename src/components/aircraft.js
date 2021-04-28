@@ -111,7 +111,7 @@ export class Hardpoints extends Component {
     constructor(gameObject) {
         super(gameObject);
 
-        const y = -0.06;
+        const y = -0.055;
         const x = 0.01;
 
         this.h1 = new THREE.Object3D();

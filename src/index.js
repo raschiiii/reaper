@@ -34,9 +34,13 @@ const sensor = new THREE.PerspectiveCamera(75, width / height, 0.01, 15000);
 const listener = new THREE.AudioListener();
 camera.add(listener);
 
+console.log(camera.getFocalLength())
+camera.setFocalLength(30)
+
+const skyColor = 0x7796C6;
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xcce0ff);
-//scene.fog = new THREE.Fog( 0xcce0ff, 500, 10000 );
+scene.background = new THREE.Color(skyColor);
+scene.fog = new THREE.Fog(skyColor, 500, 10000 );
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({
@@ -139,7 +143,7 @@ async function init() {
     spark = new Spark(scene);
 
     aircraft = factory.createAircraft(
-        new THREE.Vector3(0, 300, 0),
+        new THREE.Vector3(0, 500, 0),
         new THREE.Vector3(10, 0, 0)
     );
 
