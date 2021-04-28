@@ -13,10 +13,7 @@ module.exports = {
     },
     plugins: [
         new CopyPlugin({
-            patterns: [
-                { from: "public" },
-                { from: "assets", to: "assets" },
-            ]
+            patterns: [{ from: "public" }, { from: "assets", to: "assets" }],
         }),
     ],
 };

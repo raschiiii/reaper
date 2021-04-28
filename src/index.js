@@ -1,15 +1,16 @@
 /**
  * @license
- * Copyright 2021 Jakob Maier 
+ * Copyright 2021 Jakob Maier
+ * REAPER 1.0
  * SPDX-License-Identifier: MIT
  */
 import * as THREE from "three";
 import Stats from "three/examples/jsm/libs/stats.module.js";
 
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { FilmPass } from "three/examples/jsm/postprocessing/FilmPass.js";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 
 import { AABB } from "./collision/collision.js";
 import { Factory } from "./factory.js";

@@ -99,7 +99,7 @@ export class Flightmodel extends FlightmodelODE {
     update(dt) {
         super.update(dt);
 
-        const alphaSensitivity = 9.0;
+        const alphaSensitivity = 15.0;
         if (this.keys.KeyW) this.alpha -= alphaSensitivity * dt;
         if (this.keys.KeyS) this.alpha += alphaSensitivity * dt;
 

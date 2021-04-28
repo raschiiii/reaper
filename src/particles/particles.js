@@ -275,7 +275,7 @@ export class Smoke extends BasicSmoke {
                 startColor: new THREE.Color("orange"),
                 endColor: new THREE.Color("grey"),
                 spread: 0,
-                velocity: new THREE.Vector3(0, 0.7, 0),
+                velocity: new THREE.Vector3(0.0, 0.7, 0.0),
             },
             source
         );

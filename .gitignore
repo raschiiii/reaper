@@ -1,4 +1,4 @@
 .vs/
+dist/
 resources/
 node_modules/
-dist/
