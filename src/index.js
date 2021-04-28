@@ -34,13 +34,13 @@ const sensor = new THREE.PerspectiveCamera(75, width / height, 0.01, 15000);
 const listener = new THREE.AudioListener();
 camera.add(listener);
 
-console.log(camera.getFocalLength())
-camera.setFocalLength(30)
+console.log(camera.getFocalLength());
+camera.setFocalLength(30);
 
-const skyColor = 0x7796C6;
+const skyColor = 0x7796c6;
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(skyColor);
-scene.fog = new THREE.Fog(skyColor, 500, 10000 );
+//scene.fog = new THREE.Fog(skyColor, 500, 10000 );
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({
@@ -67,7 +67,7 @@ const stats = new Stats();
 document.body.appendChild(stats.dom);
 
 // Lights
-const sun = new THREE.DirectionalLight(0x404040, 6);
+const sun = new THREE.DirectionalLight(0xffffff, 2.5);
 sun.position.set(1000, 5000, 1000);
 sun.castShadow = true;
 sun.shadow.mapSize.width = 2048;
@@ -81,7 +81,7 @@ sun.shadow.camera.right = 50;
 scene.add(sun);
 scene.add(sun.target);
 
-const ambientLight = new THREE.AmbientLight(0x404040, 4.0);
+const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
 scene.add(ambientLight);
 
 let assets = {
