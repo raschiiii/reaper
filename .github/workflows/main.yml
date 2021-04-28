@@ -19,7 +19,7 @@ jobs:
       - name: Build
         uses: actions/setup-node@v1
         
-      - run: npm build
+      - run: npm run build
       - run: ls -l
       - run: ls dist/
 
