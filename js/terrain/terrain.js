@@ -263,6 +263,7 @@ export class TerrainManager extends Component {
             wireframe: false,
             side: THREE.DoubleSide,
             flatShading: true,
+            roughness: 1.0,
         });
 
         this._count = 0;
