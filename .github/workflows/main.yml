@@ -26,6 +26,6 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           source: "LICENSE"
-        target: ${{ secrets.TARGET_DIR }}
+          target: ${{ secrets.TARGET_DIR }}
 
 
