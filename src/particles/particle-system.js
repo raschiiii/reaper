@@ -73,7 +73,6 @@ export class ParticleSystem {
             blending: params.blending,
             transparent: true,
             vertexColors: true,
-            flatShading: true,
         });
 
         this._geometry = new THREE.BufferGeometry();

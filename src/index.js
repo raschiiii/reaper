@@ -68,18 +68,22 @@ document.body.appendChild(stats.dom);
 
 // Lights
 const sun = new THREE.DirectionalLight(0xffffff, 2.5);
-sun.position.set(1000, 5000, 1000);
+sun.position.set(0, 20, 0);
 sun.castShadow = true;
-sun.shadow.mapSize.width = 2048;
-sun.shadow.mapSize.height = 2048;
-sun.shadow.camera.near = 1000;
-sun.shadow.camera.far = 20000;
+//sun.shadowBias = 0.01;
+const map_size = Math.pow(2, 16);
+sun.shadow.mapSize.width = map_size;
+sun.shadow.mapSize.height = map_size;
+sun.shadow.camera.near = 1;
+sun.shadow.camera.far = 1000;
 sun.shadow.camera.left = -50;
 sun.shadow.camera.bottom = -50;
 sun.shadow.camera.top = 50;
 sun.shadow.camera.right = 50;
 scene.add(sun);
 scene.add(sun.target);
+const helper = new THREE.CameraHelper( sun.shadow.camera );
+scene.add( helper );
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
 scene.add(ambientLight);
@@ -143,7 +147,7 @@ async function init() {
     spark = new Spark(scene);
 
     aircraft = factory.createAircraft(
-        new THREE.Vector3(0, 500, 0),
+        new THREE.Vector3(0, 10, 0),
         new THREE.Vector3(10, 0, 0)
     );
 
