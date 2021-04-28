@@ -19,8 +19,8 @@ jobs:
         run: ls
 
       - name: copy files via scp
-      - uses: appleboy/scp-action@master
-      - with:
+        uses: appleboy/scp-action@master
+        with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
