@@ -32,5 +32,6 @@ jobs:
           port: ${{ secrets.PORT }}
           source: "dist/."
           target: ${{ secrets.TARGET_DIR }}
+          strip_components: 1
 
 
