@@ -212,14 +212,13 @@ export class BasicSmoke extends ParticleSystem {
             this._source.z +
             this.params.spread * Math.random() -
             this.params.spread / 2;
+
         particle.velocity.copy(this.params.velocity);
         particle.lifetime = this.params.particleLifetime;
         particle.size = this.params.startSize * Math.random();
         particle.color = new THREE.Color();
-        particle.lerpValue = 0.0;
-
         particle.alpha = this.params.alphaStartValue;
-        //particle.alpha = 1 - Math.random();
+        particle.lerpValue = 0.0;
     }
 
     _updateParticles(dt) {
@@ -293,7 +292,7 @@ export class SmokeTrail extends BasicSmoke {
                 texture: "assets/textures/hexagon.png",
                 blending: THREE.NormalBlending,
                 alphaDegrading: 1.0,
-                alphaStartValue: 0.5,
+                alphaStartValue: 1.0,
                 startSize: 0.1,
                 scaleValue: 0.5,
                 colorTransition: 0.2,
