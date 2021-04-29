@@ -20,6 +20,7 @@ export class MissileODE extends ODE {
 
         this.wing_lift = 0.0;
         this.rudder_lift = 0.0;
+        this.thrust = params.thrust;
     }
 
     getRightHandSide(s, q, deltaQ, ds, qScale) {
@@ -45,7 +46,7 @@ export class MissileODE extends ODE {
         let pressure = 101325.0 * Math.pow(grp, 5.25);
         let density = (0.00348 * pressure) / temperature;
 
-        let thrust = 5000.0;
+        let thrust = this.thrust;
 
         const cd = 0.5;
         let area = 0.25 * Math.PI * this.rocketDiameter * this.rocketDiameter;

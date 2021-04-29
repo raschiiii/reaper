@@ -21,7 +21,7 @@ export class PlayerView extends Component {
 
         this.oldPos.copy(this.worldPos);
 
-        const defaultOffset = 1.5;
+        const defaultOffset = 3.5;
         this.camera.position.set(
             this.worldPos.x - defaultOffset,
             this.worldPos.y + defaultOffset,

@@ -249,8 +249,8 @@ export class TerrainManager extends Component {
         super(gameObject);
 
         //this._heightmap = new RandomHeightMap();
-        //this._heightmap = new ImageHeightMap(params.heightmap);
-        this._heightmap = new FixedHeightMap();
+        this._heightmap = new ImageHeightMap(params.heightmap);
+        //this._heightmap = new FixedHeightMap();
 
         this._camera = params.camera;
         this._chunks = {};

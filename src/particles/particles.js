@@ -127,7 +127,7 @@ export class Explosion2 extends ParticleSystem {
             );
 
             particle.lifetime = this.params.particleLifetime;
-            particle.size = (i + 1) * 0.5;
+            particle.size = (i + 1) * 1.5;
             particle.alpha = 0.5;
             particle.color = new THREE.Color("orange");
         }
@@ -200,6 +200,7 @@ export class BasicSmoke extends ParticleSystem {
 
     _createParticle(unused) {
         const particle = this._particles[unused];
+
         particle.position.x =
             this._source.x +
             this.params.spread * Math.random() -
