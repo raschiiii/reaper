@@ -18,6 +18,7 @@ void main() {
 
 const _FS = `
 uniform sampler2D diffuseTexture;
+
 varying vec4 vColour;
 varying vec2 vAngle;
 
@@ -25,6 +26,67 @@ void main() {
     vec2 coords = (gl_PointCoord - 0.5) * mat2(vAngle.x, vAngle.y, -vAngle.y, vAngle.x) + 0.5;
     gl_FragColor = texture2D(diffuseTexture, coords) * vColour;
 }`;
+
+const _DITHERING_FS = `
+uniform sampler2D diffuseTexture;
+uniform sampler2D ditheringTexture;
+
+varying vec4 vColour;
+varying vec2 vAngle;
+
+void main() {
+    vec2 coords = (gl_PointCoord - 0.5) * mat2(vAngle.x, vAngle.y, -vAngle.y, vAngle.x) + 0.5;
+    vec4 dith = texture2D(ditheringTexture, coords);
+    
+    if (dith.r < 0.5){
+        discard;
+    }
+    
+    gl_FragColor = texture2D(diffuseTexture, coords) * vColour;
+}`;
+
+function createDataTexture() {
+    // https://threejs.org/docs/index.html?q=datate#api/en/textures/DataTexture
+    // https://www.shadertoy.com/view/Mlt3z8
+    const width = 4;
+    const height = 4;
+
+    const data = new Uint8Array([
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+    ]);
+
+    console.log(data.length);
+
+    const ditherTex = new THREE.DataTexture(
+        data,
+        width,
+        height,
+        THREE.RGBAFormat
+    );
+    ditherTex.minFilter = THREE.NearestFilter;
+    ditherTex.magFilter = THREE.NearestFilter;
+    ditherTex.anisotropy = 1;
+    ditherTex.wrapS = THREE.RepeatWrapping;
+    ditherTex.wrapT = THREE.RepeatWrapping;
+    ditherTex.needsUpdate = true;
+
+    return ditherTex;
+}
 
 export class ParticleSystem {
     constructor(parent, params) {
@@ -55,6 +117,9 @@ export class ParticleSystem {
             diffuseTexture: {
                 value: new THREE.TextureLoader().load(params.texture), // TODO update this
             },
+            ditheringTexture: {
+                value: createDataTexture(),
+            },
             pointMultiplier: {
                 value:
                     (window.innerHeight /
@@ -67,7 +132,7 @@ export class ParticleSystem {
         this._material = new THREE.ShaderMaterial({
             uniforms: uniforms,
             vertexShader: _VS,
-            fragmentShader: _FS,
+            fragmentShader: _DITHERING_FS,
             depthTest: false, // TODO fix this, does not work
             depthWrite: false,
             blending: params.blending,
