@@ -40,7 +40,7 @@ camera.setFocalLength(30);
 const skyColor = 0x7796c6;
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(skyColor);
-scene.fog = new THREE.Fog(skyColor, 500, 10000 );
+scene.fog = new THREE.Fog(skyColor, 500, 10000);
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({
@@ -82,8 +82,8 @@ sun.shadow.camera.top = 50;
 sun.shadow.camera.right = 50;
 scene.add(sun);
 scene.add(sun.target);
-const helper = new THREE.CameraHelper( sun.shadow.camera );
-scene.add( helper );
+const helper = new THREE.CameraHelper(sun.shadow.camera);
+scene.add(helper);
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
 scene.add(ambientLight);
@@ -147,7 +147,7 @@ async function init() {
     spark = new Spark(scene);
 
     aircraft = factory.createAircraft(
-        new THREE.Vector3(0, 100, 0),
+        new THREE.Vector3(0, 400, 0),
         new THREE.Vector3(10, 0, 0)
     );
 
