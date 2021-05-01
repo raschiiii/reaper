@@ -54,19 +54,18 @@ export class AirplaneModel extends Component {
 
         this.model.traverse(function (mesh) {
             if (mesh.isMesh) {
-                console.log(mesh.material)
-                
+                console.log(mesh.material);
+
                 mesh.castShadow = true;
                 mesh.receiveShadow = true;
 
                 mesh.material.side = THREE.FrontSide;
-               
+
                 mesh.material.roughness = 1.0;
                 mesh.material.flatShading = true;
             }
         });
-        
-        
+
         console.log(this.model.children);
 
         this.propellor = this.model.getObjectByName("Propellor");
@@ -74,7 +73,7 @@ export class AirplaneModel extends Component {
     }
 
     update(dt) {
-        if (this.propellor) this.propellor.rotateZ(400.0 * dt);
+        if (this.propellor) this.propellor.rotateZ(100.0 * dt);
     }
 
     destroy() {

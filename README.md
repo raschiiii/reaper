@@ -8,4 +8,5 @@ A retro combat flight simulator for the MQ-9 Reaper military drone playable in t
 
 https://discourse.threejs.org/t/moving-directionallight-shadow-frustum-with-camera/2700/5
 
-
+screen door transparency
+https://gkjohnson.github.io/threejs-sandbox/screendoor-transparency/
