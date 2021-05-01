@@ -9,7 +9,6 @@ export class Hellfire extends MissileODE {
             vx: gameObject.velocity.x * 10,
             vy: gameObject.velocity.z * 10,
             vz: gameObject.velocity.y * 10,
-
             diameter: 0.18,
             mass: 40.0,
             thrust: thrust,
