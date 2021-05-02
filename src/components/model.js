@@ -54,7 +54,7 @@ export class AirplaneModel extends Component {
 
         this.model.traverse(function (mesh) {
             if (mesh.isMesh) {
-                console.log(mesh.material);
+                //console.log(mesh.material);
 
                 mesh.castShadow = true;
                 mesh.receiveShadow = true;

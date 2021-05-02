@@ -35,56 +35,63 @@ varying vec4 vColour;
 varying vec2 vAngle;
 
 void main() {
-    vec2 coords = (gl_PointCoord - 0.5) * mat2(vAngle.x, vAngle.y, -vAngle.y, vAngle.x) + 0.5;
-    vec4 dith = texture2D(ditheringTexture, coords);
+    //vec2 coords = (gl_PointCoord - 0.5) * mat2(vAngle.x, vAngle.y, -vAngle.y, vAngle.x) + 0.5;
     
-    if (dith.r < 0.5){
+    vec2 coords = gl_PointCoord;
+    vec2 fcoords = gl_FragCoord.xy;
+
+    //vec4 dith = texture2D(ditheringTexture, fcoords);
+    //if (dith.r > 0.5){
+    //    discard;
+    //}
+   
+    // discard every other pixel
+    bool flag = mod(fcoords.x + fcoords.y, 2.0) == 0.0;
+    if (flag){
         discard;
     }
-    
+
     gl_FragColor = texture2D(diffuseTexture, coords) * vColour;
+    
+    /*
+    vec4 c = texture2D(diffuseTexture, coords) * vColour;
+    if (c.a  == 0.0){
+        discard;
+    }
+    gl_FragColor = vec4(c.xyz, 1.0);
+    */
+
 }`;
 
 function createDataTexture() {
     // https://threejs.org/docs/index.html?q=datate#api/en/textures/DataTexture
     // https://www.shadertoy.com/view/Mlt3z8
-    const width = 4;
-    const height = 4;
 
-    const data = new Uint8Array([
-        1,
-        1,
-        1,
-        1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-    ]);
+    const width = 2;
+    const height = 2;
 
-    console.log(data.length);
+    const data = new Uint8Array([0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+
+    console.log(data.length == width * height * 3);
 
     const ditherTex = new THREE.DataTexture(
         data,
         width,
         height,
-        THREE.RGBAFormat
+        THREE.RGBFormat
     );
-    ditherTex.minFilter = THREE.NearestFilter;
-    ditherTex.magFilter = THREE.NearestFilter;
-    ditherTex.anisotropy = 1;
+    //ditherTex.minFilter = THREE.NearestFilter;
+    //ditherTex.magFilter = THREE.NearestFilter;
+
     ditherTex.wrapS = THREE.RepeatWrapping;
     ditherTex.wrapT = THREE.RepeatWrapping;
+
+    ditherTex.repeat.set(4, 4);
+
+    //ditherTex.anisotropy = 1;
     ditherTex.needsUpdate = true;
 
+    console.log({ ditherTex });
     return ditherTex;
 }
 
@@ -113,9 +120,13 @@ export class ParticleSystem {
             });
         }
 
+        const texture = new THREE.TextureLoader().load(params.texture);
+        texture.minFilter = THREE.NearestFilter;
+        texture.magFilter = THREE.NearestFilter;
+
         const uniforms = {
             diffuseTexture: {
-                value: new THREE.TextureLoader().load(params.texture), // TODO update this
+                value: texture, // TODO update this
             },
             ditheringTexture: {
                 value: createDataTexture(),
