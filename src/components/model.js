@@ -18,10 +18,13 @@ export class SimpleModel extends Component {
         this.model.rotateZ(rotation.z);
         this.model.scale.copy(scale);
 
-        this.model.traverse(function (object) {
-            if (object.isMesh) {
-                object.castShadow = true;
-                object.material.flatShading = true;
+        this.model.traverse(function (mesh) {
+            if (mesh.isMesh) {
+                mesh.castShadow = true;
+                mesh.receiveShadow = true;
+                mesh.material.side = THREE.FrontSide;
+                mesh.material.roughness = 1.0;
+                mesh.material.flatShading = true;
             }
         });
 
@@ -70,12 +73,9 @@ export class AirplaneModel extends Component {
         this.model.traverse(function (mesh) {
             if (mesh.isMesh) {
                 //console.log(mesh.material);
-
                 mesh.castShadow = true;
                 mesh.receiveShadow = true;
-
                 mesh.material.side = THREE.FrontSide;
-
                 mesh.material.roughness = 1.0;
                 mesh.material.flatShading = true;
             }
