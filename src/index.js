@@ -214,7 +214,13 @@ function animate(now) {
             const aabb = gameObject.getComponent(AABB);
             if (aabb) {
                 for (let otherObject of grid.possible_aabb_collisions(aabb)) {
-                    if (otherObject != gameObject) aabb.collide(otherObject);
+                    if (otherObject != gameObject) {
+                        console.log(`object collision ${now}`);
+                        aabb.collide(otherObject);
+
+                        explosions.impact(otherObject.gameObject.position);
+                        //spark.impact(otherObject.position);
+                    }
                 }
                 const terrainHeight = heightmap.getHeight(
                     gameObject.position.x,

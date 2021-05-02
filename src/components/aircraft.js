@@ -54,10 +54,12 @@ export class Sensor extends Component {
             this._camera.updateProjectionMatrix();
         });
 
-        this.gameObject.subscribe("keydown", (event) => {
+        this.gameObject.subscribe(
+            "keydown",
+            (event) => {
                 switch (event.code) {
                     case "KeyT":
-                        if (!this._track){
+                        if (!this._track) {
                             this.laserTrack();
                         } else {
                             this._track = false;
@@ -145,7 +147,8 @@ export class FireControlSystem extends Component {
         super(gameObject);
 
         this._target = null;
-        this._h = 1;
+        this._hellfires = 1;
+        this._paveways = 5;
 
         this.gameObject.subscribe("laser", (e) => {
             this._target = e.target;
@@ -155,8 +158,19 @@ export class FireControlSystem extends Component {
         this.gameObject.subscribe("keydown", (e) => {
             switch (e.code) {
                 case "KeyF":
+                    if (this._hellfires > 4) return;
                     this.gameObject.publish("fire", {
-                        hardpoint: this._h++,
+                        hardpoint: this._hellfires++,
+                        target: this._target,
+                        position: this.gameObject.position,
+                        velocity: this.gameObject.velocity,
+                    });
+                    break;
+
+                case "KeyG":
+                    if (this._paveways > 6) return;
+                    this.gameObject.publish("fire", {
+                        hardpoint: this._paveways++,
                         target: this._target,
                         position: this.gameObject.position,
                         velocity: this.gameObject.velocity,
