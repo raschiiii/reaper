@@ -1,9 +1,11 @@
 import * as THREE from "three";
+import { Vector2 } from "three";
 
 import { Component } from "../engine/component";
+import { MyQuadtree } from "./my-quadtree";
 
 const material = new THREE.MeshStandardMaterial({
-    color: Math.floor(Math.random() * 100000),
+    color: 0x000000,
     wireframe: true,
     side: THREE.DoubleSide,
     flatShading: true,
@@ -37,11 +39,21 @@ export class MyTerrain extends Component {
         this._chunks["test"] = new MyTerrainChunk(
             this.root,
             new THREE.Vector2(0, 0),
-            new THREE.Vector2(1000, 1000)
+            new THREE.Vector2(1024, 1024)
         );
+
+        const s = 1024;
+        this._quadtree = new MyQuadtree(
+            new THREE.Vector2(-s, -s),
+            new THREE.Vector2(s, s)
+        );
+
+        this._quadtree.insert(new THREE.Vector3());
     }
 
-    update(dt, params) {}
+    update(dt, params) {
+        // this._quadtree.insert(params.camera.position);
+    }
 
     getHeight(x, z) {
         return 0.0;

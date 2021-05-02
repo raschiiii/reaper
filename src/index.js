@@ -258,7 +258,9 @@ function animate(now) {
         explosions.update(dt, sensorView ? sensor : camera);
         spark.update(dt, sensorView ? sensor : camera);
 
-        terrain.update(dt, sensorView ? sensor : camera);
+        terrain.update(dt, {
+            camera: sensorView ? sensor : camera,
+        });
     }
 
     stats.update();
