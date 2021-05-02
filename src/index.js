@@ -19,7 +19,7 @@ import { Explosion2, Spark } from "./particles/particles.js";
 import { ViewManager } from "./view-manager.js";
 import { TerrainManager } from "./terrain/terrain.js";
 import { GameObjectArray } from "./engine/game-object-array.js";
-import { Terrain } from "./terrain2/my-terrain.js";
+import { Terrain } from "./terrain2/lod-terrain.js";
 
 // DOM Elements
 const pauseDisplay = document.querySelector("#paused");
@@ -35,7 +35,6 @@ const sensor = new THREE.PerspectiveCamera(75, width / height, 0.01, 25000);
 const listener = new THREE.AudioListener();
 camera.add(listener);
 
-console.log(camera.getFocalLength());
 camera.setFocalLength(35);
 
 const skyColor = 0x7796c6;
@@ -56,6 +55,18 @@ renderer.physicallyCorrectLights = true;
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.BasicShadowMap;
 //renderer.setPixelRatio(window.devicePixelRatio / 2); // downsample pixel resolution
+
+window.addEventListener(
+    "resize",
+    (e) => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        sensor.aspect = window.innerWidth / window.innerHeight;
+        sensor.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    },
+    false
+);
 
 // Composer
 const cameraRenderer = new EffectComposer(renderer);

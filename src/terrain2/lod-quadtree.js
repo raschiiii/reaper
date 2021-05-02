@@ -18,9 +18,12 @@ class Node extends THREE.Box2 {
     }
 }
 
-export class MyQuadtree {
-    constructor(min, max, minNodeSize = 256) {
-        this._root = new Node(min, max);
+export class LodQuadtree {
+    constructor(size, minNodeSize) {
+        this._root = new Node(
+            new THREE.Vector2(-size, -size),
+            new THREE.Vector2(size, size)
+        );
         this._minNodeSize = minNodeSize;
     }
 

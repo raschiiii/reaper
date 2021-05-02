@@ -34,7 +34,6 @@ export class TerrainChunk {
         this._plane.position.set(offset.x, 0, offset.y);
         this._plane.rotation.x = Math.PI * -0.5;
         this._plane.receiveShadow = true;
-        //this._plane.castShadow = true;
         root.add(this._plane);
     }
 

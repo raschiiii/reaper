@@ -22,7 +22,7 @@ import {
     SmokeEmitter,
     SmokeTrailEmitter,
 } from "./particles/particle-emitter.js";
-import { Terrain } from "./terrain2/my-terrain.js";
+import { Terrain } from "./terrain2/lod-terrain.js";
 
 export class Factory {
     constructor(assets, scene, goa, camera, grid, sensor, listener) {
@@ -143,7 +143,11 @@ export class Factory {
             })
         );
         */
-        obj.addComponent(new Terrain(obj));
+        obj.addComponent(
+            new Terrain(obj, {
+                heightmap: this.assets.textures.heightmap.asset.image,
+            })
+        );
         return obj;
     }
 }
