@@ -29,13 +29,13 @@ const info = document.querySelector("#info");
 const width = window.innerWidth;
 const height = window.innerHeight;
 
-const camera = new THREE.PerspectiveCamera(75, width / height, 0.01, 15000);
-const sensor = new THREE.PerspectiveCamera(75, width / height, 0.01, 15000);
+const camera = new THREE.PerspectiveCamera(75, width / height, 0.01, 25000);
+const sensor = new THREE.PerspectiveCamera(75, width / height, 0.01, 25000);
 const listener = new THREE.AudioListener();
 camera.add(listener);
 
 console.log(camera.getFocalLength());
-camera.setFocalLength(30);
+camera.setFocalLength(35);
 
 const skyColor = 0x7796c6;
 const scene = new THREE.Scene();
@@ -68,7 +68,7 @@ const stats = new Stats();
 document.body.appendChild(stats.dom);
 
 // Lights
-const sun = new THREE.DirectionalLight(0xffffff, 2.5);
+const sun = new THREE.DirectionalLight(0xffffff, 3);
 sun.position.set(0, 20, 0);
 sun.castShadow = true;
 //sun.shadowBias = 0.01;

@@ -119,13 +119,13 @@ export class ParticleSystem {
             },
         };
 
-        // depth test with log depth buffer does not work correctly in linux/firefox
+        // depth test with log depth buffer does not work correctly
         this._material = new THREE.ShaderMaterial({
             uniforms: uniforms,
             vertexShader: _VS,
             fragmentShader: _DITHERING_FS,
             depthTest: false, // TODO fix this, does not work
-            depthWrite: false,
+            depthWrite: true,
             blending: params.blending,
             transparent: true,
             vertexColors: true,

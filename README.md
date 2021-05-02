@@ -1,5 +1,5 @@
 <p align="center"> 
-    <img src="assets/images/wallpaper.png">
+    <img src="assets/images/wallpaper3.png">
 </p>
 
 # REAPER 1.0
