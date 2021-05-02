@@ -97,6 +97,9 @@ let assets = {
         hellfire: {
             url: "assets/objects/AGM-114.glb",
         },
+        paveway: {
+            url: "assets/objects/GBU-12.glb",
+        },
     },
     textures: {
         heightmap: {

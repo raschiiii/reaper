@@ -37,6 +37,21 @@ export class SimpleModel extends Component {
     }
 }
 
+export class PavewayModel extends SimpleModel {
+    constructor(gameObject, gltf, params) {
+        super(gameObject, gltf, params);
+
+        const wings = this.gameObject.transform.getObjectByName("Wings");
+        wings.visible = false;
+        console.log({ wings });
+
+        this.gameObject.subscribe("wings", (event) => {
+            console.log("fire paveway");
+            wings.visible = true;
+        });
+    }
+}
+
 export class AirplaneModel extends Component {
     constructor(gameObject, gltf, params) {
         super(gameObject);
