@@ -19,7 +19,7 @@ import { Explosion2, Spark } from "./particles/particles.js";
 import { ViewManager } from "./view-manager.js";
 import { TerrainManager } from "./terrain/terrain.js";
 import { GameObjectArray } from "./engine/game-object-array.js";
-import { MyTerrain } from "./terrain2/my-terrain.js";
+import { Terrain } from "./terrain2/my-terrain.js";
 
 // DOM Elements
 const pauseDisplay = document.querySelector("#paused");
@@ -84,8 +84,9 @@ sun.shadow.camera.top = 50;
 sun.shadow.camera.right = 50;
 scene.add(sun);
 scene.add(sun.target);
-const helper = new THREE.CameraHelper(sun.shadow.camera);
-scene.add(helper);
+
+//const helper = new THREE.CameraHelper(sun.shadow.camera);
+//scene.add(helper);
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
 scene.add(ambientLight);
@@ -157,7 +158,7 @@ async function init() {
     );
 
     terrain = factory.createTerrain();
-    heightmap = terrain.getComponent(MyTerrain);
+    heightmap = terrain.getComponent(Terrain);
 
     factory.createTestCube(
         new THREE.Vector3(800, heightmap.getHeight(800, 200), 200)

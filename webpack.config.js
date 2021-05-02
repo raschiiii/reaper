@@ -2,6 +2,7 @@ const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
+    mode: "development",
     entry: "./src/index.js",
     output: {
         filename: "main.js",
@@ -11,6 +12,7 @@ module.exports = {
         contentBase: path.join(__dirname, "dist"),
         port: 5000,
     },
+    devtool: "inline-source-map",
     plugins: [
         new CopyPlugin({
             patterns: [{ from: "public" }, { from: "assets", to: "assets" }],

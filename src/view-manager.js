@@ -10,6 +10,7 @@ export class PlayerView extends Component {
 
         this._speed = document.querySelector("#speed");
         this._altitude = document.querySelector("#altitude");
+        this._coords = document.querySelector("#coordinates");
 
         this.camera = camera;
 
@@ -28,10 +29,7 @@ export class PlayerView extends Component {
             this.worldPos.z - defaultOffset
         );
 
-        this.controls = new OrbitControls(
-            this.camera,
-            document.body
-        );
+        this.controls = new OrbitControls(this.camera, document.body);
         this.controls.target.copy(this.gameObject.position);
         this.controls.update();
 
@@ -54,6 +52,12 @@ export class PlayerView extends Component {
         this._altitude.innerText = `${(this.gameObject.position.y * 10).toFixed(
             2
         )} m`;
+
+        this._coords.innerText = `${this.gameObject.position.x.toFixed(
+            2
+        )}, ${this.gameObject.position.y.toFixed(
+            2
+        )}, ${this.gameObject.position.z.toFixed(2)} `;
     }
 
     destroy() {

@@ -127,7 +127,7 @@ export class Explosion2 extends ParticleSystem {
             );
 
             particle.lifetime = this.params.particleLifetime;
-            particle.size = (i + 1) * 1.5;
+            particle.size = (i + 1) * 3;
             particle.alpha = 0.5;
             particle.color = new THREE.Color("orange");
         }
