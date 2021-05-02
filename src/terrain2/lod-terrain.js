@@ -3,7 +3,7 @@ import * as THREE from "three";
 import { Component } from "../engine/component";
 import { ImageHeightMap } from "../terrain/heightmap";
 import { LodQuadtree } from "./lod-quadtree";
-import { Chunk } from "./chunk.js";
+import { Chunk } from "./chunk";
 
 export class Terrain extends Component {
     constructor(gameObject, params) {

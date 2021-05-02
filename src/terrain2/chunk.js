@@ -69,7 +69,7 @@ export class Chunk {
         let vertices = this._plane.geometry.attributes.position.array;
 
         function setHeight(x, z) {
-            vertices[(x + z * (RESOLUTION + 1)) * 3 + 2] -= 100;
+            vertices[(x + z * (RESOLUTION + 1)) * 3 + 2] -= 10;
         }
 
         for (let i = 0; i <= RESOLUTION; i++) setHeight(0, i);
