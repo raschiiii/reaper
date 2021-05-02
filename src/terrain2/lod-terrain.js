@@ -66,6 +66,6 @@ export class Terrain extends Component {
     }
 
     getHeight(x, z) {
-        return 0.0;
+        return this._heightmap.get(x, z);
     }
 }
