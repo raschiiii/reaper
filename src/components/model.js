@@ -33,8 +33,8 @@ export class SimpleModel extends Component {
 
     destroy() {
         for (const child of this.model.children) {
-            child.geometry.dispose();
-            child.material.dispose();
+            if (child.geometry) child.geometry.dispose();
+            if (child.material) child.material.dispose();
         }
         this.model.parent.remove(this.model);
     }

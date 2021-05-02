@@ -151,7 +151,7 @@ async function init() {
     spark = new Spark(scene);
 
     aircraft = factory.createAircraft(
-        new THREE.Vector3(0, 400, 0),
+        new THREE.Vector3(0, 200, 0),
         new THREE.Vector3(10, 0, 0)
     );
 

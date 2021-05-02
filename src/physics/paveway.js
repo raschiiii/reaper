@@ -1,6 +1,6 @@
 import { MissileODE } from "./missile-ode.js";
 
-export class Hellfire extends MissileODE {
+export class Paveway extends MissileODE {
     constructor(gameObject) {
         super(gameObject, {
             x: gameObject.position.x * 10.0,
@@ -11,8 +11,8 @@ export class Hellfire extends MissileODE {
             vz: gameObject.velocity.y * 10,
             diameter: 0.18,
             mass: 40.0,
-            thrust: 5000,
-            burnTime: 10,
+            thrust: 0,
+            burnTime: 0,
         });
 
         const steering_lift = 2000;

@@ -3,46 +3,67 @@ import { Component } from "../engine/component.js";
 import { Physics } from "../physics/physics.js";
 import { Hellfire } from "../physics/hellfire.js";
 import { SmokeTrailEmitter } from "../particles/particle-emitter.js";
+import { Paveway } from "../physics/paveway.js";
 
-export class LaserGuidance extends Component {
-    constructor(gameObject, id, goa) {
+export class MissileControl extends Component {
+    constructor(gameObject, id, goa, type = "AGM-114") {
         super(gameObject);
-        this._target = null;
-        this._dirToTarget = new THREE.Vector3();
-        //this._debug       = document.querySelector('#display1');
 
         this.id = id;
         this.goa = goa;
 
         this.gameObject.subscribe("fire", (e) => {
             if (e.hardpoint == this.id) {
-                let tmp = new THREE.Vector3();
-
-                this._target = e.target;
-
                 const transform = this.gameObject.transform;
                 const parent = transform.parent;
                 const scene = this.gameObject.root;
 
+                let tmp = new THREE.Vector3();
                 parent.getWorldPosition(tmp);
-
                 parent.remove(transform);
                 scene.add(transform);
+
                 this.gameObject.position.copy(tmp);
                 this.gameObject.velocity.copy(e.velocity);
 
+                if (type === "AGM-114") {
+                    this.gameObject.addComponent(
+                        new SmokeTrailEmitter(this.gameObject)
+                    );
+                    this.gameObject.addComponent(
+                        new Physics(
+                            this.gameObject,
+                            new Hellfire(this.gameObject)
+                        )
+                    );
+                }
+
+                if (type === "GBU-12") {
+                    this.gameObject.publish("wings", {});
+
+                    this.gameObject.addComponent(
+                        new Physics(
+                            this.gameObject,
+                            new Paveway(this.gameObject)
+                        )
+                    );
+                }
+
                 this.gameObject.addComponent(
-                    new SmokeTrailEmitter(this.gameObject)
-                );
-                this.gameObject.addComponent(
-                    new Physics(this.gameObject, new Hellfire(this.gameObject))
+                    new LaserGuidance(this.gameObject, e.target)
                 );
 
                 this.goa.add(this.gameObject);
-
-                this.gameObject.publish("wings", {});
             }
         });
+    }
+}
+
+export class LaserGuidance extends Component {
+    constructor(gameObject, target) {
+        super(gameObject);
+        this._target = target;
+        this._dirToTarget = new THREE.Vector3();
     }
 
     // negativ is to far right, positiv to far left

@@ -17,7 +17,7 @@ import {
     Hardpoints,
     Sensor,
 } from "./components/aircraft.js";
-import { LaserGuidance } from "./components/weapon.js";
+import { LaserGuidance, MissileControl } from "./components/weapon.js";
 import {
     SmokeEmitter,
     SmokeTrailEmitter,
@@ -74,7 +74,6 @@ export class Factory {
         this.createHellfire(obj, hardpoints.h4, 4);
         this.createPaveway(obj, hardpoints.h5, 5);
         this.createPaveway(obj, hardpoints.h6, 6);
-
         return obj;
     }
 
@@ -90,7 +89,9 @@ export class Factory {
 
         obj.addComponent(new EventRelay(obj, parent, ["fire"]));
         obj.addComponent(new Explosive(obj));
-        obj.addComponent(new LaserGuidance(obj, hardpointId, this.goa));
+        obj.addComponent(
+            new MissileControl(obj, hardpointId, this.goa, "AGM-114")
+        );
         obj.addComponent(new AABB(obj));
 
         return obj;
@@ -108,7 +109,9 @@ export class Factory {
 
         obj.addComponent(new EventRelay(obj, parent, ["fire"]));
         obj.addComponent(new Explosive(obj));
-        obj.addComponent(new LaserGuidance(obj, hardpointId, this.goa));
+        obj.addComponent(
+            new MissileControl(obj, hardpointId, this.goa, "GBU-12")
+        );
         obj.addComponent(new AABB(obj));
 
         return obj;
