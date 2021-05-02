@@ -15,7 +15,7 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { AABB } from "./collision/collision.js";
 import { Factory } from "./factory.js";
 import { HashGrid } from "./collision/hashgrid.js";
-import { Explosion, Explosion2, Spark } from "./particles/particles.js";
+import { Explosion2, Spark } from "./particles/particles.js";
 import { ViewManager } from "./view-manager.js";
 import { TerrainManager } from "./terrain/terrain.js";
 import { GameObjectArray } from "./engine/game-object-array.js";
