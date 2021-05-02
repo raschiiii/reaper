@@ -11,14 +11,12 @@ export class TerrainChunk {
             10
         );
 
-        /*
         const _material = new THREE.MeshStandardMaterial({
-            color: Math.floor(Math.random() * 50000),
+            color: Math.floor(Math.random() * 100000),
             wireframe: true,
             side: THREE.DoubleSide,
             flatShading: true,
         });
-        */
 
         this._plane = new THREE.Mesh(_geometry, material);
 

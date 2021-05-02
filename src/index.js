@@ -19,6 +19,7 @@ import { Explosion2, Spark } from "./particles/particles.js";
 import { ViewManager } from "./view-manager.js";
 import { TerrainManager } from "./terrain/terrain.js";
 import { GameObjectArray } from "./engine/game-object-array.js";
+import { MyTerrain } from "./terrain2/my-terrain.js";
 
 // DOM Elements
 const pauseDisplay = document.querySelector("#paused");
@@ -156,7 +157,7 @@ async function init() {
     );
 
     terrain = factory.createTerrain();
-    heightmap = terrain.getComponent(TerrainManager);
+    heightmap = terrain.getComponent(MyTerrain);
 
     factory.createTestCube(
         new THREE.Vector3(800, heightmap.getHeight(800, 200), 200)
@@ -257,7 +258,7 @@ function animate(now) {
         explosions.update(dt, sensorView ? sensor : camera);
         spark.update(dt, sensorView ? sensor : camera);
 
-        terrain.update(dt);
+        terrain.update(dt, sensorView ? sensor : camera);
     }
 
     stats.update();

@@ -2,3 +2,5 @@
 dist/
 resources/
 node_modules/
+
+server.py

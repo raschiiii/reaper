@@ -18,8 +18,8 @@ export class TerrainManager extends Component {
         super(gameObject);
 
         //this._heightmap = new RandomHeightMap();
-        this._heightmap = new ImageHeightMap(params.heightmap);
-        //this._heightmap = new FixedHeightMap();
+        //this._heightmap = new ImageHeightMap(params.heightmap);
+        this._heightmap = new FixedHeightMap();
 
         this._camera = params.camera;
         this._chunks = {};
@@ -39,10 +39,19 @@ export class TerrainManager extends Component {
     }
 
     _updateVisibleQuadtree() {
+        const s = 32000;
         const quadtree = new QuadTree({
-            min: new THREE.Vector2(-32000, -32000),
-            max: new THREE.Vector2(32000, 32000),
+            min: new THREE.Vector2(-s, -s),
+            max: new THREE.Vector2(s, s),
         });
+
+        /*
+        const quadtree = new QuadTree({
+            min: new THREE.Vector2(-15000, 15000),
+            max: new THREE.Vector2(-15000, 15000),
+        });
+        */
+
         quadtree.Insert(this._camera.position);
         const children = quadtree.GetChildren();
 
@@ -79,7 +88,8 @@ export class TerrainManager extends Component {
 
     update(dt) {
         this._updateVisibleQuadtree();
-        //this._debug.innerText = `chunks: ${this._count}`
+        //this._debug.innerText = `chunks: ${this._count}`4
+        //console.log(`chunks: ${this._count}`);
     }
 
     _createChunk(offset, dimensions) {

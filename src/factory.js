@@ -22,6 +22,7 @@ import {
     SmokeEmitter,
     SmokeTrailEmitter,
 } from "./particles/particle-emitter.js";
+import { MyTerrain } from "./terrain2/my-terrain.js";
 
 export class Factory {
     constructor(assets, scene, goa, camera, grid, sensor, listener) {
@@ -134,12 +135,15 @@ export class Factory {
 
     createTerrain() {
         const obj = new GameObject(this.scene);
+        /*
         obj.addComponent(
             new TerrainManager(obj, {
                 camera: this.camera,
                 heightmap: this.assets.textures.heightmap.asset.image,
             })
         );
+        */
+        obj.addComponent(new MyTerrain(obj));
         return obj;
     }
 }
