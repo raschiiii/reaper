@@ -3,63 +3,7 @@ import * as THREE from "three";
 import { Component } from "../engine/component";
 import { ImageHeightMap } from "../terrain/heightmap";
 import { LodQuadtree } from "./lod-quadtree";
-
-/*
-const material = new THREE.MeshStandardMaterial({
-    color: 0x000000,
-    wireframe: true,
-    side: THREE.DoubleSide,
-    flatShading: true,
-});
-*/
-
-class Chunk {
-    constructor(root, offset, dimensions, heightmap) {
-        //console.log("create chunk", offset, dimensions);
-
-        const material = new THREE.MeshStandardMaterial({
-            color: new THREE.Color(Math.random(), Math.random(), Math.random()),
-            wireframe: false,
-            side: THREE.DoubleSide,
-            flatShading: true,
-        });
-
-        this._plane = new THREE.Mesh(
-            new THREE.PlaneBufferGeometry(dimensions.x, dimensions.y, 10, 10),
-            material
-        );
-
-        this.buildChunk(heightmap, offset);
-
-        this._plane.position.set(offset.x, 0, offset.y);
-        this._plane.rotation.x = Math.PI * -0.5;
-        this._plane.receiveShadow = true;
-        root.add(this._plane);
-    }
-
-    buildChunk(heightmap, offset) {
-        let vertices = this._plane.geometry.attributes.position.array;
-
-        for (let i = 0; i < vertices.length; i = i + 3) {
-            vertices[i + 2] = heightmap.get(
-                vertices[i] + offset.x,
-                -vertices[i + 1] + offset.y
-            );
-        }
-
-        this._plane.geometry.attributes.position.needsUpdate = true;
-        this._plane.geometry.computeVertexNormals();
-    }
-
-    buildChunkWithSkirts(heightmap, offset) {}
-
-    destroy() {
-        this._plane.geometry.dispose();
-        this._plane.material.dispose();
-        const parent = this._plane.parent;
-        parent.remove(this._plane);
-    }
-}
+import { Chunk } from "./chunk.js";
 
 export class Terrain extends Component {
     constructor(gameObject, params) {
@@ -72,13 +16,12 @@ export class Terrain extends Component {
 
         this._chunks = {};
 
-        /*
         const x = new Chunk(
             this.root,
             new THREE.Vector2(),
-            new THREE.Vector2(1024, 1024)
+            new THREE.Vector2(1024, 1024),
+            this._heightmap
         );
-        */
     }
 
     _buildTerrain(pos) {
@@ -118,7 +61,7 @@ export class Terrain extends Component {
     }
 
     update(dt, params) {
-        this._buildTerrain(params.camera.position);
+        //this._buildTerrain(params.camera.position);
     }
 
     getHeight(x, z) {
