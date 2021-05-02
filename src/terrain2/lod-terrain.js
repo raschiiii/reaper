@@ -15,13 +15,14 @@ export class Terrain extends Component {
         this._heightmap = new ImageHeightMap(params.heightmap);
 
         this._chunks = {};
-
+        /*
         const x = new Chunk(
             this.root,
             new THREE.Vector2(),
-            new THREE.Vector2(1024, 1024),
+            new THREE.Vector2(256, 256),
             this._heightmap
         );
+        */
     }
 
     _buildTerrain(pos) {
@@ -61,7 +62,7 @@ export class Terrain extends Component {
     }
 
     update(dt, params) {
-        //this._buildTerrain(params.camera.position);
+        this._buildTerrain(params.camera.position);
     }
 
     getHeight(x, z) {
