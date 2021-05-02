@@ -54,8 +54,7 @@ renderer.setClearColor("red");
 renderer.physicallyCorrectLights = true;
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.BasicShadowMap;
-renderer.setPixelRatio(window.devicePixelRatio / 2);
-//renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
+//renderer.setPixelRatio(window.devicePixelRatio / 2); // downsample pixel resolution
 
 // Composer
 const cameraRenderer = new EffectComposer(renderer);
