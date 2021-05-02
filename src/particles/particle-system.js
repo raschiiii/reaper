@@ -29,38 +29,24 @@ void main() {
 
 const _DITHERING_FS = `
 uniform sampler2D diffuseTexture;
-uniform sampler2D ditheringTexture;
 
 varying vec4 vColour;
 varying vec2 vAngle;
 
 void main() {
-    //vec2 coords = (gl_PointCoord - 0.5) * mat2(vAngle.x, vAngle.y, -vAngle.y, vAngle.x) + 0.5;
+    vec2 coords = (gl_PointCoord - 0.5) * mat2(vAngle.x, vAngle.y, -vAngle.y, vAngle.x) + 0.5;
+    //vec2 coords = gl_PointCoord;
     
-    vec2 coords = gl_PointCoord;
-    vec2 fcoords = gl_FragCoord.xy;
-
-    //vec4 dith = texture2D(ditheringTexture, fcoords);
-    //if (dith.r > 0.5){
-    //    discard;
-    //}
-   
     // discard every other pixel
+    vec2 fcoords = gl_FragCoord.xy;
     bool flag = mod(fcoords.x + fcoords.y, 2.0) == 0.0;
     if (flag){
         discard;
     }
 
-    gl_FragColor = texture2D(diffuseTexture, coords) * vColour;
-    
-    /*
-    vec4 c = texture2D(diffuseTexture, coords) * vColour;
-    if (c.a  == 0.0){
-        discard;
-    }
-    gl_FragColor = vec4(c.xyz, 1.0);
-    */
-
+    vec4 color = texture2D(diffuseTexture, coords) * vColour;
+    if (color.a <= 0.0) discard;
+    gl_FragColor = vec4(color.rgb, 1.0);
 }`;
 
 function createDataTexture() {
@@ -80,18 +66,15 @@ function createDataTexture() {
         height,
         THREE.RGBFormat
     );
-    //ditherTex.minFilter = THREE.NearestFilter;
-    //ditherTex.magFilter = THREE.NearestFilter;
 
+    ditherTex.minFilter = THREE.NearestFilter;
+    ditherTex.magFilter = THREE.NearestFilter;
     ditherTex.wrapS = THREE.RepeatWrapping;
     ditherTex.wrapT = THREE.RepeatWrapping;
-
     ditherTex.repeat.set(4, 4);
 
-    //ditherTex.anisotropy = 1;
     ditherTex.needsUpdate = true;
 
-    console.log({ ditherTex });
     return ditherTex;
 }
 
@@ -127,9 +110,6 @@ export class ParticleSystem {
         const uniforms = {
             diffuseTexture: {
                 value: texture, // TODO update this
-            },
-            ditheringTexture: {
-                value: createDataTexture(),
             },
             pointMultiplier: {
                 value:
