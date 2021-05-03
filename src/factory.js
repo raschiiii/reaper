@@ -133,7 +133,7 @@ export class Factory {
         //obj.addComponent(new SmokeEmitter(obj));
 
         const aabb = obj.addComponent(
-            new AABB(obj, new THREE.Vector3(0.5, 0.5, 0.5))
+            new AABB(obj, new THREE.Vector3(2, 2, 2))
         );
 
         this.grid.insert(aabb);

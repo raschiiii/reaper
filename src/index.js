@@ -171,7 +171,7 @@ async function init() {
     spark = new Spark(scene);
 
     aircraft = factory.createAircraft(
-        new THREE.Vector3(-400, 400, 100),
+        new THREE.Vector3(-400, 400, 0),
         new THREE.Vector3(10, 0, 0)
     );
 
@@ -253,43 +253,42 @@ function animate(now) {
             // TODO fix this
             const aabb = gameObject.getComponent(AABB);
             if (aabb) {
+                let impactPoint = null;
+
                 for (let otherAabb of grid.possible_aabb_collisions(aabb)) {
                     if (otherAabb != gameObject) {
                         aabb.collide(otherAabb);
 
-                        //console.log(`object collision ${now}`);
-
                         if (!aabb._collided) {
-                            //console.log(`object impact ${now}`);
-
                             otherAabb.gameObject.addComponent(
                                 new SmokeEmitter(otherAabb.gameObject)
                             );
-
-                            explosions.impact(otherAabb.gameObject.position);
-                            spark.impact(otherAabb.gameObject.position);
-
-                            gameObject.publish("collision", {});
+                            impactPoint = otherAabb.gameObject.position.clone();
                         }
                     }
                 }
+
                 const terrainHeight = heightmap.getHeight(
                     gameObject.position.x,
                     gameObject.position.z
                 );
+
                 if (gameObject.position.y < terrainHeight) {
-                    const impactPoint = new THREE.Vector3(
+                    impactPoint = new THREE.Vector3(
                         gameObject.position.x,
                         terrainHeight,
                         gameObject.position.z
                     );
 
+                    if (!gameObject.getComponent(SmokeEmitter)) {
+                        gameObject.addComponent(new SmokeEmitter(gameObject));
+                    }
+                }
+
+                if (impactPoint) {
                     explosions.impact(impactPoint);
                     spark.impact(impactPoint);
-
-                    gameObject.publish("collision", {
-                        depth: [0, terrainHeight - gameObject.position.y, 0],
-                    });
+                    gameObject.publish("collision", {});
                 }
             }
 

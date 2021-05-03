@@ -60,23 +60,6 @@ export class AABB extends Component {
             d1 = aabb.box.max.z - this.box.min.z;
             let z = d0 < d1 ? d0 : -d1;
 
-            /*
-            if (Math.abs(x) > Math.abs(y) && Math.abs(z) > Math.abs(y)){
-                this.gameObject.position.setY(this.gameObject.position.y-y)
-                this.gameObject.velocity.setY(0)
-            }
-
-            if (Math.abs(y) > Math.abs(x) && Math.abs(z) > Math.abs(x)){
-                this.gameObject.position.setX(this.gameObject.position.x-x)  
-                this.gameObject.velocity.setX(0)
-            }
-
-            if (Math.abs(y) > Math.abs(z) && Math.abs(x) > Math.abs(z)){
-                this.gameObject.position.setZ(this.gameObject.position.z-z)  
-                this.gameObject.velocity.setZ(0)
-            }
-        */
-
             this._collided = true;
             this.gameObject.publish("collision", { depth: [x, y, z] });
 

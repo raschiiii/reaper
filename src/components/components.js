@@ -41,7 +41,7 @@ export class Explosive extends Component {
                 this.gameObject.removeComponent(SimpleModel);
                 this.gameObject.removeComponent(PavewayModel);
                 this.gameObject.removeComponent(SmokeTrailEmitter);
-                this.gameObject.addComponent(new SmokeEmitter(this.gameObject));
+                //this.gameObject.addComponent(new SmokeEmitter(this.gameObject));
             }
         });
     }
