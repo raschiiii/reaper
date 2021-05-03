@@ -1,7 +1,10 @@
 .vs/
 dist/
-resources/
 node_modules/
+resources/books/
+resources/screenshots/
+resources/reference/
+resources/resources/
 
 server.py
 socialmedia.txt
