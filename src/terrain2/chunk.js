@@ -47,7 +47,7 @@ export class Chunk {
         );
 
         this.buildChunk(heightmap, offset);
-        //this.buildSkirts();
+        this.buildSkirts();
 
         this._plane.position.set(offset.x, 0, offset.y);
         this._plane.rotation.x = Math.PI * -0.5;

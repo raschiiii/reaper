@@ -160,7 +160,7 @@ async function init() {
     grid = new HashGrid(2);
     factory = new Factory(assets, scene, goa, camera, grid, sensor, listener);
     viewManager = new ViewManager(goa, camera);
-    explosions = new Explosion2(scene, "assets/textures/hexagon.png", listener);
+    explosions = new Explosion2(scene, listener);
     spark = new Spark(scene);
 
     aircraft = factory.createAircraft(
@@ -233,7 +233,7 @@ function animate(now) {
     // update sun position
     const activeCamera = sensorView ? sensor : camera;
     sun.position.copy(activeCamera.position);
-    sun.position.add(new THREE.Vector3(10, 100, 10));
+    sun.position.add(new THREE.Vector3(30, 100, 30));
     sun.target.position.copy(activeCamera.position);
 
     if (!paused) {

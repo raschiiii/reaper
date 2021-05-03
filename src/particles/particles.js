@@ -261,7 +261,7 @@ export class SmokeTrail extends BasicSmoke {
 }
 
 export class Explosion2 extends BasicSmoke {
-    constructor(parent) {
+    constructor(parent, listener) {
         super(parent, {
             numParticles: 500,
             particleLifetime: 2.0,
@@ -279,9 +279,34 @@ export class Explosion2 extends BasicSmoke {
             spread: 0.125,
             velocity: new THREE.Vector3(0.1, 0.3, 0),
         });
+
+        (async () => {
+            const audioLoader = new THREE.AudioLoader();
+            const buffer = await new Promise((resolve, reject) => {
+                audioLoader.load(
+                    "assets/audio/explosion.mp3",
+                    (data) => resolve(data),
+                    null,
+                    reject
+                );
+            });
+            this.sound = new THREE.PositionalAudio(listener);
+            this.sound.setBuffer(buffer);
+            this.sound.setRefDistance(20);
+            parent.add(this.sound);
+        })();
     }
 
     impact(pos) {
+        if (this.sound) {
+            if (this.sound.isPlaying) {
+                this.sound.stop();
+                this.sound.play();
+            } else {
+                this.sound.play();
+            }
+        }
+
         for (let i = 0; i < this.params.particlesPerImpact; i++) {
             let unused = this._findUnusedParticle();
 
@@ -292,9 +317,9 @@ export class Explosion2 extends BasicSmoke {
             let t1 = 2.5;
             let t2 = t1 / 2;
             particle.velocity.set(
-                t1 * Math.random() - t2,
-                2 * (t1 * Math.random() - t2),
-                t1 * Math.random() - t2
+                -t1 * Math.random() - t2,
+                -2 * (t1 * Math.random() - t2),
+                -t1 * Math.random() - t2
             );
 
             //particle.velocity.set(0, 4, 0);
