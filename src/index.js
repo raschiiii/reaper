@@ -82,18 +82,17 @@ document.body.appendChild(stats.dom);
 
 // Lights
 const sun = new THREE.DirectionalLight(0xffffff, 3);
-sun.position.set(0, 20, 0);
 sun.castShadow = true;
-//sun.shadowBias = 0.01;
 const map_size = Math.pow(2, 16);
 sun.shadow.mapSize.width = map_size;
 sun.shadow.mapSize.height = map_size;
 sun.shadow.camera.near = 1;
-sun.shadow.camera.far = 1000;
-sun.shadow.camera.left = -50;
-sun.shadow.camera.bottom = -50;
-sun.shadow.camera.top = 50;
-sun.shadow.camera.right = 50;
+sun.shadow.camera.far = 10000;
+const val = 50;
+sun.shadow.camera.left = -val;
+sun.shadow.camera.bottom = -val;
+sun.shadow.camera.top = val;
+sun.shadow.camera.right = val;
 scene.add(sun);
 scene.add(sun.target);
 
@@ -230,6 +229,12 @@ function animate(now) {
     dt = now - then;
     then = now;
     if (dt > 0.1 || isNaN(dt)) dt = 0.1;
+
+    // update sun position
+    const activeCamera = sensorView ? sensor : camera;
+    sun.position.copy(activeCamera.position);
+    sun.position.add(new THREE.Vector3(10, 100, 10));
+    sun.target.position.copy(activeCamera.position);
 
     if (!paused) {
         goa.forEach((gameObject) => {

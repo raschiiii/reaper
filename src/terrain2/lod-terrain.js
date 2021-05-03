@@ -1,7 +1,7 @@
 import * as THREE from "three";
 
 import { Component } from "../engine/component";
-import { ImageHeightMap } from "../terrain/heightmap";
+import { FixedHeightMap, ImageHeightMap } from "../terrain/heightmap";
 import { LodQuadtree } from "./lod-quadtree";
 import { Chunk } from "./chunk";
 
@@ -12,6 +12,7 @@ export class Terrain extends Component {
         this.root = new THREE.Object3D();
         this.gameObject.transform.add(this.root);
 
+        //this._heightmap = new FixedHeightMap();
         this._heightmap = new ImageHeightMap(params.heightmap);
 
         this._chunks = {};
