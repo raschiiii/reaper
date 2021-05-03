@@ -112,6 +112,7 @@ export class Sensor extends Component {
         this._camera.rotation.copy(this._sensorRotation);
         this._camera.position.copy(cameraPos);
 
+        /*
         this._altEl.innerText = `ALT ${(
             this.gameObject.position.y * 10
         ).toFixed(2)}`;
@@ -119,13 +120,14 @@ export class Sensor extends Component {
         this._spdEl.innerText = `SPD ${(
             this.gameObject.velocity.length() * 10
         ).toFixed(2)}`;
+        */
 
         if (this._track) {
             const distance = cameraPos.distanceTo(this._target);
-            this._rngEl.innerText = `RNG ${(distance * 10.0).toFixed(2)}`;
+            //this._rngEl.innerText = `RNG ${(distance * 10.0).toFixed(2)}`;
             this._camera.lookAt(this._target);
         } else {
-            this._rngEl.innerText = `RNG`;
+            //this._rngEl.innerText = `RNG`;
         }
     }
 }

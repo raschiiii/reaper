@@ -125,7 +125,7 @@ export class Factory {
         obj.addComponent(new Box(obj, { castShadow: true }));
         obj.addComponent(new SmokeEmitter(obj));
         const aabb = obj.addComponent(
-            new AABB(obj, new THREE.Vector3(10, 10, 10))
+            new AABB(obj, new THREE.Vector3(1, 1, 1))
         );
         this.grid.insert(aabb);
 
