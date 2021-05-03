@@ -103,14 +103,14 @@
             </div>
         </div>
 
-        <div id="sensor" class="gui" style="left: 0vw; top: 0vh">
+        <div id="sensor">
             <img class="gui-img" src="assets/textures/HUD.png" />
             <div class="gui" style="left: 70vw; top: 20vh">
-                <span>ALT</span><br />
-                <span>SPD</span><br />
+                <span id="alt">ALT</span><br />
+                <span id="spd">SPD</span><br />
             </div>
             <div class="gui" style="left: 70vw; top: 80vh">
-                <span>RNG</span><br />
+                <span id="rng">RNG</span><br />
                 <span>N</span><br />
                 <span>E</span><br />
             </div>
@@ -123,6 +123,15 @@
                 <span>RNG</span><br />
                 <span>N</span><br />
                 <span>E</span><br />
+            </div>
+            <div
+                id="laser"
+                class="gui"
+                style="left: 50vw; top: 30vh; display: none"
+            >
+                <div style="position: relative; left: -50%">
+                    <span>tracking</span>
+                </div>
             </div>
         </div>
 

@@ -11,6 +11,11 @@ export class Sensor extends Component {
         let down = false;
         this.enabled = false;
 
+        this._laserEl = document.querySelector("#laser");
+        this._altEl = document.querySelector("#alt");
+        this._spdEl = document.querySelector("#spd");
+        this._rngEl = document.querySelector("#rng");
+
         this._sensorRotation = new THREE.Euler(0, -Math.PI / 2, 0, "YZX");
         this._camera.rotation.copy(this._sensorRotation);
 
@@ -58,12 +63,15 @@ export class Sensor extends Component {
         this.gameObject.subscribe(
             "keydown",
             (event) => {
+                if (!this.enabled) return;
                 switch (event.code) {
                     case "KeyT":
                         if (!this._track) {
                             this.laserTrack();
+                            this._laserEl.style.display = "block";
                         } else {
                             this._track = false;
+                            this._laserEl.style.display = "none";
                             this._sensorRotation.copy(this._camera.rotation);
                         }
                         break;
@@ -98,14 +106,26 @@ export class Sensor extends Component {
         */
     }
 
-    update(dt) {
+    update(_) {
         let cameraPos = new THREE.Vector3();
         this._cameraDummy.getWorldPosition(cameraPos);
         this._camera.rotation.copy(this._sensorRotation);
         this._camera.position.copy(cameraPos);
 
+        this._altEl.innerText = `ALT ${(
+            this.gameObject.position.y * 10
+        ).toFixed(2)}`;
+
+        this._spdEl.innerText = `SPD ${(
+            this.gameObject.velocity.length() * 10
+        ).toFixed(2)}`;
+
         if (this._track) {
+            const distance = cameraPos.distanceTo(this._target);
+            this._rngEl.innerText = `RNG ${(distance * 10.0).toFixed(2)}`;
             this._camera.lookAt(this._target);
+        } else {
+            this._rngEl.innerText = `RNG`;
         }
     }
 }

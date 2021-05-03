@@ -11,6 +11,10 @@ body {
     font-family: "Courier New", Courier, monospace;
 }
 
+span {
+    display: inline;
+}
+
 .gui {
     position: absolute;
 }
