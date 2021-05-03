@@ -241,7 +241,7 @@ export class SmokeTrail extends BasicSmoke {
             parent,
             {
                 numParticles: 500,
-                particleLifetime: 2,
+                particleLifetime: 5,
                 particlesPerSecond: 100,
                 texture: "assets/textures/hexagon.png",
                 blending: THREE.NormalBlending,

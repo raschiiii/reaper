@@ -26,8 +26,8 @@ export class Terrain extends Component {
         */
     }
 
-    _buildTerrain(pos) {
-        const quadtree = new LodQuadtree(65536, 256);
+    _build(pos) {
+        const quadtree = new LodQuadtree(65536, 512);
 
         quadtree.insert(pos);
         const children = quadtree.getChildren();
@@ -63,7 +63,7 @@ export class Terrain extends Component {
     }
 
     update(dt, params) {
-        this._buildTerrain(params.camera.position);
+        this._build(params.camera.position);
     }
 
     getHeight(x, z) {
