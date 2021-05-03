@@ -222,7 +222,7 @@ export class Smoke extends BasicSmoke {
                 blending: THREE.NormalBlending,
                 alphaDegrading: 0.0,
                 alphaStartValue: 1.0,
-                startSize: 1,
+                startSize: 0.75,
                 scaleValue: 0.3,
                 colorTransition: 3.0,
                 startColor: new THREE.Color("orange"),
@@ -324,10 +324,14 @@ export class Explosion2 extends BasicSmoke {
             );
             */
 
-            particle.velocity.set(0, Math.random(), 0);
+            particle.velocity.set(
+                Math.random() * 0.5,
+                Math.random() * 3.0,
+                Math.random() * 0.5
+            );
 
             particle.lifetime = this.params.particleLifetime;
-            particle.size = (i + 1) * 3;
+            particle.size = (i + 1) * 1.5;
             particle.alpha = this.params.alphaStartValue;
             particle.color = new THREE.Color();
             particle.lerpValue = 0.0;

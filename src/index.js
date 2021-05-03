@@ -20,6 +20,10 @@ import { ViewManager } from "./view-manager.js";
 import { TerrainManager } from "./terrain/terrain.js";
 import { GameObjectArray } from "./engine/game-object-array.js";
 import { Terrain } from "./terrain2/lod-terrain.js";
+import {
+    SmokeEmitter,
+    SmokeTrailEmitter,
+} from "./particles/particle-emitter.js";
 
 // DOM Elements
 const pauseDisplay = document.querySelector("#paused");
@@ -113,6 +117,9 @@ let assets = {
         paveway: {
             url: "assets/objects/GBU-12.glb",
         },
+        pickup: {
+            url: "assets/objects/Pickup.glb",
+        },
     },
     textures: {
         heightmap: {
@@ -164,7 +171,7 @@ async function init() {
     spark = new Spark(scene);
 
     aircraft = factory.createAircraft(
-        new THREE.Vector3(0, 400, 0),
+        new THREE.Vector3(-400, 400, 100),
         new THREE.Vector3(10, 0, 0)
     );
 
@@ -177,6 +184,7 @@ async function init() {
     factory.createTestCube(
         new THREE.Vector3(300, heightmap.getHeight(300, 0), 0)
     );
+    factory.createTestCube(new THREE.Vector3(0, heightmap.getHeight(0, 0), 0));
 
     goa._addQueued();
     viewManager._init();
@@ -242,19 +250,27 @@ function animate(now) {
                 camera: sensorView ? sensor : camera, // active camera
             });
 
+            // TODO fix this
             const aabb = gameObject.getComponent(AABB);
             if (aabb) {
-                for (let otherObject of grid.possible_aabb_collisions(aabb)) {
-                    if (otherObject != gameObject) {
-                        aabb.collide(otherObject);
+                for (let otherAabb of grid.possible_aabb_collisions(aabb)) {
+                    if (otherAabb != gameObject) {
+                        aabb.collide(otherAabb);
 
-                        console.log(`object collision ${now}`);
+                        //console.log(`object collision ${now}`);
+
                         if (!aabb._collided) {
-                            console.log(`object impact ${now}`);
-                            explosions.impact(otherObject.gameObject.position);
+                            //console.log(`object impact ${now}`);
+
+                            otherAabb.gameObject.addComponent(
+                                new SmokeEmitter(otherAabb.gameObject)
+                            );
+
+                            explosions.impact(otherAabb.gameObject.position);
+                            spark.impact(otherAabb.gameObject.position);
+
                             gameObject.publish("collision", {});
                         }
-                        //spark.impact(otherObject.position);
                     }
                 }
                 const terrainHeight = heightmap.getHeight(

@@ -122,13 +122,21 @@ export class Factory {
         let obj = new GameObject(this.scene);
         obj.position.copy(pos);
 
-        obj.addComponent(new Box(obj, { castShadow: true }));
-        obj.addComponent(new SmokeEmitter(obj));
-        const aabb = obj.addComponent(
-            new AABB(obj, new THREE.Vector3(1, 1, 1))
+        obj.addComponent(
+            new SimpleModel(obj, this.assets.gltf.pickup.asset, {
+                rotation: new THREE.Vector3(0, Math.PI / 2, 0),
+                scale: new THREE.Vector3(0.1, 0.1, 0.1),
+            })
         );
-        this.grid.insert(aabb);
 
+        //obj.addComponent(new Box(obj, { castShadow: true }));
+        //obj.addComponent(new SmokeEmitter(obj));
+
+        const aabb = obj.addComponent(
+            new AABB(obj, new THREE.Vector3(0.5, 0.5, 0.5))
+        );
+
+        this.grid.insert(aabb);
         this.goa.add(obj);
         return obj;
     }
