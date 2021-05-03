@@ -96,53 +96,6 @@ export class Explosion extends ParticleSystem {
     }
 }
 
-export class Explosion2 extends ParticleSystem {
-    constructor(parent) {
-        super(parent, {
-            numParticles: 500,
-            particleLifetime: 0.5,
-            particlesPerSecond: 20,
-            texture: "assets/textures/hexagon.png",
-            blending: THREE.AdditiveBlending,
-            alphaDegrading: 0.1,
-            scaleValue: 0.7,
-            particlesPerImpact: 3,
-        });
-    }
-
-    impact(pos) {
-        for (let i = 0; i < this.params.particlesPerImpact; i++) {
-            let unused = this._findUnusedParticle();
-
-            const particle = this._particles[unused];
-
-            particle.position.copy(pos);
-
-            let t1 = 5,
-                t2 = 2.5;
-            particle.velocity.set(
-                t1 * Math.random() - t2,
-                t1 * Math.random() - t2 * 2,
-                t1 * Math.random() - t2
-            );
-
-            particle.lifetime = this.params.particleLifetime;
-            particle.size = (i + 1) * 3;
-            particle.alpha = 0.5;
-            particle.color = new THREE.Color("orange");
-        }
-    }
-
-    update(dt, camera) {
-        this._points.material.uniforms.pointMultiplier.value =
-            (window.innerHeight /
-                (2.0 * Math.tan((0.5 * 60.0 * Math.PI) / 180.0))) *
-            camera.zoom;
-        this._updateParticles(dt);
-        this._updateGeometry();
-    }
-}
-
 export class Spark extends ParticleSystem {
     constructor(parent) {
         1;
@@ -267,7 +220,7 @@ export class Smoke extends BasicSmoke {
                 particlesPerSecond: 1.5,
                 texture: "assets/textures/hexagon.png",
                 blending: THREE.NormalBlending,
-                alphaDegrading: 0.1,
+                alphaDegrading: 0.0,
                 alphaStartValue: 1.0,
                 startSize: 0.1,
                 scaleValue: 0.2,
@@ -304,5 +257,62 @@ export class SmokeTrail extends BasicSmoke {
             },
             source
         );
+    }
+}
+
+export class Explosion2 extends BasicSmoke {
+    constructor(parent) {
+        super(parent, {
+            numParticles: 500,
+            particleLifetime: 2.0,
+            particlesPerSecond: 20,
+            texture: "assets/textures/hexagon.png",
+            blending: THREE.NormalBlending,
+            particlesPerImpact: 3,
+            alphaDegrading: 0.0,
+            alphaStartValue: 1.0,
+            startSize: 0.1,
+            scaleValue: 0.7,
+            colorTransition: 0.5,
+            startColor: new THREE.Color("orange"),
+            endColor: new THREE.Color(0x2c2c2c),
+            spread: 0.125,
+            velocity: new THREE.Vector3(0.1, 0.3, 0),
+        });
+    }
+
+    impact(pos) {
+        for (let i = 0; i < this.params.particlesPerImpact; i++) {
+            let unused = this._findUnusedParticle();
+
+            const particle = this._particles[unused];
+
+            particle.position.copy(pos);
+
+            let t1 = 2.5;
+            let t2 = t1 / 2;
+            particle.velocity.set(
+                t1 * Math.random() - t2,
+                2 * (t1 * Math.random() - t2),
+                t1 * Math.random() - t2
+            );
+
+            //particle.velocity.set(0, 4, 0);
+
+            particle.lifetime = this.params.particleLifetime;
+            particle.size = (i + 1) * 3;
+            particle.alpha = this.params.alphaStartValue;
+            particle.color = new THREE.Color();
+            particle.lerpValue = 0.0;
+        }
+    }
+
+    update(dt, camera) {
+        this._points.material.uniforms.pointMultiplier.value =
+            (window.innerHeight /
+                (2.0 * Math.tan((0.5 * 60.0 * Math.PI) / 180.0))) *
+            camera.zoom;
+        this._updateParticles(dt);
+        this._updateGeometry();
     }
 }
