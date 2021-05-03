@@ -2,9 +2,8 @@
 dist/
 node_modules/
 resources/books/
-resources/screenshots/
 resources/reference/
-resources/resources/
+resources/screenshots/
 
 server.py
 socialmedia.txt
