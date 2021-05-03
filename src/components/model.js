@@ -46,7 +46,7 @@ export class PavewayModel extends SimpleModel {
 
         const wings = this.gameObject.transform.getObjectByName("Wings");
         wings.visible = false;
-        console.log({ wings });
+        // console.log({ wings });
 
         this.gameObject.subscribe("wings", (event) => {
             console.log("fire paveway");
@@ -81,7 +81,7 @@ export class AirplaneModel extends Component {
             }
         });
 
-        console.log(this.model.children);
+        //console.log(this.model.children);
 
         this.propellor = this.model.getObjectByName("Propellor");
         this.gameObject.transform.add(this.model);

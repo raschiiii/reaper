@@ -26,6 +26,7 @@ const pauseDisplay = document.querySelector("#paused");
 const hud = document.querySelector("#sensor");
 const canvas = document.querySelector("#canvas");
 const info = document.querySelector("#info");
+const help = document.querySelector("#help");
 
 const width = window.innerWidth;
 const height = window.innerHeight;
@@ -40,7 +41,7 @@ camera.setFocalLength(35);
 const skyColor = 0x7796c6;
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(skyColor);
-// scene.fog = new THREE.Fog(skyColor, 500, 10000);
+scene.fog = new THREE.Fog(skyColor, 15000, 20000);
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({
@@ -202,10 +203,22 @@ async function init() {
                 case "Digit2":
                     if (!sensorView) viewManager.toggle();
                     break;
+
+                case "KeyH":
+                    help.style.display = "block";
+                    break;
             }
         },
         false
     );
+
+    document.addEventListener("keyup", (event) => {
+        switch (event.code) {
+            case "KeyH":
+                help.style.display = "none";
+                break;
+        }
+    });
 
     animate();
 }

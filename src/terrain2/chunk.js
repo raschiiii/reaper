@@ -38,7 +38,12 @@ export class Chunk {
                 RESOLUTION,
                 RESOLUTION
             ),
-            material
+            new THREE.MeshStandardMaterial({
+                color: color2,
+                wireframe: false,
+                side: THREE.DoubleSide,
+                flatShading: true,
+            })
         );
 
         this.buildChunk(heightmap, offset);
