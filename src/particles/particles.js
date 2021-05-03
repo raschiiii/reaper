@@ -169,7 +169,7 @@ export class BasicSmoke extends ParticleSystem {
 
         particle.velocity.copy(this.params.velocity);
         particle.lifetime = this.params.particleLifetime;
-        particle.size = this.params.startSize * Math.random();
+        particle.size = this.params.startSize;
         particle.color = new THREE.Color();
         particle.alpha = this.params.alphaStartValue;
         particle.lerpValue = 0.0;
@@ -217,13 +217,13 @@ export class Smoke extends BasicSmoke {
             {
                 numParticles: 200,
                 particleLifetime: 15,
-                particlesPerSecond: 1.5,
+                particlesPerSecond: 1.2,
                 texture: "assets/textures/hexagon.png",
                 blending: THREE.NormalBlending,
                 alphaDegrading: 0.0,
                 alphaStartValue: 1.0,
-                startSize: 0.1,
-                scaleValue: 0.2,
+                startSize: 1,
+                scaleValue: 0.3,
                 colorTransition: 3.0,
                 startColor: new THREE.Color("orange"),
                 endColor: new THREE.Color(0x2c2c2c),
@@ -314,6 +314,7 @@ export class Explosion2 extends BasicSmoke {
 
             particle.position.copy(pos);
 
+            /*
             let t1 = 2.5;
             let t2 = t1 / 2;
             particle.velocity.set(
@@ -321,8 +322,9 @@ export class Explosion2 extends BasicSmoke {
                 -2 * (t1 * Math.random() - t2),
                 -t1 * Math.random() - t2
             );
+            */
 
-            //particle.velocity.set(0, 4, 0);
+            particle.velocity.set(0, Math.random(), 0);
 
             particle.lifetime = this.params.particleLifetime;
             particle.size = (i + 1) * 3;

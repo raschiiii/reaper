@@ -175,7 +175,7 @@ async function init() {
         new THREE.Vector3(800, heightmap.getHeight(800, 200), 200)
     );
     factory.createTestCube(
-        new THREE.Vector3(800, heightmap.getHeight(800, 0), 0)
+        new THREE.Vector3(300, heightmap.getHeight(300, 0), 0)
     );
 
     goa._addQueued();
@@ -246,10 +246,14 @@ function animate(now) {
             if (aabb) {
                 for (let otherObject of grid.possible_aabb_collisions(aabb)) {
                     if (otherObject != gameObject) {
-                        console.log(`object collision ${now}`);
                         aabb.collide(otherObject);
 
-                        explosions.impact(otherObject.gameObject.position);
+                        console.log(`object collision ${now}`);
+                        if (!aabb._collided) {
+                            console.log(`object impact ${now}`);
+                            explosions.impact(otherObject.gameObject.position);
+                            gameObject.publish("collision", {});
+                        }
                         //spark.impact(otherObject.position);
                     }
                 }

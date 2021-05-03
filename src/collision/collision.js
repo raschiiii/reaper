@@ -10,6 +10,7 @@ export class AABB extends Component {
             new THREE.Vector3(size.x / 2, size.y / 2, size.z / 2)
         );
 
+        this._collided = false;
         this._offset = new THREE.Vector3(0, 0, 0);
         this._center = new THREE.Vector3(0, 0, 0);
         this.update(0);
@@ -37,6 +38,7 @@ export class AABB extends Component {
     }
 
     update(dt) {
+        this._collided = false;
         this.box.getCenter(this._center);
         this._offset.subVectors(this.gameObject.position, this._center);
         this.box.translate(this._offset);
@@ -75,7 +77,7 @@ export class AABB extends Component {
             }
         */
 
-            console.log("collision");
+            this._collided = true;
             this.gameObject.publish("collision", { depth: [x, y, z] });
 
             return true;
