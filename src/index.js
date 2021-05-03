@@ -59,10 +59,10 @@ renderer.shadowMap.type = THREE.BasicShadowMap;
 
 window.addEventListener(
     "resize",
-    (e) => {
+    () => {
         camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
         sensor.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
         sensor.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
     },
