@@ -4,146 +4,45 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:creator" content="@jakobmaier_" />
-        <meta name="twitter:title" content="Reaper 1.0" />
-        <meta
-            name="twitter:description"
-            content="Reaper 1.0 is a retro combat flight 
-            simulator for the MQ-9 Reaper drone."
-        />
-        <meta
-            name="description"
-            content="Reaper 1.0 is a retro combat flight 
-            simulator for the MQ-9 Reaper drone."
-        />
-        <link rel="stylesheet" href="stylesheet.css" />
-        <title>Reaper 1.0</title>
+        <link rel="stylesheet" href="style.css" />
+        <title>REAPER</title>
     </head>
     <body>
-        <canvas id="canvas" width="100vw" height="100vh"></canvas>
-
-        <div id="info" class="gui" style="left: 75vw; top: 5vh">
-            <span id="speed">Speed</span><br />
-            <span id="altitude">Alt</span><br />
-            <span id="coordinates">Coords:</span><br />
-            <span id="throttle"></span><br />
-            <span id="display1">display1</span><br />
-            <span id="display2">display2</span><br />
-        </div>
-
-        <!--
-        <div class="gui" style="left: 50vw; top: 70vh">
-            <div id="text" style="position: relative; left: -50%">
-                <p>Here is your mission:</p>
-            </div>
-        </div>
-        -->
-
-        <div class="gui" style="left: 50vw; top: 90vh">
-            <div style="position: relative; left: -50%">
-                <p>press H to get help</p>
-            </div>
-        </div>
-
-        <div class="gui" style="left: 50vw; top: 5vh">
-            <div id="help" style="position: relative; left: -50%">
-                <h2>Help</h2>
-                <h3>General</h3>
-                <table>
-                    <tr>
-                        <td>P</td>
-                        <td>pause game</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>toggle sensor view</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>switch between objects</td>
-                    </tr>
-                    <tr>
-                        <td>W</td>
-                        <td>pitch down</td>
-                    </tr>
-                    <tr>
-                        <td>A</td>
-                        <td>roll left</td>
-                    </tr>
-                    <tr>
-                        <td>S</td>
-                        <td>pitch up</td>
-                    </tr>
-                    <tr>
-                        <td>D</td>
-                        <td>roll right</td>
-                    </tr>
-                    <tr>
-                        <td>Shift</td>
-                        <td>increase thrust</td>
-                    </tr>
-                    <tr>
-                        <td>CapsLock</td>
-                        <td>decrease thrust</td>
-                    </tr>
-                    <tr>
-                        <td>F</td>
-                        <td>fire missile</td>
-                    </tr>
-                    <tr>
-                        <td>G</td>
-                        <td>drop bomb</td>
-                    </tr>
-                    <tr>
-                        <td>T</td>
-                        <td>laser tracking (only in sensor view)</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-        <div id="sensor" class="gui" style="left: 0vw; top: 0vh">
-            <img class="gui-img" src="assets/textures/HUD.png" />
-            <div class="gui" style="left: 70vw; top: 20vh">
-                <span id="alt">ALT</span><br />
-                <span id="spd">SPD</span><br />
-            </div>
-            <div class="gui" style="left: 70vw; top: 80vh">
-                <span id="rng">RNG</span><br />
-                <span>N</span><br />
-                <span>E</span><br />
-            </div>
-            <div class="gui" style="left: 30vw; top: 80vh">
-                <span id="pitch">PITCH</span><br />
-                <span id="yaw">YAW</span><br />
-                <span>E</span><br />
-            </div>
-            <div class="gui" style="left: 30vw; top: 20vh">
-                <span>RNG</span><br />
-                <span>N</span><br />
-                <span>E</span><br />
-            </div>
-            <div
-                id="laser"
-                class="gui"
-                style="left: 50vw; top: 30vh; display: none"
-            >
-                <div style="position: relative; left: -50%">
-                    <span>tracking</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="gui" style="left: 50vw; top: 30vh">
-            <div style="position: relative; left: -50%">
-                <h1 id="paused"></h1>
+        <main>
+            <header>
+                <h1>Fear the Reaper</h1>
+                <p>a retro combat flight simulator</p>
+            </header>
+            <video width="100%" controls>
+                <source src="assets/images/paveway.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
+            <section>
+                <p>
+                    Fly the MQ-9 Reaper UAV over Syria and take part in the
+                    fight against ISIS. Use it's powerful laser-guided bombs and
+                    missiles to locate and destroy terrorist groups and rebel
+                    forces. test
+                </p>
+                <p>
+                    Developed using web technology, this game is playable right
+                    here in the browser.
+                </p>
                 <!--
-                <h1 id="paused">paused, press p to unpause</h1>
+                <p>
+                    This game is inspired by the classic flight simulator games
+                    of the 90's like FALCON 3.0 (1993), A-10 Attack! (1995) and
+                    Su-27 Flanker (1995).
+                </p>
+ 
                 -->
-            </div>
-        </div>
-
-        <script type="module" src="main.js"></script>
+                <div style="text-align: center; margin: auto; width: 90%">
+                    <b>play now, no download required</b>
+                    <a href="reaper.html">
+                        <h2>PLAY</h2>
+                    </a>
+                </div>
+            </section>
+        </main>
     </body>
 </html>
