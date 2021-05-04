@@ -9,6 +9,7 @@ body {
     height: 100vh;
     box-sizing: border-box;
     font-family: "Courier New", Courier, monospace;
+    font-weight: 600;
 }
 
 span {
@@ -48,8 +49,25 @@ span {
     display: none;
 }
 
-table,
-th,
-td {
+.help {
     border: 1px solid black;
+}
+
+table.help td {
+    border: 1px solid black;
+}
+
+table.sensor-table {
+}
+
+table.sensor-table td {
+}
+
+table.sensor-table td:nth-child(1) {
+    padding-right: 20px;
+    text-align: left;
+}
+
+table.sensor-table td:nth-child(2) {
+    text-align: right;
 }

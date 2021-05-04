@@ -15,6 +15,11 @@ export class Sensor extends Component {
         this._altEl = document.querySelector("#alt");
         this._spdEl = document.querySelector("#spd");
         this._rngEl = document.querySelector("#rng");
+        this._trgtN = document.querySelector("#trgtN");
+        this._trgtE = document.querySelector("#trgtE");
+        this._zoomEl = document.querySelector("#zoom");
+        this._eEl = document.querySelector("#E");
+        this._nEl = document.querySelector("#N");
 
         this._sensorRotation = new THREE.Euler(0, -Math.PI / 2, 0, "YZX");
         this._camera.rotation.copy(this._sensorRotation);
@@ -81,6 +86,38 @@ export class Sensor extends Component {
         );
     }
 
+    update(_) {
+        let cameraPos = new THREE.Vector3();
+        this._cameraDummy.getWorldPosition(cameraPos);
+        this._camera.rotation.copy(this._sensorRotation);
+        this._camera.position.copy(cameraPos);
+
+        this._altEl.innerText = `${(this.gameObject.position.y * 10).toFixed(
+            2
+        )}`;
+
+        this._spdEl.innerText = ` ${(
+            this.gameObject.velocity.length() * 10
+        ).toFixed(2)}`;
+
+        this._zoomEl.innerText = `${this._camera.zoom}`;
+        this._eEl.innerText = `${this.gameObject.position.z.toFixed(2)}`;
+        this._nEl.innerText = `${this.gameObject.position.x.toFixed(2)}`;
+
+        if (this._track) {
+            const distance = cameraPos.distanceTo(this._target);
+            this._rngEl.innerText = `${(distance * 10.0).toFixed(2)}`;
+            this._trgtN.innerText = `${this._target.x.toFixed(2)}`;
+            this._trgtE.innerText = `${this._target.z.toFixed(2)}`;
+
+            this._camera.lookAt(this._target);
+        } else {
+            this._rngEl.innerText = ``;
+            this._trgtN.innerText = ``;
+            this._trgtE.innerText = ``;
+        }
+    }
+
     laserTrack() {
         let dir = new THREE.Vector3(0, 0, -1);
         dir.applyEuler(this._camera.rotation);
@@ -104,29 +141,6 @@ export class Sensor extends Component {
             intersects[ i ].object.material.color.set( 0xff0000 );
         }
         */
-    }
-
-    update(_) {
-        let cameraPos = new THREE.Vector3();
-        this._cameraDummy.getWorldPosition(cameraPos);
-        this._camera.rotation.copy(this._sensorRotation);
-        this._camera.position.copy(cameraPos);
-
-        this._altEl.innerText = `ALT ${(
-            this.gameObject.position.y * 10
-        ).toFixed(2)}`;
-
-        this._spdEl.innerText = `SPD ${(
-            this.gameObject.velocity.length() * 10
-        ).toFixed(2)}`;
-
-        if (this._track) {
-            const distance = cameraPos.distanceTo(this._target);
-            this._rngEl.innerText = `RNG ${(distance * 10.0).toFixed(2)}`;
-            this._camera.lookAt(this._target);
-        } else {
-            this._rngEl.innerText = `RNG`;
-        }
     }
 }
 

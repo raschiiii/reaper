@@ -261,9 +261,13 @@ function animate(now) {
                         aabb.collide(otherAabb);
 
                         if (!aabb._collided) {
-                            otherAabb.gameObject.addComponent(
-                                new SmokeEmitter(otherAabb.gameObject)
-                            );
+                            if (
+                                !otherAabb.gameObject.getComponent(SmokeEmitter)
+                            ) {
+                                otherAabb.gameObject.addComponent(
+                                    new SmokeEmitter(otherAabb.gameObject)
+                                );
+                            }
                             impactPoint = otherAabb.gameObject.position.clone();
                         }
                     }
@@ -282,6 +286,7 @@ function animate(now) {
                     );
 
                     if (!gameObject.getComponent(SmokeEmitter)) {
+                        console.log("addding smoke emitter");
                         gameObject.addComponent(new SmokeEmitter(gameObject));
                     }
                 }
