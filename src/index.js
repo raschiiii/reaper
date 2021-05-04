@@ -78,11 +78,11 @@ const cameraRenderer = new EffectComposer(renderer);
 cameraRenderer.addPass(new RenderPass(scene, camera));
 const sensorRenderer = new EffectComposer(renderer);
 sensorRenderer.addPass(new RenderPass(scene, sensor));
-sensorRenderer.addPass(new FilmPass(0.35, 0.5, 2048, false));
+//sensorRenderer.addPass(new FilmPass(0.35, 0.5, 2048, false));
 
 // Stats
 const stats = new Stats();
-document.body.appendChild(stats.dom);
+//document.body.appendChild(stats.dom);
 
 // Lights
 const sun = new THREE.DirectionalLight(0xffffff, 3);
@@ -177,13 +177,14 @@ async function init() {
 
     terrain = factory.createTerrain();
     heightmap = terrain.getComponent(Terrain);
-
+    /*
     factory.createTestCube(
         new THREE.Vector3(800, heightmap.getHeight(800, 200), 200)
     );
     factory.createTestCube(
         new THREE.Vector3(300, heightmap.getHeight(300, 0), 0)
     );
+    */
     factory.createTestCube(new THREE.Vector3(0, heightmap.getHeight(0, 0), 0));
 
     goa._addQueued();

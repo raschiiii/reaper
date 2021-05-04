@@ -129,7 +129,7 @@ export class Spark extends ParticleSystem {
             );
 
             particle.lifetime = this.params.particleLifetime;
-            particle.size = 0.1;
+            particle.size = 0.05;
             particle.alpha = 0.5;
             particle.color = new THREE.Color("orange");
         }

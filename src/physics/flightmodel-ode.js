@@ -44,7 +44,7 @@ export class FlightmodelODE extends ODE {
 
         this.bank = 0;
         this.alpha = 0;
-        this.throttle = 100;
+        this.throttle = 400;
         this.flap = 0;
 
         this.roll = 0;
@@ -177,6 +177,3 @@ export class FlightmodelODE extends ODE {
         return new THREE.Euler(-this.roll, this.yaw, this.pitch, "YZX");
     }
 }
-
-
-
