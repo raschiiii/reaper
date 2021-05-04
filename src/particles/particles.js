@@ -264,7 +264,7 @@ export class Explosion2 extends BasicSmoke {
     constructor(parent, listener) {
         super(parent, {
             numParticles: 500,
-            particleLifetime: 2.0,
+            particleLifetime: 1.5,
             particlesPerSecond: 20,
             texture: "assets/textures/hexagon.png",
             blending: THREE.NormalBlending,
@@ -290,6 +290,7 @@ export class Explosion2 extends BasicSmoke {
                     reject
                 );
             });
+
             this.sound = new THREE.PositionalAudio(listener);
             this.sound.setBuffer(buffer);
             this.sound.setRefDistance(20);
