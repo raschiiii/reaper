@@ -241,6 +241,7 @@ function animate(now) {
 
     // update sun position
     const activeCamera = sensorView ? sensor : camera;
+
     sun.position.copy(activeCamera.position);
     sun.position.add(new THREE.Vector3(30, 100, 30));
     sun.target.position.copy(activeCamera.position);
@@ -248,7 +249,7 @@ function animate(now) {
     if (!paused) {
         goa.forEach((gameObject) => {
             gameObject.update(dt, {
-                camera: sensorView ? sensor : camera, // active camera
+                camera: activeCamera, // active camera
             });
 
             // TODO fix this
@@ -299,7 +300,7 @@ function animate(now) {
                         gameObject.position.z
                     );
 
-                    gameObject.publish("collision", {});
+                    gameObject.publish("collision", {}); // TODO calculate depth
 
                     if (!gameObject.getComponent(SmokeEmitter)) {
                         gameObject.addComponent(new SmokeEmitter(gameObject));
@@ -324,11 +325,11 @@ function animate(now) {
             }
         });
 
-        explosions.update(dt, sensorView ? sensor : camera);
-        spark.update(dt, sensorView ? sensor : camera);
+        explosions.update(dt, activeCamera);
+        spark.update(dt, activeCamera);
 
         terrain.update(dt, {
-            camera: sensorView ? sensor : camera,
+            camera: activeCamera,
         });
     }
 
