@@ -8,6 +8,7 @@ import {
     SmokeTrailEmitter,
 } from "../particles/particle-emitter.js";
 import { PavewayModel, SimpleModel } from "./model.js";
+import { Label } from "./weapon.js";
 
 // allows a gameObject to subscribe to the events of another gameobject
 export class EventRelay extends Component {
@@ -37,6 +38,7 @@ export class Explosive extends Component {
                 this.gameObject.lifetime = 60;
 
                 this.gameObject.removeComponent(AABB);
+                this.gameObject.removeComponent(Label);
                 this.gameObject.removeComponent(Physics);
                 this.gameObject.removeComponent(SimpleModel);
                 this.gameObject.removeComponent(PavewayModel);

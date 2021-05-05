@@ -130,6 +130,7 @@ export class Factory {
         );
 
         obj.addComponent(new Label(obj));
+        obj.addComponent(new Explosive(obj));
 
         //obj.addComponent(new Box(obj, { castShadow: true }));
         //obj.addComponent(new SmokeEmitter(obj));

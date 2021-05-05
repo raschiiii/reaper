@@ -60,7 +60,9 @@ export class AABB extends Component {
             d1 = aabb.box.max.z - this.box.min.z;
             let z = d0 < d1 ? d0 : -d1;
 
+            console.log("collision");
             this._collided = true;
+            aabb.gameObject.publish("collision", { depth: [x, y, z] });
             this.gameObject.publish("collision", { depth: [x, y, z] });
 
             return true;

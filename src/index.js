@@ -171,7 +171,7 @@ async function init() {
     spark = new Spark(scene);
 
     aircraft = factory.createAircraft(
-        new THREE.Vector3(-400, 400, 0),
+        new THREE.Vector3(-400, 200, 0),
         new THREE.Vector3(10, 0, 0)
     );
 
@@ -256,11 +256,20 @@ function animate(now) {
             if (aabb) {
                 let impactPoint = null;
 
-                for (let otherAabb of grid.possible_aabb_collisions(aabb)) {
-                    if (otherAabb != gameObject) {
-                        aabb.collide(otherAabb);
+                for (let oAabb of grid.possible_aabb_collisions(aabb)) {
+                    if (oAabb != gameObject) {
+                        if (aabb.collide(oAabb)) {
+                            if (!oAabb.gameObject.getComponent(SmokeEmitter)) {
+                                oAabb.gameObject.addComponent(
+                                    new SmokeEmitter(oAabb.gameObject)
+                                );
+                                impactPoint = oAabb.gameObject.position.clone();
+                            }
+                        }
 
-                        if (!aabb._collided) {
+                        /*
+                        if (aabb._collided) {
+                            console.log("test");
                             if (
                                 !otherAabb.gameObject.getComponent(SmokeEmitter)
                             ) {
@@ -270,6 +279,7 @@ function animate(now) {
                             }
                             impactPoint = otherAabb.gameObject.position.clone();
                         }
+                        */
                     }
                 }
 
