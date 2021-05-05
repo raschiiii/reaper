@@ -5,6 +5,55 @@ import { Hellfire } from "../physics/hellfire.js";
 import { SmokeTrailEmitter } from "../particles/particle-emitter.js";
 import { Paveway } from "../physics/paveway.js";
 
+export class Label extends Component {
+    constructor(gameObject) {
+        super(gameObject);
+
+        this.element = document.createElement("div");
+        this.element.style.cssText =
+            "position: absolute; top: 0px; left: 0px; color: white;";
+        this.element.innerText = `Enemy`;
+        document.body.append(this.element);
+
+        this._label = new THREE.Object3D();
+        this._label.position.y = 2;
+        this.gameObject.transform.add(this._label);
+
+        /*
+        var name = "Enemy";
+        var canvas = document.createElement("canvas");
+        var ctx = canvas.getContext("2d");
+        ctx.font = "20px Georgia";
+        ctx.fillText(name, 10, 50);
+        var texture = new THREE.Texture(canvas);
+        texture.needsUpdate = true; //just to make sure it's all up to date.
+
+        this._label = new THREE.Sprite(
+            new THREE.SpriteMaterial({ map: texture })
+        );
+
+        this._label.position.y = 2;
+        const scale = 3;
+        this._label.scale.set(scale, scale, scale);
+        this.gameObject.transform.add(this._label);
+        */
+    }
+
+    update(dt, params) {
+        let tmpv = new THREE.Vector3();
+        this._label.updateWorldMatrix(true, false);
+        this._label.getWorldPosition(tmpv);
+
+        tmpv.project(params.camera);
+        const x = (tmpv.x * 0.5 + 0.5) * window.innerWidth;
+        const y = (tmpv.y * -0.5 + 0.5) * window.innerHeight;
+
+        console.log(Math.floor(x), Math.floor(y));
+
+        this.element.style.transform = `translate(-50%, -50%) translate(${x}px,${y}px)`;
+    }
+}
+
 export class MissileControl extends Component {
     constructor(gameObject, id, goa, type = "AGM-114") {
         super(gameObject);

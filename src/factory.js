@@ -5,7 +5,7 @@ import { Box } from "./components/shapes.js";
 import { AABB } from "./collision/collision.js";
 import { EventRelay, Explosive, Sound } from "./components/components.js";
 import { Physics } from "./physics/physics.js";
-import { Flightmodel } from "./physics/flightmodel.js";
+import { Reaper } from "./physics/reaper.js";
 import {
     AirplaneModel,
     SimpleModel,
@@ -17,7 +17,7 @@ import {
     Hardpoints,
     Sensor,
 } from "./components/aircraft.js";
-import { LaserGuidance, MissileControl } from "./components/weapon.js";
+import { Label, LaserGuidance, MissileControl } from "./components/weapon.js";
 import {
     SmokeEmitter,
     SmokeTrailEmitter,
@@ -57,7 +57,7 @@ export class Factory {
         );
 
         //obj.addComponent(new Physics(obj, new SpringODE(obj, 1.0, 1.5, 20, -2.7)));
-        obj.addComponent(new Physics(obj, new Flightmodel(obj)));
+        obj.addComponent(new Physics(obj, new Reaper(obj)));
 
         obj.addComponent(new Sensor(obj, this.sensor));
         obj.addComponent(new FireControlSystem(obj));
@@ -128,6 +128,8 @@ export class Factory {
                 scale: new THREE.Vector3(0.1, 0.1, 0.1),
             })
         );
+
+        obj.addComponent(new Label(obj));
 
         //obj.addComponent(new Box(obj, { castShadow: true }));
         //obj.addComponent(new SmokeEmitter(obj));

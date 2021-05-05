@@ -1,6 +1,6 @@
 import { FlightmodelODE } from "./flightmodel-ode.js";
 
-export class Flightmodel extends FlightmodelODE {
+export class Reaper extends FlightmodelODE {
     constructor(gameObject) {
         super(gameObject, {
             // switch coordiantes
@@ -37,7 +37,7 @@ export class Flightmodel extends FlightmodelODE {
             KeyS: false,
             KeyW: false,
             ShiftLeft: false,
-            CapsLock: false
+            CapsLock: false,
         };
 
         this.display1 = document.querySelector("#display1");
@@ -88,10 +88,6 @@ export class Flightmodel extends FlightmodelODE {
                 case "KeyS":
                     this.keys.KeyS = false;
                     break;
-
-
-
-
             }
         });
     }
@@ -104,14 +100,14 @@ export class Flightmodel extends FlightmodelODE {
         if (this.keys.KeyS) this.alpha += alphaSensitivity * dt;
 
         const alphaReturnFactor = 0.5;
-        this.alpha += (-this.alpha * alphaReturnFactor) * dt;
+        this.alpha += -this.alpha * alphaReturnFactor * dt;
 
         const bankSensitivity = 1.0;
         if (this.keys.KeyA) this.bank += bankSensitivity * dt;
         if (this.keys.KeyD) this.bank -= bankSensitivity * dt;
 
         const bankReturnFactor = 0.25;
-        this.bank += (-this.bank * bankReturnFactor) * dt;
+        this.bank += -this.bank * bankReturnFactor * dt;
 
         this.display1.innerText = `alpha: ${this.alpha.toFixed(2)}`;
         this.display2.innerText = `throttle: ${this.throttle.toFixed(2)}`;
