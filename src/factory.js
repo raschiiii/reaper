@@ -144,6 +144,19 @@ export class Factory {
         return obj;
     }
 
+    createHouse(pos) {
+        let obj = new GameObject(this.scene);
+        obj.position.copy(pos);
+        obj.transform.rotateY(Math.random());
+
+        obj.addComponent(
+            new SimpleModel(obj, this.assets.gltf.house_1.asset, {
+                rotation: new THREE.Vector3(0, Math.PI / 2, 0),
+                scale: new THREE.Vector3(0.1, 0.1, 0.1),
+            })
+        );
+    }
+
     createTerrain() {
         const obj = new GameObject(this.scene);
         /*

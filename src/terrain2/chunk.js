@@ -1,12 +1,39 @@
 import * as THREE from "three";
 
-const RESOLUTION = 10;
+const _RESOLUTION = 10;
 
 export class Chunk {
     constructor(root, offset, dimensions, heightmap) {
-        //console.log("create chunk", offset, dimensions);
+        //console.log("create chunk", offset);
 
-        const t = dimensions.x / (RESOLUTION - 2);
+        function randomPos() {
+            return new THREE.Vector3(
+                offset.x + (dimensions.x * Math.random() - dimensions.x / 2),
+                heightmap.get(offset.x, offset.y),
+                offset.y + (dimensions.y * Math.random() - dimensions.y / 2)
+            );
+        }
+
+        if (dimensions.x <= 1024) {
+            this._buildings = new THREE.Group();
+
+            console.log("detailed");
+
+            for (let i = 0; i < 10; i++) {
+                const cube = new THREE.Mesh(
+                    new THREE.BoxGeometry(2, 3, 2),
+                    new THREE.MeshStandardMaterial({
+                        color: 0xff0000,
+                    })
+                );
+
+                cube.position.copy(randomPos());
+                this._buildings.add(cube);
+            }
+            root.add(this._buildings);
+        }
+
+        const t = dimensions.x / (_RESOLUTION - 2);
         dimensions.x += 2 * t;
         dimensions.y += 2 * t;
 
@@ -16,27 +43,19 @@ export class Chunk {
             Math.random()
         );
 
-        const val = dimensions.x / (65536 / 2);
         const color2 = new THREE.Color();
         color2.lerpColors(
             new THREE.Color(0x523415),
             new THREE.Color(0x745c43),
-            val
+            dimensions.x / (65536 / 2)
         );
-
-        const material = new THREE.MeshStandardMaterial({
-            color: color2,
-            wireframe: false,
-            side: THREE.DoubleSide,
-            flatShading: true,
-        });
 
         this._plane = new THREE.Mesh(
             new THREE.PlaneGeometry(
                 dimensions.x,
                 dimensions.y,
-                RESOLUTION,
-                RESOLUTION
+                _RESOLUTION,
+                _RESOLUTION
             ),
             new THREE.MeshStandardMaterial({
                 color: color2,
@@ -63,7 +82,6 @@ export class Chunk {
             const y = -vertices[i + 1] + offset.y;
 
             vertices[i + 2] = heightmap.get(x, y);
-            //vertices[i + 2] = 0.0;
         }
 
         this._plane.geometry.attributes.position.needsUpdate = true;
@@ -74,13 +92,13 @@ export class Chunk {
         let vertices = this._plane.geometry.attributes.position.array;
 
         function setHeight(x, z) {
-            vertices[(x + z * (RESOLUTION + 1)) * 3 + 2] -= 10;
+            vertices[(x + z * (_RESOLUTION + 1)) * 3 + 2] -= 10;
         }
 
-        for (let i = 0; i <= RESOLUTION; i++) setHeight(0, i);
-        for (let i = 0; i <= RESOLUTION; i++) setHeight(RESOLUTION, i);
-        for (let i = 0; i <= RESOLUTION; i++) setHeight(i, 0);
-        for (let i = 0; i <= RESOLUTION; i++) setHeight(i, RESOLUTION);
+        for (let i = 0; i <= _RESOLUTION; i++) setHeight(0, i);
+        for (let i = 0; i <= _RESOLUTION; i++) setHeight(_RESOLUTION, i);
+        for (let i = 0; i <= _RESOLUTION; i++) setHeight(i, 0);
+        for (let i = 0; i <= _RESOLUTION; i++) setHeight(i, _RESOLUTION);
 
         this._plane.geometry.attributes.position.needsUpdate = true;
 
@@ -92,9 +110,20 @@ export class Chunk {
     }
 
     destroy() {
+        const parent = this._plane.parent;
+
         this._plane.geometry.dispose();
         this._plane.material.dispose();
-        const parent = this._plane.parent;
+
         parent.remove(this._plane);
+
+        if (this._buildings) {
+            this._buildings.traverse(function (child) {
+                if (child.geometry) child.geometry.dispose();
+                if (child.material) child.material.dispose();
+            });
+
+            parent.remove(this._buildings);
+        }
     }
 }

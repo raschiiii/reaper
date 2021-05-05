@@ -82,7 +82,7 @@ sensorRenderer.addPass(new RenderPass(scene, sensor));
 
 // Stats
 const stats = new Stats();
-//document.body.appendChild(stats.dom);
+document.body.appendChild(stats.dom);
 
 // Lights
 const sun = new THREE.DirectionalLight(0xffffff, 3);
@@ -92,7 +92,7 @@ sun.shadow.mapSize.width = map_size;
 sun.shadow.mapSize.height = map_size;
 sun.shadow.camera.near = 1;
 sun.shadow.camera.far = 10000;
-const val = 50;
+const val = 100;
 sun.shadow.camera.left = -val;
 sun.shadow.camera.bottom = -val;
 sun.shadow.camera.top = val;
@@ -119,6 +119,9 @@ let assets = {
         },
         pickup: {
             url: "assets/objects/Pickup.glb",
+        },
+        house_1: {
+            url: "assets/objects/House_1.glb",
         },
     },
     textures: {
@@ -179,14 +182,20 @@ async function init() {
     heightmap = terrain.getComponent(Terrain);
 
     // create enemies
-    factory.createPickup(
-        new THREE.Vector3(800, heightmap.getHeight(800, 200), 200)
-    );
-    factory.createPickup(
-        new THREE.Vector3(300, heightmap.getHeight(300, 0), 0)
-    );
-
+    factory.createPickup(heightmap.placeAt(500, 300));
+    factory.createPickup(heightmap.placeAt(300, 100));
     factory.createPickup(heightmap.placeAt(0, 0));
+
+    /*
+    for (let i = 0; i < 50; i++) {
+        factory.createHouse(
+            heightmap.placeAt(
+                (Math.random() - 0.5) * 200,
+                (Math.random() - 0.5) * 100
+            )
+        );
+    }
+    */
 
     goa._addQueued();
     viewManager._init();
@@ -217,7 +226,7 @@ async function init() {
                     help.style.display = "block";
                     break;
 
-                case "KeyJ":
+                case "KeyC":
                     let labels = document.getElementsByClassName("label");
                     for (let label of labels) {
                         label.style.display = "block";
@@ -234,7 +243,7 @@ async function init() {
                 help.style.display = "none";
                 break;
 
-            case "KeyJ":
+            case "KeyC":
                 let labels = document.getElementsByClassName("label");
                 for (let label of labels) {
                     label.style.display = "none";
@@ -258,7 +267,7 @@ function animate(now) {
     const activeCamera = sensorView ? sensor : camera;
 
     sun.position.copy(activeCamera.position);
-    sun.position.add(new THREE.Vector3(30, 100, 30));
+    sun.position.add(new THREE.Vector3(50, 100, 50));
     sun.target.position.copy(activeCamera.position);
 
     if (!paused) {

@@ -274,7 +274,7 @@ export class Explosion2 extends BasicSmoke {
     constructor(parent, listener) {
         super(parent, {
             numParticles: 500,
-            particleLifetime: 1.5,
+            particleLifetime: 2.5,
             particlesPerSecond: 20,
             texture: "assets/textures/hexagon.png",
             blending: THREE.NormalBlending,
@@ -337,7 +337,7 @@ export class Explosion2 extends BasicSmoke {
 
             particle.velocity.set(
                 Math.random() * 0.5,
-                Math.random() * 3.0,
+                Math.random() * 1.0,
                 Math.random() * 0.5
             );
 
