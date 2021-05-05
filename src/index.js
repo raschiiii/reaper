@@ -274,17 +274,6 @@ function animate(now) {
                                 });
                             }
                         }
-
-                        /*
-                        if (aabb.collide(oAabb)) {
-                            if (!oAabb.gameObject.getComponent(SmokeEmitter)) {
-                                oAabb.gameObject.addComponent(
-                                    new SmokeEmitter(oAabb.gameObject)
-                                );
-                                impactPoint = oAabb.gameObject.position.clone();
-                            }
-                        }
-                        */
                     }
                 }
 
@@ -308,8 +297,8 @@ function animate(now) {
                 }
 
                 if (impactPoint) {
-                    explosions.impact(impactPoint);
                     spark.impact(impactPoint);
+                    explosions.impact(impactPoint);
                 }
             }
 
