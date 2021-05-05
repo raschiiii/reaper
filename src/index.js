@@ -177,15 +177,16 @@ async function init() {
 
     terrain = factory.createTerrain();
     heightmap = terrain.getComponent(Terrain);
-    /*
-    factory.createTestCube(
+
+    // create enemies
+    factory.createPickup(
         new THREE.Vector3(800, heightmap.getHeight(800, 200), 200)
     );
-    factory.createTestCube(
+    factory.createPickup(
         new THREE.Vector3(300, heightmap.getHeight(300, 0), 0)
     );
-    */
-    factory.createTestCube(new THREE.Vector3(0, heightmap.getHeight(0, 0), 0));
+
+    factory.createPickup(heightmap.placeAt(0, 0));
 
     goa._addQueued();
     viewManager._init();
@@ -215,6 +216,13 @@ async function init() {
                 case "KeyH":
                     help.style.display = "block";
                     break;
+
+                case "KeyJ":
+                    let labels = document.getElementsByClassName("label");
+                    for (let label of labels) {
+                        label.style.display = "block";
+                    }
+                    break;
             }
         },
         false
@@ -224,6 +232,13 @@ async function init() {
         switch (event.code) {
             case "KeyH":
                 help.style.display = "none";
+                break;
+
+            case "KeyJ":
+                let labels = document.getElementsByClassName("label");
+                for (let label of labels) {
+                    label.style.display = "none";
+                }
                 break;
         }
     });
@@ -252,7 +267,6 @@ function animate(now) {
                 camera: activeCamera, // active camera
             });
 
-            // TODO fix this
             const aabb = gameObject.getComponent(AABB);
             if (aabb) {
                 let impactPoint = null;

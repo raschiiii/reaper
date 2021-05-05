@@ -224,7 +224,7 @@ export class Smoke extends BasicSmoke {
                 alphaStartValue: 1.0,
                 startSize: 0.75,
                 scaleValue: 0.3,
-                colorTransition: 3.0,
+                colorTransition: 2.0,
                 startColor: new THREE.Color("orange"),
                 endColor: new THREE.Color(0x2c2c2c),
                 spread: 0,

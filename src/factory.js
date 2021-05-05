@@ -118,7 +118,7 @@ export class Factory {
         return obj;
     }
 
-    createTestCube(pos) {
+    createPickup(pos) {
         let obj = new GameObject(this.scene);
         obj.position.copy(pos);
 

@@ -69,4 +69,8 @@ export class Terrain extends Component {
     getHeight(x, z) {
         return this._heightmap.get(x, z);
     }
+
+    placeAt(x, z) {
+        return new THREE.Vector3(x, this._heightmap.get(x, z), z);
+    }
 }

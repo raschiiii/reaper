@@ -6,16 +6,18 @@ import { SmokeTrailEmitter } from "../particles/particle-emitter.js";
 import { Paveway } from "../physics/paveway.js";
 
 export class Label extends Component {
-    constructor(gameObject, text = "Enemy") {
+    constructor(gameObject, text = "HOSTILE") {
         super(gameObject);
 
-        this.element = document.createElement("div");
-        this.element.style.cssText = "position: absolute; top: 0px; left: 0px;";
+        this.element = document.createElement("small");
+        this.element.className = "label";
+        this.element.style.cssText =
+            "position: absolute; top: 0px; left: 0px; display: none;";
         this.element.innerText = text;
         document.body.append(this.element);
 
         this._label = new THREE.Object3D();
-        this._label.position.y = 2;
+        this._label.position.y = 1;
         this.gameObject.transform.add(this._label);
     }
 
@@ -31,9 +33,12 @@ export class Label extends Component {
         const x = (tmpv.x * 0.5 + 0.5) * window.innerWidth;
         const y = (tmpv.y * -0.5 + 0.5) * window.innerHeight;
 
-        this.element.style.display = "block";
-
-        if (y > window.innerHeight || x > window.innerWidth) {
+        const border = 50;
+        if (
+            (y > window.innerHeight - border ||
+                x > window.innerWidth - border) &&
+            this.element.style.display == "block"
+        ) {
             this.element.style.display = "none";
         }
 
@@ -41,7 +46,6 @@ export class Label extends Component {
     }
 
     destroy() {
-        // don't know if this works
         this.element.remove();
     }
 }
