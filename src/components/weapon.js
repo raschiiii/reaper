@@ -1,9 +1,10 @@
 import * as THREE from "three";
-import { Component } from "../engine/component.js";
+
 import { Physics } from "../physics/physics.js";
-import { Hellfire } from "../physics/hellfire.js";
-import { SmokeTrailEmitter } from "../particles/particle-emitter.js";
 import { Paveway } from "../physics/paveway.js";
+import { Hellfire } from "../physics/hellfire.js";
+import { Component } from "../engine/component.js";
+import { SmokeTrailEmitter } from "../particles/particle-emitter.js";
 
 export class Label extends Component {
     constructor(gameObject, text = "HOSTILE") {

@@ -105,7 +105,7 @@ export class Spark extends ParticleSystem {
             particlesPerSecond: 20,
             texture: "assets/textures/rectangle.png",
             blending: THREE.AdditiveBlending,
-            alphaDegrading: 0.1,
+            alphaDegrading: 0.05,
             scaleValue: 0,
             particlesPerImpact: 30,
         });
@@ -120,6 +120,7 @@ export class Spark extends ParticleSystem {
 
             particle.position.copy(pos);
 
+            /*
             let t1 = 20,
                 t2 = 10;
             particle.velocity.set(
@@ -127,9 +128,18 @@ export class Spark extends ParticleSystem {
                 t1 * Math.random() - t2 * 2,
                 t1 * Math.random() - t2
             );
+            */
+
+            particle.velocity.set(
+                Math.random() - 0.5,
+                Math.random() - 0.5,
+                Math.random() - 0.5
+            );
+            particle.velocity.normalize();
+            particle.velocity.multiplyScalar(5);
 
             particle.lifetime = this.params.particleLifetime;
-            particle.size = 0.05;
+            particle.size = 0.1;
             particle.alpha = 0.5;
             particle.color = new THREE.Color("orange");
         }
