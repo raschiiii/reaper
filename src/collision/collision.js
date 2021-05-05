@@ -10,7 +10,6 @@ export class AABB extends Component {
             new THREE.Vector3(size.x / 2, size.y / 2, size.z / 2)
         );
 
-        this._collided = false;
         this._offset = new THREE.Vector3(0, 0, 0);
         this._center = new THREE.Vector3(0, 0, 0);
         this.update(0);
@@ -37,7 +36,7 @@ export class AABB extends Component {
         return this.box.max;
     }
 
-    update(dt) {
+    update(_) {
         this._collided = false;
         this.box.getCenter(this._center);
         this._offset.subVectors(this.gameObject.position, this._center);
@@ -60,14 +59,34 @@ export class AABB extends Component {
             d1 = aabb.box.max.z - this.box.min.z;
             let z = d0 < d1 ? d0 : -d1;
 
-            console.log("collision");
-            this._collided = true;
             aabb.gameObject.publish("collision", { depth: [x, y, z] });
             this.gameObject.publish("collision", { depth: [x, y, z] });
-
+            console.log("collision");
             return true;
         } else {
             return false;
+        }
+    }
+
+    collide2(aabb) {
+        if (aabb.box.intersectsBox(this.box)) {
+            let d0, d1;
+
+            d0 = this.box.max.x - aabb.box.min.x;
+            d1 = aabb.box.max.x - this.box.min.x;
+            let x = d0 < d1 ? d0 : -d1;
+
+            d0 = this.box.max.y - aabb.box.min.y;
+            d1 = aabb.box.max.y - this.box.min.y;
+            let y = d0 < d1 ? d0 : -d1;
+
+            d0 = this.box.max.z - aabb.box.min.z;
+            d1 = aabb.box.max.z - this.box.min.z;
+            let z = d0 < d1 ? d0 : -d1;
+
+            return [x, y, z];
+        } else {
+            return null;
         }
     }
 }
