@@ -59,6 +59,7 @@ export class AirplaneModel extends Component {
     constructor(gameObject, gltf, params) {
         super(gameObject);
 
+        this.sensorCamera = params.sensor;
         let rotation = params.rotation ? params.rotation : new THREE.Vector3();
         let position = params.position ? params.position : new THREE.Vector3();
         let scale = params.scale ? params.scale : new THREE.Vector3(1, 1, 1);
@@ -72,7 +73,6 @@ export class AirplaneModel extends Component {
 
         this.model.traverse(function (mesh) {
             if (mesh.isMesh) {
-                //console.log(mesh.material);
                 mesh.castShadow = true;
                 mesh.receiveShadow = true;
                 mesh.material.side = THREE.FrontSide;
@@ -84,11 +84,32 @@ export class AirplaneModel extends Component {
         //console.log(this.model.children);
 
         this.propellor = this.model.getObjectByName("Propellor");
+        this.sensor = this.model.getObjectByName("Sensor");
+
+        this.sensor.rotation.name = "YZX";
+
         this.gameObject.transform.add(this.model);
     }
 
     update(dt) {
         if (this.propellor) this.propellor.rotateZ(100.0 * dt);
+        /*
+        if (this.sensor) {
+            const rotation = this.sensorCamera.rotation;
+
+            let rot = new THREE.Vector3(0, -Math.PI / 2, 0);
+            rot.rotateOnWorldAxis(new THREE.Vector3(0, 1, 0), rotation.y);
+            rot.rotateOnWorldAxis(new THREE.Vector3(0, 0, 1), rotation.z);
+            rot.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), rotation.x);
+
+            this.sensor.rotation.copy(rot);
+            this.sensor.rotation.set(
+                -this.sensorCamera.rotation.x,
+                this.sensorCamera.rotation.y + Math.PI / 2,
+                this.sensorCamera.rotation.z
+            );
+        }
+        */
     }
 
     destroy() {

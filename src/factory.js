@@ -45,6 +45,7 @@ export class Factory {
             new AirplaneModel(obj, this.assets.gltf.drone.asset, {
                 rotation: new THREE.Vector3(0, Math.PI / 2, 0),
                 scale: new THREE.Vector3(0.1, 0.1, 0.1),
+                sensor: this.sensor,
             })
         );
 
