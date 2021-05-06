@@ -3,7 +3,7 @@ import * as THREE from "three";
 import { Component } from "../engine/component";
 import { FixedHeightMap, ImageHeightMap } from "../terrain/heightmap";
 import { LodQuadtree } from "./lod-quadtree";
-import { Chunk } from "./chunk";
+import { Buildings, Chunk } from "./chunk";
 
 export class Terrain extends Component {
     constructor(gameObject, params) {
@@ -51,12 +51,19 @@ export class Terrain extends Component {
                     child.size,
                     this._heightmap
                 ),
+                buildings: new Buildings(
+                    this.root,
+                    child.center,
+                    child.size,
+                    this._heightmap
+                ),
             };
         }
 
         for (const key in this._chunks) {
             this._count--;
             this._chunks[key].chunk.destroy();
+            this._chunks[key].buildings.destroy();
         }
 
         this._chunks = newChunks;

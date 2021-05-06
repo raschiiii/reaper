@@ -2,10 +2,8 @@ import * as THREE from "three";
 
 const _RESOLUTION = 10;
 
-export class Chunk {
+export class Buildings {
     constructor(root, offset, dimensions, heightmap) {
-        //console.log("create chunk", offset);
-
         function randomPos() {
             return new THREE.Vector3(
                 offset.x + (dimensions.x * Math.random() - dimensions.x / 2),
@@ -17,11 +15,9 @@ export class Chunk {
         if (dimensions.x <= 1024) {
             this._buildings = new THREE.Group();
 
-            console.log("detailed");
-
             for (let i = 0; i < 10; i++) {
                 const cube = new THREE.Mesh(
-                    new THREE.BoxGeometry(2, 3, 2),
+                    new THREE.BoxGeometry(5, 10, 5),
                     new THREE.MeshStandardMaterial({
                         color: 0xff0000,
                     })
@@ -32,7 +28,25 @@ export class Chunk {
             }
             root.add(this._buildings);
         }
+    }
 
+    destroy() {
+        if (this._buildings) {
+            const parent = this._buildings.parent;
+
+            this._buildings.traverse(function (child) {
+                if (child.geometry) child.geometry.dispose();
+                if (child.material) child.material.dispose();
+            });
+
+            parent.remove(this._buildings);
+        }
+    }
+}
+
+export class Chunk {
+    constructor(root, offset, dimensions, heightmap) {
+        //console.log({offset});
         const t = dimensions.x / (_RESOLUTION - 2);
         dimensions.x += 2 * t;
         dimensions.y += 2 * t;
@@ -116,14 +130,5 @@ export class Chunk {
         this._plane.material.dispose();
 
         parent.remove(this._plane);
-
-        if (this._buildings) {
-            this._buildings.traverse(function (child) {
-                if (child.geometry) child.geometry.dispose();
-                if (child.material) child.material.dispose();
-            });
-
-            parent.remove(this._buildings);
-        }
     }
 }
