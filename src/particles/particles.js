@@ -201,6 +201,7 @@ export class BasicSmoke extends ParticleSystem {
 
                     particle.size += this.params.scaleValue * dt;
                     particle.alpha -= this.params.alphaDegrading * dt;
+                    particle.rotation += dt * this.params.rotationValue;
 
                     particle.lerpValue +=
                         (1.0 / this.params.colorTransition) * dt;
@@ -234,6 +235,7 @@ export class Smoke extends BasicSmoke {
                 alphaStartValue: 1.0,
                 startSize: 0.75,
                 scaleValue: 0.3,
+                rotationValue: 0.0,
                 colorTransition: 2.0,
                 startColor: new THREE.Color("orange"),
                 endColor: new THREE.Color(0x2c2c2c),
@@ -258,6 +260,7 @@ export class SmokeTrail extends BasicSmoke {
                 alphaDegrading: 1.0,
                 alphaStartValue: 1.0,
                 startSize: 0.1,
+                rotationValue: 0.0,
                 scaleValue: 0.5,
                 colorTransition: 0.2,
                 startColor: new THREE.Color("orange"),
@@ -282,6 +285,7 @@ export class Explosion2 extends BasicSmoke {
             alphaDegrading: 0.0,
             alphaStartValue: 1.0,
             startSize: 0.1,
+            rotationValue: 1.0,
             scaleValue: 0.7,
             colorTransition: 0.5,
             startColor: new THREE.Color("orange"),
