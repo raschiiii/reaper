@@ -139,7 +139,8 @@ export class Spark extends ParticleSystem {
             particle.velocity.multiplyScalar(5);
 
             particle.lifetime = this.params.particleLifetime;
-            particle.size = 0.1;
+            particle.size = 0.05;
+            particle.rotation = 0;
             particle.alpha = 0.5;
             particle.color = new THREE.Color("orange");
         }
@@ -287,7 +288,7 @@ export class Explosion2 extends BasicSmoke {
             startSize: 0.1,
             rotationValue: 1.0,
             scaleValue: 0.7,
-            colorTransition: 0.5,
+            colorTransition: 2,
             startColor: new THREE.Color("orange"),
             endColor: new THREE.Color(0x2c2c2c),
             spread: 0.125,
@@ -339,11 +340,15 @@ export class Explosion2 extends BasicSmoke {
             );
             */
 
+            /*
             particle.velocity.set(
                 Math.random() * 0.5,
                 Math.random() * 1.0,
                 Math.random() * 0.5
             );
+            */
+
+            particle.velocity.set(0, 0.4, 0);
 
             particle.lifetime = this.params.particleLifetime;
             particle.size = (i + 1) * 1.5;

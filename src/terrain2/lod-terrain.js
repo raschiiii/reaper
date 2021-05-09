@@ -44,26 +44,29 @@ export class Terrain extends Component {
             }
 
             newChunks[key] = {
-                //position: [child.center.x, child.center.y],
                 chunk: new Chunk(
                     this.root,
                     child.center,
                     child.size,
                     this._heightmap
                 ),
+                /*
                 buildings: new Buildings(
                     this.root,
                     child.center,
                     child.size,
                     this._heightmap
                 ),
+                */
             };
         }
 
         for (const key in this._chunks) {
             this._count--;
             this._chunks[key].chunk.destroy();
-            this._chunks[key].buildings.destroy();
+
+            if (this._chunks[key].buildings)
+                this._chunks[key].buildings.destroy();
         }
 
         this._chunks = newChunks;
