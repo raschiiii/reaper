@@ -6,7 +6,6 @@
  */
 import * as THREE from "three";
 import Stats from "three/examples/jsm/libs/stats.module.js";
-
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { FilmPass } from "three/examples/jsm/postprocessing/FilmPass.js";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
@@ -17,13 +16,9 @@ import { Factory } from "./factory.js";
 import { HashGrid } from "./collision/hashgrid.js";
 import { Explosion2, Spark } from "./particles/particles.js";
 import { ViewManager } from "./view-manager.js";
-import { TerrainManager } from "./terrain/terrain.js";
 import { GameObjectArray } from "./engine/game-object-array.js";
 import { Terrain } from "./terrain2/lod-terrain.js";
-import {
-    SmokeEmitter,
-    SmokeTrailEmitter,
-} from "./particles/particle-emitter.js";
+import { SmokeEmitter } from "./particles/particle-emitter.js";
 import { GameObject } from "./engine/game-object.js";
 import { SensorCamera } from "./components/aircraft.js";
 
@@ -37,10 +32,9 @@ const help = document.querySelector("#help");
 const width = window.innerWidth;
 const height = window.innerHeight;
 
-const camera = new THREE.PerspectiveCamera(75, width / height, 0.01, 25000);
-//const sensor = new THREE.PerspectiveCamera(75, width / height, 0.01, 25000);
-const sensor = new SensorCamera(75, width / height, 0.01, 25000);
 const listener = new THREE.AudioListener();
+const sensor = new SensorCamera(75, width / height, 0.01, 25000);
+const camera = new THREE.PerspectiveCamera(75, width / height, 0.01, 25000);
 camera.add(listener);
 
 camera.setFocalLength(35);
