@@ -140,7 +140,7 @@ let assets = {
 let paused = false,
     sensorView = false;
 let grid, goa, aircraft, terrain, heightmap;
-let viewManager, factory, explosions, spark;
+let viewManager, factory, explosions, spark, focusCenter;
 
 async function init() {
     const promises = [];
