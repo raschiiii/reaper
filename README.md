@@ -10,3 +10,10 @@ A retro combat flight simulator for the MQ-9 Reaper military drone playable in t
 
 https://answers.unity.com/questions/696271/how-create-modern-aircrafts-hud.html
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript
+
+### Inspiration
+
+https://www.mobygames.com/game/macintosh/a-10-attack
+https://www.mobygames.com/game/windows/a-10-cuba
+https://www.mobygames.com/game/dos/falcon-30
+https://www.mobygames.com/game/tfx
