@@ -25,6 +25,7 @@ import {
     SmokeTrailEmitter,
 } from "./particles/particle-emitter.js";
 import { GameObject } from "./engine/game-object.js";
+import { SensorCamera } from "./components/aircraft.js";
 
 // DOM Elements
 const pauseDisplay = document.querySelector("#paused");
@@ -37,7 +38,8 @@ const width = window.innerWidth;
 const height = window.innerHeight;
 
 const camera = new THREE.PerspectiveCamera(75, width / height, 0.01, 25000);
-const sensor = new THREE.PerspectiveCamera(75, width / height, 0.01, 25000);
+//const sensor = new THREE.PerspectiveCamera(75, width / height, 0.01, 25000);
+const sensor = new SensorCamera(75, width / height, 0.01, 25000);
 const listener = new THREE.AudioListener();
 camera.add(listener);
 

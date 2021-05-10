@@ -3,7 +3,7 @@ import * as THREE from "three";
 import { Component } from "../engine/component";
 import { FixedHeightMap, ImageHeightMap } from "../terrain/heightmap";
 import { LodQuadtree } from "./lod-quadtree";
-import { Buildings, Chunk } from "./chunk";
+import { Buildings, Chunk } from "./lod-chunk";
 
 export class Terrain extends Component {
     constructor(gameObject, params) {
@@ -73,7 +73,14 @@ export class Terrain extends Component {
     }
 
     update(dt, params) {
-        this._build(params.camera.position);
+        const pos = new THREE.Vector3();
+        if (params.camera.focusPoint && params.camera.zoom > 10) {
+            pos.copy(params.camera.focusPoint);
+        } else {
+            pos.copy(params.camera.position);
+        }
+
+        this._build(pos);
     }
 
     getHeight(x, z) {

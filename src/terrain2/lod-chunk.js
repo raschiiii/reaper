@@ -51,6 +51,7 @@ export class Chunk {
         dimensions.x += 2 * t;
         dimensions.y += 2 * t;
 
+        // just for debugging
         const color1 = new THREE.Color(
             Math.random(),
             Math.random(),

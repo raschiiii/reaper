@@ -1,6 +1,13 @@
 import * as THREE from "three";
 import { Component } from "../engine/component.js";
 
+export class SensorCamera extends THREE.PerspectiveCamera {
+    constructor(fov = 50, aspect = 1, near = 0.1, far = 2000) {
+        super(fov, aspect, near, far);
+        this.focusPoint = new THREE.Vector3(); // the point the camera is focused on, needed for LOD
+    }
+}
+
 export class Sensor extends Component {
     constructor(gameObject, camera) {
         super(gameObject);
@@ -76,7 +83,7 @@ export class Sensor extends Component {
                 switch (e.code) {
                     case "KeyT":
                         if (!this._track) {
-                            this.laserTrack();
+                            this._laserTrack();
                             this._elem.laser.style.display = "block";
                         } else {
                             this._track = false;
@@ -95,6 +102,10 @@ export class Sensor extends Component {
         this._cameraDummy.getWorldPosition(sensorPosition);
         this._camera.rotation.copy(this._sensorRotation);
         this._camera.position.copy(sensorPosition);
+
+        const point = this._raycast();
+
+        this._camera.focusPoint = point;
 
         this._updateDisplay();
 
@@ -138,8 +149,9 @@ export class Sensor extends Component {
         }
     }
 
-    laserTrack() {
+    _raycast() {
         let dir = new THREE.Vector3(0, 0, -1);
+        let point = new THREE.Vector3();
         dir.applyEuler(this._camera.rotation);
         dir.normalize();
 
@@ -151,16 +163,26 @@ export class Sensor extends Component {
         );
 
         if (intersects.length > 0) {
-            this._target.copy(intersects[0].point);
-            this.gameObject.publish("laser", { target: this._target });
-            this._track = true;
+            point.copy(intersects[0].point);
+            return point;
+        } else {
+            return new THREE.Vector3();
         }
+    }
 
+    _laserTrack() {
         /*
         for ( let i = 0; i < intersects.length; i ++ ) {
             intersects[ i ].object.material.color.set( 0xff0000 );
         }
         */
+
+        const point = this._raycast();
+        if (point) {
+            this._target.copy(point);
+            this.gameObject.publish("laser", { target: this._target });
+            this._track = true;
+        }
     }
 }
 
