@@ -101,7 +101,7 @@ export class Spark extends ParticleSystem {
         1;
         super(parent, {
             numParticles: 400,
-            particleLifetime: 0.75,
+            particleLifetime: 0.5,
             particlesPerSecond: 20,
             texture: "assets/textures/rectangle.png",
             blending: THREE.AdditiveBlending,
@@ -119,16 +119,6 @@ export class Spark extends ParticleSystem {
             const particle = this._particles[unused];
 
             particle.position.copy(pos);
-
-            /*
-            let t1 = 20,
-                t2 = 10;
-            particle.velocity.set(
-                t1 * Math.random() - t2,
-                t1 * Math.random() - t2 * 2,
-                t1 * Math.random() - t2
-            );
-            */
 
             particle.velocity.set(
                 Math.random() - 0.5,

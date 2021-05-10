@@ -1,6 +1,8 @@
 import * as THREE from "three";
 
 export class GameObject {
+    static gameObjectArray = null;
+
     constructor(parent) {
         this.id = this._generateId();
         this.components = [];
@@ -76,6 +78,14 @@ export class GameObject {
 
     get position() {
         return this.transform.position;
+    }
+
+    get rotation() {
+        return this.transform.rotation;
+    }
+
+    set rotation(r) {
+        this.transform.rotation.set(r.x, r.y, r.z);
     }
 
     get root() {

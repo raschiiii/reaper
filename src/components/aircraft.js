@@ -11,15 +11,19 @@ export class Sensor extends Component {
         let down = false;
         this.enabled = false;
 
-        this._laserEl = document.querySelector("#laser");
-        this._altEl = document.querySelector("#alt");
-        this._spdEl = document.querySelector("#spd");
-        this._rngEl = document.querySelector("#rng");
-        this._trgtN = document.querySelector("#trgtN");
-        this._trgtE = document.querySelector("#trgtE");
-        this._zoomEl = document.querySelector("#zoom");
-        this._eEl = document.querySelector("#E");
-        this._nEl = document.querySelector("#N");
+        this._elements = {
+            laser: document.querySelector("#laser"),
+            yaw: document.querySelector("#yaw"),
+            pitch: document.querySelector("#pitch"),
+            alt: document.querySelector("#alt"),
+            speed: document.querySelector("#spd"),
+            range: document.querySelector("#rng"),
+            target_north: document.querySelector("#trgtN"),
+            target_east: document.querySelector("#trgtE"),
+            zoom: document.querySelector("#zoom"),
+            east: document.querySelector("#E"),
+            north: document.querySelector("#N"),
+        };
 
         this._sensorRotation = new THREE.Euler(0, -Math.PI / 2, 0, "YZX");
         this._camera.rotation.copy(this._sensorRotation);
@@ -67,16 +71,16 @@ export class Sensor extends Component {
 
         this.gameObject.subscribe(
             "keydown",
-            (event) => {
+            (e) => {
                 if (!this.enabled) return;
-                switch (event.code) {
+                switch (e.code) {
                     case "KeyT":
                         if (!this._track) {
                             this.laserTrack();
-                            this._laserEl.style.display = "block";
+                            this._elements.laser.style.display = "block";
                         } else {
                             this._track = false;
-                            this._laserEl.style.display = "none";
+                            this._elements.laser.style.display = "none";
                             this._sensorRotation.copy(this._camera.rotation);
                         }
                         break;
@@ -87,34 +91,56 @@ export class Sensor extends Component {
     }
 
     update(_) {
-        let cameraPos = new THREE.Vector3();
-        this._cameraDummy.getWorldPosition(cameraPos);
+        let sensorPosition = new THREE.Vector3();
+        this._cameraDummy.getWorldPosition(sensorPosition);
         this._camera.rotation.copy(this._sensorRotation);
-        this._camera.position.copy(cameraPos);
+        this._camera.position.copy(sensorPosition);
 
-        this._altEl.innerText = `${(this.gameObject.position.y * 10).toFixed(
+        this._updateDisplay();
+
+        if (this._track) {
+            this._camera.lookAt(this._target);
+        }
+    }
+
+    _updateDisplay() {
+        const position = this.gameObject.position;
+        const velocity = this.gameObject.velocity;
+        const rotation = this.gameObject.rotation;
+
+        const pitchOffset = Math.floor(
+            THREE.MathUtils.radToDeg(this._sensorRotation.x - rotation.z)
+        );
+
+        const yawOffset = Math.floor(
+            THREE.MathUtils.radToDeg(this._sensorRotation.y - rotation.y)
+        );
+
+        this._elements.pitch.innerText = `${pitchOffset}`;
+        this._elements.yaw.innerText = `${(yawOffset + 90) % 360}`;
+
+        this._elements.alt.innerText = `${(position.y * 10).toFixed(2)}`;
+        this._elements.speed.innerText = ` ${(velocity.length() * 10).toFixed(
             2
         )}`;
 
-        this._spdEl.innerText = ` ${(
-            this.gameObject.velocity.length() * 10
-        ).toFixed(2)}`;
-
-        this._zoomEl.innerText = `${this._camera.zoom}`;
-        this._eEl.innerText = `${this.gameObject.position.z.toFixed(2)}`;
-        this._nEl.innerText = `${this.gameObject.position.x.toFixed(2)}`;
+        this._elements.zoom.innerText = `${this._camera.zoom}`;
+        this._elements.east.innerText = `${position.z.toFixed(2)}`;
+        this._elements.north.innerText = `${position.x.toFixed(2)}`;
 
         if (this._track) {
-            const distance = cameraPos.distanceTo(this._target);
-            this._rngEl.innerText = `${(distance * 10.0).toFixed(2)}`;
-            this._trgtN.innerText = `${this._target.x.toFixed(2)}`;
-            this._trgtE.innerText = `${this._target.z.toFixed(2)}`;
-
-            this._camera.lookAt(this._target);
+            const distance = this._camera.position.distanceTo(this._target);
+            this._elements.range.innerText = `${(distance * 10.0).toFixed(2)}`;
+            this._elements.target_north.innerText = `${this._target.x.toFixed(
+                2
+            )}`;
+            this._elements.target_east.innerText = `${this._target.z.toFixed(
+                2
+            )}`;
         } else {
-            this._rngEl.innerText = ``;
-            this._trgtN.innerText = ``;
-            this._trgtE.innerText = ``;
+            this._elements.range.innerText = ``;
+            this._elements.target_north.innerText = ``;
+            this._elements.target_east.innerText = ``;
         }
     }
 

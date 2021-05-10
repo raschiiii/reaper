@@ -24,6 +24,7 @@ import {
     SmokeEmitter,
     SmokeTrailEmitter,
 } from "./particles/particle-emitter.js";
+import { GameObject } from "./engine/game-object.js";
 
 // DOM Elements
 const pauseDisplay = document.querySelector("#paused");
@@ -167,6 +168,7 @@ async function init() {
     await Promise.all(promises);
 
     goa = new GameObjectArray();
+    GameObject.gameObjectArray = goa;
     grid = new HashGrid(2);
     factory = new Factory(assets, scene, goa, camera, grid, sensor, listener);
     viewManager = new ViewManager(goa, camera);
