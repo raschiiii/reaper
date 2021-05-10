@@ -103,7 +103,10 @@ export class ParticleSystem {
             });
         }
 
-        const texture = new THREE.TextureLoader().load(params.texture);
+        const texture =
+            params.textureAsset ||
+            new THREE.TextureLoader().load(params.texture);
+
         texture.minFilter = THREE.NearestFilter;
         texture.magFilter = THREE.NearestFilter;
 

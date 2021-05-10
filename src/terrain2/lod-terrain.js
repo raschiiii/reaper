@@ -74,7 +74,8 @@ export class Terrain extends Component {
 
     update(dt, params) {
         const pos = new THREE.Vector3();
-        if (params.camera.focusPoint && params.camera.zoom > 10) {
+        //if (params.camera.focusPoint && params.camera.zoom > 10) {
+        if (params.camera.focusPoint) {
             pos.copy(params.camera.focusPoint);
         } else {
             pos.copy(params.camera.position);

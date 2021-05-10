@@ -2,6 +2,11 @@ import * as THREE from "three";
 
 import { ParticleSystem } from "./particle-system.js";
 
+const HEXAGON = new THREE.TextureLoader().load("assets/textures/hexagon.png");
+const RECTANGLE = new THREE.TextureLoader().load(
+    "assets/textures/rectangle.png"
+);
+
 export class Explosion extends ParticleSystem {
     constructor(parent, texturePath, listener) {
         super(parent, {
@@ -103,7 +108,7 @@ export class Spark extends ParticleSystem {
             numParticles: 400,
             particleLifetime: 0.5,
             particlesPerSecond: 20,
-            texture: "assets/textures/rectangle.png",
+            textureAsset: RECTANGLE,
             blending: THREE.AdditiveBlending,
             alphaDegrading: 0.05,
             scaleValue: 0,
@@ -220,7 +225,8 @@ export class Smoke extends BasicSmoke {
                 numParticles: 200,
                 particleLifetime: 15,
                 particlesPerSecond: 1.2,
-                texture: "assets/textures/hexagon.png",
+                //texture: "assets/textures/hexagon.png",
+                textureAsset: HEXAGON,
                 blending: THREE.NormalBlending,
                 alphaDegrading: 0.0,
                 alphaStartValue: 1.0,
@@ -246,7 +252,8 @@ export class SmokeTrail extends BasicSmoke {
                 numParticles: 500,
                 particleLifetime: 5,
                 particlesPerSecond: 100,
-                texture: "assets/textures/hexagon.png",
+                //texture: "assets/textures/hexagon.png",
+                textureAsset: HEXAGON,
                 blending: THREE.NormalBlending,
                 alphaDegrading: 1.0,
                 alphaStartValue: 1.0,
@@ -270,7 +277,8 @@ export class Explosion2 extends BasicSmoke {
             numParticles: 500,
             particleLifetime: 2.5,
             particlesPerSecond: 20,
-            texture: "assets/textures/hexagon.png",
+            //texture: "assets/textures/hexagon.png",
+            textureAsset: HEXAGON,
             blending: THREE.NormalBlending,
             particlesPerImpact: 3,
             alphaDegrading: 0.0,

@@ -62,7 +62,7 @@ renderer.setClearColor("red");
 renderer.physicallyCorrectLights = true;
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.BasicShadowMap;
-//renderer.setPixelRatio(window.devicePixelRatio / 2); // downsample pixel resolution
+renderer.setPixelRatio(window.devicePixelRatio / 2); // downsample pixel resolution
 
 window.addEventListener(
     "resize",
@@ -85,7 +85,7 @@ sensorRenderer.addPass(new RenderPass(scene, sensor));
 
 // Stats
 const stats = new Stats();
-document.body.appendChild(stats.dom);
+// document.body.appendChild(stats.dom);
 
 // Lights
 const sun = new THREE.DirectionalLight(0xffffff, 3);
@@ -130,6 +130,12 @@ let assets = {
     textures: {
         heightmap: {
             url: "assets/textures/heightmap.png",
+        },
+        hexagon: {
+            url: "assets/textures/hexagon.png",
+        },
+        rectangle: {
+            url: "assets/textures/rectangle.png",
         },
     },
     audio: {
