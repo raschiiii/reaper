@@ -11,7 +11,7 @@ export class Sensor extends Component {
         let down = false;
         this.enabled = false;
 
-        this._elements = {
+        this._elem = {
             laser: document.querySelector("#laser"),
             yaw: document.querySelector("#yaw"),
             pitch: document.querySelector("#pitch"),
@@ -77,10 +77,10 @@ export class Sensor extends Component {
                     case "KeyT":
                         if (!this._track) {
                             this.laserTrack();
-                            this._elements.laser.style.display = "block";
+                            this._elem.laser.style.display = "block";
                         } else {
                             this._track = false;
-                            this._elements.laser.style.display = "none";
+                            this._elem.laser.style.display = "none";
                             this._sensorRotation.copy(this._camera.rotation);
                         }
                         break;
@@ -116,31 +116,25 @@ export class Sensor extends Component {
             THREE.MathUtils.radToDeg(this._sensorRotation.y - rotation.y)
         );
 
-        this._elements.pitch.innerText = `${pitchOffset}`;
-        this._elements.yaw.innerText = `${(yawOffset + 90) % 360}`;
+        this._elem.pitch.innerText = `${pitchOffset}`;
+        this._elem.yaw.innerText = `${(yawOffset + 90) % 360}`;
 
-        this._elements.alt.innerText = `${(position.y * 10).toFixed(2)}`;
-        this._elements.speed.innerText = ` ${(velocity.length() * 10).toFixed(
-            2
-        )}`;
+        this._elem.alt.innerText = `${(position.y * 10).toFixed(2)}`;
+        this._elem.speed.innerText = ` ${(velocity.length() * 10).toFixed(2)}`;
 
-        this._elements.zoom.innerText = `${this._camera.zoom}`;
-        this._elements.east.innerText = `${position.z.toFixed(2)}`;
-        this._elements.north.innerText = `${position.x.toFixed(2)}`;
+        this._elem.zoom.innerText = `${this._camera.zoom}`;
+        this._elem.east.innerText = `${position.z.toFixed(2)}`;
+        this._elem.north.innerText = `${position.x.toFixed(2)}`;
 
         if (this._track) {
             const distance = this._camera.position.distanceTo(this._target);
-            this._elements.range.innerText = `${(distance * 10.0).toFixed(2)}`;
-            this._elements.target_north.innerText = `${this._target.x.toFixed(
-                2
-            )}`;
-            this._elements.target_east.innerText = `${this._target.z.toFixed(
-                2
-            )}`;
+            this._elem.range.innerText = `${(distance * 10.0).toFixed(2)}`;
+            this._elem.target_north.innerText = `${this._target.x.toFixed(2)}`;
+            this._elem.target_east.innerText = `${this._target.z.toFixed(2)}`;
         } else {
-            this._elements.range.innerText = ``;
-            this._elements.target_north.innerText = ``;
-            this._elements.target_east.innerText = ``;
+            this._elem.range.innerText = ``;
+            this._elem.target_north.innerText = ``;
+            this._elem.target_east.innerText = ``;
         }
     }
 
