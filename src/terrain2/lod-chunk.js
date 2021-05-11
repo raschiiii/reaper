@@ -65,6 +65,8 @@ export class Chunk {
             dimensions.x / (65536 / 2)
         );
 
+        const color3 = new THREE.Color(0x523415);
+
         this._plane = new THREE.Mesh(
             new THREE.PlaneGeometry(
                 dimensions.x,
@@ -73,7 +75,7 @@ export class Chunk {
                 _RESOLUTION
             ),
             new THREE.MeshStandardMaterial({
-                color: color2,
+                color: color3,
                 wireframe: false,
                 side: THREE.DoubleSide,
                 flatShading: true,
