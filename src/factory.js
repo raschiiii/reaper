@@ -1,7 +1,6 @@
 import * as THREE from "three";
 
 import { GameObject } from "./engine/game-object.js";
-import { Box } from "./components/shapes.js";
 import { AABB } from "./collision/collision.js";
 import { EventRelay, Explosive, Sound } from "./components/components.js";
 import { Physics } from "./physics/physics.js";
@@ -11,18 +10,13 @@ import {
     SimpleModel,
     PavewayModel,
 } from "./components/model.js";
-import { TerrainManager } from "./terrain/terrain.js";
 import {
     FireControlSystem,
     Hardpoints,
     Sensor,
 } from "./components/aircraft.js";
-import { Label, LaserGuidance, MissileControl } from "./components/weapon.js";
-import {
-    SmokeEmitter,
-    SmokeTrailEmitter,
-} from "./particles/particle-emitter.js";
-import { Terrain } from "./terrain2/lod-terrain.js";
+import { Label, MissileControl } from "./components/weapon.js";
+import { Terrain } from "./terrain/lod-terrain.js";
 
 export class Factory {
     constructor(assets, scene, goa, camera, grid, sensor, listener) {

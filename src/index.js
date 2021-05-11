@@ -17,9 +17,8 @@ import { HashGrid } from "./collision/hashgrid.js";
 import { Explosion2, Spark } from "./particles/particles.js";
 import { ViewManager } from "./view-manager.js";
 import { GameObjectArray } from "./engine/game-object-array.js";
-import { Terrain } from "./terrain2/lod-terrain.js";
+import { Terrain } from "./terrain/lod-terrain.js";
 import { SmokeEmitter } from "./particles/particle-emitter.js";
-import { GameObject } from "./engine/game-object.js";
 import { SensorCamera } from "./components/aircraft.js";
 
 // DOM Elements
@@ -56,7 +55,7 @@ renderer.setClearColor("red");
 renderer.physicallyCorrectLights = true;
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.BasicShadowMap;
-renderer.setPixelRatio(window.devicePixelRatio / 2); // downsample pixel resolution
+//renderer.setPixelRatio(window.devicePixelRatio / 2); // downsample pixel resolution
 
 window.addEventListener(
     "resize",
@@ -89,7 +88,7 @@ sun.shadow.mapSize.width = map_size;
 sun.shadow.mapSize.height = map_size;
 sun.shadow.camera.near = 1;
 sun.shadow.camera.far = 10000;
-const val = 50;
+const val = 100;
 sun.shadow.camera.left = -val;
 sun.shadow.camera.bottom = -val;
 sun.shadow.camera.top = val;

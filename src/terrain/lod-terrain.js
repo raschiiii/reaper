@@ -27,7 +27,7 @@ export class Terrain extends Component {
     }
 
     _build(pos) {
-        const quadtree = new LodQuadtree(65536, 512);
+        const quadtree = new LodQuadtree(65536, 256);
 
         quadtree.insert(pos);
         const children = quadtree.getChildren();
@@ -50,14 +50,12 @@ export class Terrain extends Component {
                     child.size,
                     this._heightmap
                 ),
-                /*
                 buildings: new Buildings(
                     this.root,
                     child.center,
                     child.size,
                     this._heightmap
                 ),
-                */
             };
         }
 
@@ -74,8 +72,8 @@ export class Terrain extends Component {
 
     update(dt, params) {
         const pos = new THREE.Vector3();
-        //if (params.camera.focusPoint && params.camera.zoom > 10) {
-        if (params.camera.focusPoint) {
+        if (params.camera.focusPoint && params.camera.zoom > 5) {
+            //if (params.camera.focusPoint) {
             pos.copy(params.camera.focusPoint);
         } else {
             pos.copy(params.camera.position);

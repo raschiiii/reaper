@@ -12,16 +12,22 @@ export class Buildings {
             );
         }
 
-        if (dimensions.x <= 1024) {
+        if (dimensions.x <= 512) {
             this._buildings = new THREE.Group();
 
             for (let i = 0; i < 10; i++) {
                 const cube = new THREE.Mesh(
-                    new THREE.BoxGeometry(5, 10, 5),
+                    new THREE.BoxGeometry(
+                        THREE.MathUtils.randInt(1, 3),
+                        THREE.MathUtils.randInt(1, 5),
+                        THREE.MathUtils.randInt(1, 3)
+                    ),
                     new THREE.MeshStandardMaterial({
-                        color: 0xff0000,
+                        color: 0x857f76,
                     })
                 );
+
+                cube.castShadow = true;
 
                 cube.position.copy(randomPos());
                 this._buildings.add(cube);
@@ -75,7 +81,7 @@ export class Chunk {
                 _RESOLUTION
             ),
             new THREE.MeshStandardMaterial({
-                color: color3,
+                color: color1,
                 wireframe: false,
                 side: THREE.DoubleSide,
                 flatShading: true,
