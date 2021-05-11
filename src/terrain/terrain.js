@@ -6,7 +6,7 @@ import {
     FixedHeightMap,
     ImageHeightMap,
     RandomHeightMap,
-} from "./heightmap.js";
+} from "../terrain2/heightmap.js";
 
 import { TerrainChunk } from "./terrain-chunk.js";
 

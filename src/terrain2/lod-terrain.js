@@ -1,7 +1,7 @@
 import * as THREE from "three";
 
 import { Component } from "../engine/component";
-import { FixedHeightMap, ImageHeightMap } from "../terrain/heightmap";
+import { FixedHeightMap, ImageHeightMap } from "./heightmap";
 import { LodQuadtree } from "./lod-quadtree";
 import { Buildings, Chunk } from "./lod-chunk";
 
