@@ -141,7 +141,7 @@ let assets = {
 
 let paused = false,
     sensorView = false;
-let grid, goa, aircraft, terrain, heightmap;
+let grid, aircraft, terrain, heightmap;
 let viewManager, factory, explosions, spark, focusCenter;
 
 async function init() {
@@ -169,11 +169,19 @@ async function init() {
     load(new THREE.TextureLoader(), assets.textures);
     await Promise.all(promises);
 
-    goa = new GameObjectArray();
-    GameObject.gameObjectArray = goa;
+    window.gameObjectArray = new GameObjectArray();
+
     grid = new HashGrid(2);
-    factory = new Factory(assets, scene, goa, camera, grid, sensor, listener);
-    viewManager = new ViewManager(goa, camera);
+    factory = new Factory(
+        assets,
+        scene,
+        window.gameObjectArray,
+        camera,
+        grid,
+        sensor,
+        listener
+    );
+    viewManager = new ViewManager(window.gameObjectArray, camera);
     explosions = new Explosion2(scene, listener);
     spark = new Spark(scene);
 
@@ -201,7 +209,7 @@ async function init() {
     }
     */
 
-    goa._addQueued();
+    window.gameObjectArray._addQueued();
     viewManager._init();
 
     document.addEventListener(
@@ -275,7 +283,7 @@ function animate(now) {
     sun.target.position.copy(activeCamera.position);
 
     if (!paused) {
-        goa.forEach((gameObject) => {
+        window.gameObjectArray.forEach((gameObject) => {
             gameObject.update(dt, {
                 camera: activeCamera, // active camera
             });
@@ -335,7 +343,7 @@ function animate(now) {
                     if (viewManager.activeGameObject == gameObject.id) {
                         viewManager.toggle();
                     }
-                    goa.remove(gameObject);
+                    window.gameObjectArray.remove(gameObject);
                     gameObject.destroy();
                 }
             }
