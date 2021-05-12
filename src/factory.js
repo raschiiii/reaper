@@ -16,7 +16,7 @@ import {
     Sensor,
 } from "./components/aircraft.js";
 import { Label, MissileControl } from "./components/weapon.js";
-import { Terrain } from "./terrain/lod-terrain.js";
+import { Terrain } from "./terrain/terrain.js";
 
 export class Factory {
     constructor(assets, scene, goa, camera, grid, sensor, listener) {

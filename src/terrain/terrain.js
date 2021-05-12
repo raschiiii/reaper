@@ -2,8 +2,8 @@ import * as THREE from "three";
 
 import { Component } from "../engine/component";
 import { FixedHeightMap, ImageHeightMap } from "./heightmap";
-import { LodQuadtree } from "./lod-quadtree";
-import { Buildings, Chunk } from "./lod-chunk";
+import { LodQuadtree } from "./quadtree";
+import { Buildings, Chunk } from "./chunk";
 
 export class Terrain extends Component {
     constructor(gameObject, params) {
