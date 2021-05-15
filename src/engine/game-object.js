@@ -1,8 +1,6 @@
 import * as THREE from "three";
 
 export class GameObject {
-    static gameObjectArray = null;
-
     constructor(parent) {
         this.id = this._generateId();
         this.components = [];

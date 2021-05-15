@@ -33,7 +33,8 @@ export class Factory {
         const obj = new GameObject(this.scene);
         obj.position.copy(pos);
         obj.velocity.copy(vel);
-        this.goa.add(obj);
+
+        window.gameObjectArray.add(obj);
 
         obj.addComponent(
             new AirplaneModel(obj, this.assets.gltf.drone.asset, {
@@ -135,7 +136,7 @@ export class Factory {
         );
 
         this.grid.insert(aabb);
-        this.goa.add(obj);
+        window.gameObjectArray.add(obj);
         return obj;
     }
 
