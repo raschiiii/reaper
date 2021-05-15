@@ -20,6 +20,7 @@ import { GameObjectArray } from "./engine/game-object-array.js";
 import { Terrain } from "./terrain/terrain.js";
 import { SmokeEmitter } from "./particles/particle-emitter.js";
 import { SensorCamera } from "./components/aircraft.js";
+import { Game } from "./engine/game.js";
 
 // DOM Elements
 const pauseDisplay = document.querySelector("#paused");
@@ -168,19 +169,19 @@ async function init() {
     load(new THREE.TextureLoader(), assets.textures);
     await Promise.all(promises);
 
-    window.gameObjectArray = new GameObjectArray();
+    window.game = new Game();
 
     grid = new HashGrid(2);
     factory = new Factory(
         assets,
         scene,
-        window.gameObjectArray,
+        window.game.array,
         camera,
         grid,
         sensor,
         listener
     );
-    viewManager = new ViewManager(window.gameObjectArray, camera);
+    viewManager = new ViewManager(window.game.array, camera);
     explosions = new Explosion2(scene, listener);
     spark = new Spark(scene);
 
@@ -208,7 +209,7 @@ async function init() {
     }
     */
 
-    window.gameObjectArray._addQueued();
+    window.game.array._addQueued();
     viewManager._init();
 
     document.addEventListener(
@@ -282,7 +283,7 @@ function animate(now) {
     sun.target.position.copy(activeCamera.position);
 
     if (!paused) {
-        window.gameObjectArray.forEach((gameObject) => {
+        window.game.array.forEach((gameObject) => {
             gameObject.update(dt, {
                 camera: activeCamera, // active camera
             });
@@ -342,7 +343,7 @@ function animate(now) {
                     if (viewManager.activeGameObject == gameObject.id) {
                         viewManager.toggle();
                     }
-                    window.gameObjectArray.remove(gameObject);
+                    window.game.array.remove(gameObject);
                     gameObject.destroy();
                 }
             }

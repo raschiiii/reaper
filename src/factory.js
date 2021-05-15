@@ -34,7 +34,7 @@ export class Factory {
         obj.position.copy(pos);
         obj.velocity.copy(vel);
 
-        window.gameObjectArray.add(obj);
+        window.game.array.add(obj);
 
         obj.addComponent(
             new AirplaneModel(obj, this.assets.gltf.drone.asset, {
@@ -136,7 +136,7 @@ export class Factory {
         );
 
         this.grid.insert(aabb);
-        window.gameObjectArray.add(obj);
+        window.game.array.add(obj);
         return obj;
     }
 

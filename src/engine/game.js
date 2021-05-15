@@ -3,8 +3,7 @@ import { GameEvents } from "./game-events.js";
 
 export class Game {
     constructor() {
-        this.array = new GameObjectArray();
         this.events = new GameEvents();
-        window.game = this;
+        this.array = new GameObjectArray();
     }
 }

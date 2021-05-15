@@ -36,7 +36,7 @@ export class AABB extends Component {
         return this.box.max;
     }
 
-    update(_) {
+    update() {
         this._collided = false;
         this.box.getCenter(this._center);
         this._offset.subVectors(this.gameObject.position, this._center);
