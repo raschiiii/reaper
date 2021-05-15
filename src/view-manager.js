@@ -75,10 +75,7 @@ export class ViewManager {
 
     _init() {
         this._activeIndex = 0;
-        //const newActive = this._goa.array[this._activeIndex];
-        console.log(window.game);
         const newActive = window.game.array.array[this._activeIndex];
-        console.log(newActive);
         this.activeGameObject = newActive.id;
         newActive.addComponent(new PlayerView(newActive, this._camera));
         newActive.addComponent(new PlayerInput(newActive));

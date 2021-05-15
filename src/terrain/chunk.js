@@ -3,7 +3,7 @@ import * as THREE from "three";
 const _RESOLUTION = 10;
 
 export class Buildings {
-    constructor(root, offset, dimensions, heightmap) {
+    constructor(root, offset, dimensions, heightmap, key) {
         function randomPos() {
             return new THREE.Vector3(
                 offset.x + (dimensions.x * Math.random() - dimensions.x / 2),
@@ -13,6 +13,8 @@ export class Buildings {
         }
 
         if (dimensions.x <= 512) {
+            console.log(key, dimensions);
+
             this._buildings = new THREE.Group();
 
             for (let i = 0; i < 10; i++) {
@@ -51,7 +53,7 @@ export class Buildings {
 }
 
 export class Chunk {
-    constructor(root, offset, dimensions, heightmap) {
+    constructor(root, offset, dimensions, heightmap, key) {
         //console.log({offset});
         const t = dimensions.x / (_RESOLUTION - 2);
         dimensions.x += 2 * t;

@@ -2,7 +2,7 @@ import * as THREE from "three";
 
 import { Component } from "../engine/component";
 import { FixedHeightMap, ImageHeightMap } from "./heightmap";
-import { LodQuadtree } from "./quadtree";
+import { Quadtree } from "./quadtree";
 import { Buildings, Chunk } from "./chunk";
 
 export class Terrain extends Component {
@@ -27,7 +27,7 @@ export class Terrain extends Component {
     }
 
     _build(pos) {
-        const quadtree = new LodQuadtree(65536, 256);
+        const quadtree = new Quadtree(65536, 256);
 
         quadtree.insert(pos);
         const children = quadtree.getChildren();
@@ -48,13 +48,15 @@ export class Terrain extends Component {
                     this.root,
                     child.center,
                     child.size,
-                    this._heightmap
+                    this._heightmap,
+                    key
                 ),
                 buildings: new Buildings(
                     this.root,
                     child.center,
                     child.size,
-                    this._heightmap
+                    this._heightmap,
+                    key
                 ),
             };
         }

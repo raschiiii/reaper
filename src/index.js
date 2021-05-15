@@ -190,17 +190,6 @@ async function init() {
     factory.createPickup(heightmap.placeAt(300, 100));
     factory.createPickup(heightmap.placeAt(0, 0));
 
-    /*
-    for (let i = 0; i < 50; i++) {
-        factory.createHouse(
-            heightmap.placeAt(
-                (Math.random() - 0.5) * 200,
-                (Math.random() - 0.5) * 100
-            )
-        );
-    }
-    */
-
     window.game.array._addQueued();
     viewManager._init();
 

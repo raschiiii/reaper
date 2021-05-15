@@ -18,7 +18,7 @@ class Node extends THREE.Box2 {
     }
 }
 
-export class LodQuadtree {
+export class Quadtree {
     constructor(size, minNodeSize) {
         this._root = new Node(
             new THREE.Vector2(-size, -size),
