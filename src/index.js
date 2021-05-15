@@ -172,16 +172,8 @@ async function init() {
     window.game = new Game();
 
     grid = new HashGrid(2);
-    factory = new Factory(
-        assets,
-        scene,
-        window.game.array,
-        camera,
-        grid,
-        sensor,
-        listener
-    );
-    viewManager = new ViewManager(window.game.array, camera);
+    factory = new Factory(assets, scene, camera, grid, sensor, listener);
+    viewManager = new ViewManager(camera);
     explosions = new Explosion2(scene, listener);
     spark = new Spark(scene);
 

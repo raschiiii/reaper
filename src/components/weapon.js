@@ -52,11 +52,10 @@ export class Label extends Component {
 }
 
 export class MissileControl extends Component {
-    constructor(gameObject, id, goa, type = "AGM-114") {
+    constructor(gameObject, id, type = "AGM-114") {
         super(gameObject);
 
         this.id = id;
-        this.goa = goa;
 
         this.gameObject.subscribe("fire", (e) => {
             if (e.hardpoint == this.id) {

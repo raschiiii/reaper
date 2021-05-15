@@ -19,10 +19,9 @@ import { Label, MissileControl } from "./components/weapon.js";
 import { Terrain } from "./terrain/terrain.js";
 
 export class Factory {
-    constructor(assets, scene, goa, camera, grid, sensor, listener) {
+    constructor(assets, scene, camera, grid, sensor, listener) {
         this.assets = assets;
         this.scene = scene;
-        this.goa = goa;
         this.camera = camera;
         this.sensor = sensor;
         this.grid = grid;
@@ -43,7 +42,6 @@ export class Factory {
                 sensor: this.sensor,
             })
         );
-
         obj.addComponent(
             new Sound(obj, this.listener, this.assets.audio.engine.asset, {
                 loop: true,
@@ -51,19 +49,14 @@ export class Factory {
                 autoplay: true,
             })
         );
-
         //obj.addComponent(new Physics(obj, new SpringODE(obj, 1.0, 1.5, 20, -2.7)));
         obj.addComponent(new Physics(obj, new Reaper(obj)));
-
         obj.addComponent(new Sensor(obj, this.sensor));
         obj.addComponent(new FireControlSystem(obj));
-
         obj.addComponent(new AABB(obj));
         obj.addComponent(new Explosive(obj));
-
         //obj.addComponent(new SmokeTrailEmitter(obj));
         //obj.addComponent(new LocalAxis(obj));
-
         const hardpoints = obj.addComponent(new Hardpoints(obj));
         this.createHellfire(obj, hardpoints.h1, 1);
         this.createHellfire(obj, hardpoints.h2, 2);
@@ -83,14 +76,10 @@ export class Factory {
                 scale: new THREE.Vector3(0.1, 0.1, 0.1),
             })
         );
-
         obj.addComponent(new EventRelay(obj, parent, ["fire"]));
         obj.addComponent(new Explosive(obj));
-        obj.addComponent(
-            new MissileControl(obj, hardpointId, this.goa, "AGM-114")
-        );
+        obj.addComponent(new MissileControl(obj, hardpointId, "AGM-114"));
         obj.addComponent(new AABB(obj));
-
         return obj;
     }
 
@@ -103,14 +92,10 @@ export class Factory {
                 scale: new THREE.Vector3(0.1, 0.1, 0.1),
             })
         );
-
         obj.addComponent(new EventRelay(obj, parent, ["fire"]));
         obj.addComponent(new Explosive(obj));
-        obj.addComponent(
-            new MissileControl(obj, hardpointId, this.goa, "GBU-12")
-        );
+        obj.addComponent(new MissileControl(obj, hardpointId, "GBU-12"));
         obj.addComponent(new AABB(obj));
-
         return obj;
     }
 
@@ -155,14 +140,6 @@ export class Factory {
 
     createTerrain() {
         const obj = new GameObject(this.scene);
-        /*
-        obj.addComponent(
-            new TerrainManager(obj, {
-                camera: this.camera,
-                heightmap: this.assets.textures.heightmap.asset.image,
-            })
-        );
-        */
         obj.addComponent(
             new Terrain(obj, {
                 heightmap: this.assets.textures.heightmap.asset.image,

@@ -1,7 +1,6 @@
 import * as THREE from "three";
 
 import { Component } from "../engine/component.js";
-import { ParticleSystem } from "./particle-system.js";
 import { Smoke, SmokeTrail } from "./particles.js";
 
 export class ParticleEmitter extends Component {

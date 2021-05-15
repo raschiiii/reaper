@@ -66,8 +66,8 @@ export class PlayerView extends Component {
 }
 
 export class ViewManager {
-    constructor(goa, camera) {
-        this._goa = goa;
+    constructor(camera) {
+        this._goa = window.game.array;
         this._activeIndex = -1;
         this.activeGameObject = null;
         this._camera = camera;
@@ -75,7 +75,10 @@ export class ViewManager {
 
     _init() {
         this._activeIndex = 0;
-        const newActive = this._goa.array[this._activeIndex];
+        //const newActive = this._goa.array[this._activeIndex];
+        console.log(window.game);
+        const newActive = window.game.array.array[this._activeIndex];
+        console.log(newActive);
         this.activeGameObject = newActive.id;
         newActive.addComponent(new PlayerView(newActive, this._camera));
         newActive.addComponent(new PlayerInput(newActive));
@@ -84,14 +87,14 @@ export class ViewManager {
     setActive(i) {
         if (i == this._activeIndex) return;
 
-        const newActive = this._goa.array[i];
+        const newActive = window.game.array.array[i];
 
         if (!newActive) {
             console.error("error");
             return;
         }
 
-        const oldActive = this._goa.array[this._activeIndex];
+        const oldActive = window.game.array.array[this._activeIndex];
         if (oldActive) {
             oldActive.removeComponent(PlayerView);
             oldActive.removeComponent(PlayerInput);
@@ -107,10 +110,10 @@ export class ViewManager {
     }
 
     toggle() {
-        const n = this._goa.array.length;
+        const n = window.game.array.array.length;
         let i = this._activeIndex;
 
-        const oldActive = this._goa.array[i];
+        const oldActive = window.game.array.array[i];
         if (oldActive) {
             oldActive.removeComponent(PlayerView);
             oldActive.removeComponent(PlayerInput);
@@ -119,7 +122,7 @@ export class ViewManager {
         i = (i + 1) % n;
         this._activeIndex = i;
 
-        let newActive = this._goa.array[i];
+        let newActive = window.game.array.array[i];
 
         if (newActive == undefined) {
             console.error("error");
