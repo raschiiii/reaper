@@ -190,7 +190,7 @@ async function init() {
     factory.createPickup(heightmap.placeAt(300, 100));
     factory.createPickup(heightmap.placeAt(0, 0));
 
-    window.game.array._addQueued();
+    window.game.objects._addQueued();
     viewManager._init();
 
     document.addEventListener(
@@ -264,7 +264,7 @@ function animate(now) {
     sun.target.position.copy(activeCamera.position);
 
     if (!paused) {
-        window.game.array.forEach((gameObject) => {
+        window.game.objects.forEach((gameObject) => {
             gameObject.update(dt, {
                 camera: activeCamera, // active camera
             });
@@ -324,7 +324,7 @@ function animate(now) {
                     if (viewManager.activeGameObject == gameObject.id) {
                         viewManager.toggle();
                     }
-                    window.game.array.remove(gameObject);
+                    window.game.objects.remove(gameObject);
                     gameObject.destroy();
                 }
             }

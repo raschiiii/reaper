@@ -67,7 +67,7 @@ export class PlayerView extends Component {
 
 export class ViewManager {
     constructor(camera) {
-        this._goa = window.game.array;
+        this._goa = window.game.objects;
         this._activeIndex = -1;
         this.activeGameObject = null;
         this._camera = camera;
@@ -75,7 +75,7 @@ export class ViewManager {
 
     _init() {
         this._activeIndex = 0;
-        const newActive = window.game.array.array[this._activeIndex];
+        const newActive = window.game.objects.array[this._activeIndex];
         this.activeGameObject = newActive.id;
         newActive.addComponent(new PlayerView(newActive, this._camera));
         newActive.addComponent(new PlayerInput(newActive));
@@ -84,14 +84,14 @@ export class ViewManager {
     setActive(i) {
         if (i == this._activeIndex) return;
 
-        const newActive = window.game.array.array[i];
+        const newActive = window.game.objects.array[i];
 
         if (!newActive) {
             console.error("error");
             return;
         }
 
-        const oldActive = window.game.array.array[this._activeIndex];
+        const oldActive = window.game.objects.array[this._activeIndex];
         if (oldActive) {
             oldActive.removeComponent(PlayerView);
             oldActive.removeComponent(PlayerInput);
@@ -107,10 +107,10 @@ export class ViewManager {
     }
 
     toggle() {
-        const n = window.game.array.array.length;
+        const n = window.game.objects.array.length;
         let i = this._activeIndex;
 
-        const oldActive = window.game.array.array[i];
+        const oldActive = window.game.objects.array[i];
         if (oldActive) {
             oldActive.removeComponent(PlayerView);
             oldActive.removeComponent(PlayerInput);
@@ -119,7 +119,7 @@ export class ViewManager {
         i = (i + 1) % n;
         this._activeIndex = i;
 
-        let newActive = window.game.array.array[i];
+        let newActive = window.game.objects.array[i];
 
         if (newActive == undefined) {
             console.error("error");

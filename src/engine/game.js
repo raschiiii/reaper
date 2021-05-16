@@ -4,6 +4,6 @@ import { GameEvents } from "./game-events.js";
 export class Game {
     constructor() {
         this.events = new GameEvents();
-        this.array = new GameObjectArray();
+        this.objects = new GameObjectArray();
     }
 }

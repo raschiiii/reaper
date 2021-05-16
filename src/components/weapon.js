@@ -98,7 +98,7 @@ export class MissileControl extends Component {
                     new LaserGuidance(this.gameObject, e.target)
                 );
 
-                window.game.array.add(this.gameObject);
+                window.game.objects.add(this.gameObject);
             }
         });
     }
