@@ -16,7 +16,6 @@ import { Factory } from "./factory.js";
 import { HashGrid } from "./collision/hashgrid.js";
 import { Explosion2, Spark } from "./particles/particles.js";
 import { ViewManager } from "./view-manager.js";
-import { GameObjectArray } from "./engine/game-object-array.js";
 import { Terrain } from "./terrain/terrain.js";
 import { SmokeEmitter } from "./particles/particle-emitter.js";
 import { SensorCamera } from "./components/aircraft.js";
