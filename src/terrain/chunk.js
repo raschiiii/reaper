@@ -19,6 +19,18 @@ const _OBJECTS = {
     ],
 };
 
+class LookupTable {
+    constructor() {
+        this.size = 256;
+    }
+
+    insert(coord) {}
+
+    lookup(coord) {
+        return [];
+    }
+}
+
 export class Buildings {
     constructor(root, offset, dimensions, heightmap, key) {
         function randomPos() {
@@ -125,7 +137,7 @@ export class Chunk {
                 _RESOLUTION
             ),
             new THREE.MeshStandardMaterial({
-                color: color3,
+                color: color1,
                 wireframe: false,
                 side: THREE.DoubleSide,
                 flatShading: true,
