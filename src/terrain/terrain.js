@@ -27,7 +27,7 @@ export class Terrain extends Component {
     }
 
     _build(pos) {
-        const quadtree = new Quadtree(65536, 256);
+        const quadtree = new Quadtree(65536, 512);
 
         quadtree.insert(pos);
         const children = quadtree.getChildren();

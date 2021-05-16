@@ -2,6 +2,23 @@ import * as THREE from "three";
 
 const _RESOLUTION = 10;
 
+const _OBJECTS = {
+    "-256/-256": [
+        {
+            x: 5,
+            z: -4,
+        },
+        {
+            x: 12,
+            z: 13,
+        },
+        {
+            x: -1,
+            z: -4,
+        },
+    ],
+};
+
 export class Buildings {
     constructor(root, offset, dimensions, heightmap, key) {
         function randomPos() {
@@ -13,10 +30,36 @@ export class Buildings {
         }
 
         if (dimensions.x <= 512) {
-            console.log(key, dimensions);
+            console.log(key, dimensions.x);
 
             this._buildings = new THREE.Group();
+            //this._buildings.position.set(offset.x, 0, offset.y);
 
+            if (_OBJECTS[key]) {
+                for (const location of _OBJECTS[key]) {
+                    console.log(location);
+                    const cube = new THREE.Mesh(
+                        new THREE.BoxGeometry(
+                            THREE.MathUtils.randInt(1, 3),
+                            THREE.MathUtils.randInt(1, 5),
+                            THREE.MathUtils.randInt(1, 3)
+                        ),
+                        new THREE.MeshStandardMaterial({
+                            color: 0x857f76,
+                        })
+                    );
+
+                    cube.castShadow = true;
+                    cube.position.set(
+                        location.x,
+                        heightmap.get(location.x, location.z),
+                        location.z
+                    );
+                    this._buildings.add(cube);
+                }
+            }
+
+            /*
             for (let i = 0; i < 10; i++) {
                 const cube = new THREE.Mesh(
                     new THREE.BoxGeometry(
@@ -28,12 +71,11 @@ export class Buildings {
                         color: 0x857f76,
                     })
                 );
-
                 cube.castShadow = true;
-
                 cube.position.copy(randomPos());
                 this._buildings.add(cube);
             }
+            */
             root.add(this._buildings);
         }
     }
@@ -105,7 +147,6 @@ export class Chunk {
         for (let i = 0; i < vertices.length; i = i + 3) {
             const x = vertices[i] + offset.x;
             const y = -vertices[i + 1] + offset.y;
-
             vertices[i + 2] = heightmap.get(x, y);
         }
 
@@ -136,10 +177,8 @@ export class Chunk {
 
     destroy() {
         const parent = this._plane.parent;
-
         this._plane.geometry.dispose();
         this._plane.material.dispose();
-
         parent.remove(this._plane);
     }
 }
