@@ -249,9 +249,9 @@ export class SmokeTrail extends BasicSmoke {
         super(
             parent,
             {
-                numParticles: 500,
-                particleLifetime: 0.2,
-                particlesPerSecond: 200,
+                numParticles: 1000,
+                particleLifetime: 20,
+                particlesPerSecond: 50,
                 //texture: "assets/textures/hexagon.png",
                 textureAsset: HEXAGON,
                 blending: THREE.AdditiveBlending,
@@ -263,7 +263,7 @@ export class SmokeTrail extends BasicSmoke {
                 colorTransition: 0.2,
                 startColor: new THREE.Color("orange"),
                 endColor: new THREE.Color(0x2c2c2c),
-                spread: 0.2,
+                spread: 0.125,
                 velocity: new THREE.Vector3(0.1, 0.3, 0),
             },
             source
