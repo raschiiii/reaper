@@ -38,7 +38,7 @@ camera.add(listener);
 
 camera.setFocalLength(35);
 
-const skyColor = 0x7796c6;
+const skyColor = 0x78c0e0;
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(skyColor);
 scene.fog = new THREE.Fog(skyColor, 15000, 20000);
