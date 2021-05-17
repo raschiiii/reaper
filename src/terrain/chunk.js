@@ -2,33 +2,58 @@ import * as THREE from "three";
 
 const _RESOLUTION = 10;
 
-const _OBJECTS = {
-    "-256/-256": [
-        {
-            x: 5,
-            z: -4,
-        },
-        {
-            x: 12,
-            z: 13,
-        },
-        {
-            x: -1,
-            z: -4,
-        },
-    ],
-};
-
 class LookupTable {
     constructor() {
-        this.size = 256;
+        this._chunkSize = 512;
+        this._maxChunkSize = 1024;
+        this._table = {};
     }
 
-    insert(coord) {}
-
-    lookup(coord) {
-        return [];
+    _hash(pos) {
+        const x = Math.floor(pos.x / this._chunkSize);
+        const y = Math.floor(pos.y / this._chunkSize);
+        return `${x}/${y}`;
     }
+
+    insert(obj) {
+        const key = this._hash(obj.pos);
+        if (this._table[key]) {
+            this._table[key].push(obj);
+        } else {
+            this._table[key] = [obj];
+        }
+    }
+
+    _entry(pos) {
+        return this._table[this._hash(pos)] || [];
+    }
+
+    lookup(pos, size) {
+        if (size.x > this._chunkSize && size.x <= this._maxChunkSize) {
+            //console.log(pos, size);
+
+            const offset = size.x / 2;
+            const newSize = new THREE.Vector3(size.x / 2, size.y / 2);
+            const p1 = this.lookup(new THREE.Vector2(pos.x + offset, pos.y + offset), newSize);
+            const p2 = this.lookup(new THREE.Vector2(pos.x + offset, pos.y - offset), newSize);
+            const p3 = this.lookup(new THREE.Vector2(pos.x - offset, pos.y + offset), newSize);
+            const p4 = this.lookup(new THREE.Vector2(pos.x - offset, pos.y - offset), newSize);
+            return [...p1, ...p2, ...p3, ...p4];
+        } else {
+            return this._entry(pos);
+        }
+    }
+}
+
+const lookupTable = new LookupTable();
+const radius = 60;
+for (let i = 0; i < 50; i++) {
+    lookupTable.insert({
+        pos: new THREE.Vector2(
+            radius * Math.random() - radius / 2,
+            radius * Math.random() - radius / 2
+        ),
+    });
 }
 
 export class Buildings {
@@ -41,38 +66,19 @@ export class Buildings {
             );
         }
 
-        if (dimensions.x <= 512) {
-            console.log(key, dimensions.x);
+        //console.log(dimensions.x);
+
+        const terrainObjects = lookupTable.lookup(offset, dimensions);
+
+        if (terrainObjects.length > 0) {
+            console.log(offset, dimensions, terrainObjects.length);
+
+            //console.log({ locations: terrainObjects });
 
             this._buildings = new THREE.Group();
-            //this._buildings.position.set(offset.x, 0, offset.y);
 
-            if (_OBJECTS[key]) {
-                for (const location of _OBJECTS[key]) {
-                    console.log(location);
-                    const cube = new THREE.Mesh(
-                        new THREE.BoxGeometry(
-                            THREE.MathUtils.randInt(1, 3),
-                            THREE.MathUtils.randInt(1, 5),
-                            THREE.MathUtils.randInt(1, 3)
-                        ),
-                        new THREE.MeshStandardMaterial({
-                            color: 0x857f76,
-                        })
-                    );
-
-                    cube.castShadow = true;
-                    cube.position.set(
-                        location.x,
-                        heightmap.get(location.x, location.z),
-                        location.z
-                    );
-                    this._buildings.add(cube);
-                }
-            }
-
-            /*
-            for (let i = 0; i < 10; i++) {
+            for (const obj of terrainObjects) {
+                const pos = obj.pos;
                 const cube = new THREE.Mesh(
                     new THREE.BoxGeometry(
                         THREE.MathUtils.randInt(1, 3),
@@ -83,11 +89,13 @@ export class Buildings {
                         color: 0x857f76,
                     })
                 );
+
                 cube.castShadow = true;
-                cube.position.copy(randomPos());
+                cube.position.set(pos.x, heightmap.get(pos.x, pos.y), pos.y);
+                cube.rotateY(Math.random());
                 this._buildings.add(cube);
             }
-            */
+
             root.add(this._buildings);
         }
     }
@@ -114,11 +122,7 @@ export class Chunk {
         dimensions.y += 2 * t;
 
         // just for debugging
-        const color1 = new THREE.Color(
-            Math.random(),
-            Math.random(),
-            Math.random()
-        );
+        const color1 = new THREE.Color(Math.random(), Math.random(), Math.random());
 
         const color2 = new THREE.Color();
         color2.lerpColors(
@@ -130,14 +134,9 @@ export class Chunk {
         const color3 = new THREE.Color(0x523415);
 
         this._plane = new THREE.Mesh(
-            new THREE.PlaneGeometry(
-                dimensions.x,
-                dimensions.y,
-                _RESOLUTION,
-                _RESOLUTION
-            ),
+            new THREE.PlaneGeometry(dimensions.x, dimensions.y, _RESOLUTION, _RESOLUTION),
             new THREE.MeshStandardMaterial({
-                color: color3,
+                color: color1,
                 wireframe: false,
                 side: THREE.DoubleSide,
                 flatShading: true,

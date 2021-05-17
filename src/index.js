@@ -179,10 +179,7 @@ async function init() {
     explosions = new Explosion2(scene, listener);
     spark = new Spark(scene);
 
-    aircraft = factory.createAircraft(
-        new THREE.Vector3(-400, 200, 0),
-        new THREE.Vector3(10, 0, 0)
-    );
+    aircraft = factory.createAircraft(new THREE.Vector3(-400, 200, 0), new THREE.Vector3(10, 0, 0));
 
     terrain = factory.createTerrain();
     heightmap = terrain.getComponent(Terrain);
@@ -280,9 +277,7 @@ function animate(now) {
                         let depth = aabb.collide2(oAabb);
                         if (depth != null) {
                             if (!oAabb.gameObject.getComponent(SmokeEmitter)) {
-                                oAabb.gameObject.addComponent(
-                                    new SmokeEmitter(oAabb.gameObject)
-                                );
+                                oAabb.gameObject.addComponent(new SmokeEmitter(oAabb.gameObject));
                                 impactPoint = oAabb.gameObject.position.clone();
                                 gameObject.publish("collision", {
                                     depth: depth,

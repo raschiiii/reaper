@@ -5,17 +5,8 @@ import { AABB } from "./collision/collision.js";
 import { EventRelay, Explosive, Sound } from "./components/components.js";
 import { Physics } from "./physics/physics.js";
 import { Reaper } from "./physics/reaper.js";
-import {
-    AirplaneModel,
-    SimpleModel,
-    PavewayModel,
-    WreckModel,
-} from "./components/model.js";
-import {
-    FireControlSystem,
-    Hardpoints,
-    Sensor,
-} from "./components/aircraft.js";
+import { AirplaneModel, SimpleModel, PavewayModel, WreckModel } from "./components/model.js";
+import { FireControlSystem, Hardpoints, Sensor } from "./components/aircraft.js";
 import { Label, MissileControl } from "./components/weapon.js";
 import { Terrain } from "./terrain/terrain.js";
 
@@ -93,15 +84,11 @@ export class Factory {
 
         obj.addComponent(new SimpleModel(obj, this.assets.gltf.pickup.asset));
 
-        obj.addComponent(
-            new WreckModel(obj, this.assets.gltf.pickup_wreck.asset)
-        );
+        obj.addComponent(new WreckModel(obj, this.assets.gltf.pickup_wreck.asset));
 
         obj.addComponent(new Label(obj));
         obj.addComponent(new Explosive(obj));
-        const aabb = obj.addComponent(
-            new AABB(obj, new THREE.Vector3(2, 2, 2))
-        );
+        const aabb = obj.addComponent(new AABB(obj, new THREE.Vector3(2, 2, 2)));
 
         this.grid.insert(aabb);
         window.game.objects.add(obj);

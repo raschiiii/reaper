@@ -3,9 +3,7 @@ import * as THREE from "three";
 import { ParticleSystem } from "./particle-system.js";
 
 const HEXAGON = new THREE.TextureLoader().load("assets/textures/hexagon.png");
-const RECTANGLE = new THREE.TextureLoader().load(
-    "assets/textures/rectangle.png"
-);
+const RECTANGLE = new THREE.TextureLoader().load("assets/textures/rectangle.png");
 
 export class Explosion extends ParticleSystem {
     constructor(parent, texturePath, listener) {
@@ -93,9 +91,7 @@ export class Explosion extends ParticleSystem {
         }
 
         this._points.material.uniforms.pointMultiplier.value =
-            (window.innerHeight /
-                (2.0 * Math.tan((0.5 * 60.0 * Math.PI) / 180.0))) *
-            camera.zoom;
+            (window.innerHeight / (2.0 * Math.tan((0.5 * 60.0 * Math.PI) / 180.0))) * camera.zoom;
         this._updateParticles(dt);
         this._updateGeometry();
     }
@@ -125,11 +121,7 @@ export class Spark extends ParticleSystem {
 
             particle.position.copy(pos);
 
-            particle.velocity.set(
-                Math.random() - 0.5,
-                Math.random() - 0.5,
-                Math.random() - 0.5
-            );
+            particle.velocity.set(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
             particle.velocity.normalize();
             particle.velocity.multiplyScalar(5);
 
@@ -143,9 +135,7 @@ export class Spark extends ParticleSystem {
 
     update(dt, camera) {
         this._points.material.uniforms.pointMultiplier.value =
-            (window.innerHeight /
-                (2.0 * Math.tan((0.5 * 60.0 * Math.PI) / 180.0))) *
-            camera.zoom;
+            (window.innerHeight / (2.0 * Math.tan((0.5 * 60.0 * Math.PI) / 180.0))) * camera.zoom;
         this._updateParticles(dt);
         this._updateGeometry();
     }
@@ -161,17 +151,11 @@ export class BasicSmoke extends ParticleSystem {
         const particle = this._particles[unused];
 
         particle.position.x =
-            this._source.x +
-            this.params.spread * Math.random() -
-            this.params.spread / 2;
+            this._source.x + this.params.spread * Math.random() - this.params.spread / 2;
         particle.position.y =
-            this._source.y +
-            this.params.spread * Math.random() -
-            this.params.spread / 2;
+            this._source.y + this.params.spread * Math.random() - this.params.spread / 2;
         particle.position.z =
-            this._source.z +
-            this.params.spread * Math.random() -
-            this.params.spread / 2;
+            this._source.z + this.params.spread * Math.random() - this.params.spread / 2;
 
         particle.velocity.copy(this.params.velocity);
         particle.lifetime = this.params.particleLifetime;
@@ -199,8 +183,7 @@ export class BasicSmoke extends ParticleSystem {
                     particle.alpha -= this.params.alphaDegrading * dt;
                     particle.rotation += dt * this.params.rotationValue;
 
-                    particle.lerpValue +=
-                        (1.0 / this.params.colorTransition) * dt;
+                    particle.lerpValue += (1.0 / this.params.colorTransition) * dt;
                     particle.lerpValue = Math.min(particle.lerpValue, 1.0);
 
                     particle.color.lerpColors(
@@ -357,9 +340,7 @@ export class Explosion2 extends BasicSmoke {
 
     update(dt, camera) {
         this._points.material.uniforms.pointMultiplier.value =
-            (window.innerHeight /
-                (2.0 * Math.tan((0.5 * 60.0 * Math.PI) / 180.0))) *
-            camera.zoom;
+            (window.innerHeight / (2.0 * Math.tan((0.5 * 60.0 * Math.PI) / 180.0))) * camera.zoom;
         this._updateParticles(dt);
         this._updateGeometry();
     }

@@ -60,12 +60,7 @@ function createDataTexture() {
 
     console.log(data.length == width * height * 3);
 
-    const ditherTex = new THREE.DataTexture(
-        data,
-        width,
-        height,
-        THREE.RGBFormat
-    );
+    const ditherTex = new THREE.DataTexture(data, width, height, THREE.RGBFormat);
 
     ditherTex.minFilter = THREE.NearestFilter;
     ditherTex.magFilter = THREE.NearestFilter;
@@ -103,9 +98,7 @@ export class ParticleSystem {
             });
         }
 
-        const texture =
-            params.textureAsset ||
-            new THREE.TextureLoader().load(params.texture);
+        const texture = params.textureAsset || new THREE.TextureLoader().load(params.texture);
 
         texture.minFilter = THREE.NearestFilter;
         texture.magFilter = THREE.NearestFilter;
@@ -116,8 +109,7 @@ export class ParticleSystem {
             },
             pointMultiplier: {
                 value:
-                    (window.innerHeight /
-                        (2.0 * Math.tan((0.5 * 60.0 * Math.PI) / 180.0))) *
+                    (window.innerHeight / (2.0 * Math.tan((0.5 * 60.0 * Math.PI) / 180.0))) *
                     this._zoom,
             },
         };
@@ -150,11 +142,7 @@ export class ParticleSystem {
     }
 
     _findUnusedParticle() {
-        for (
-            let i = this._lastUsedParticle;
-            i < this.params.numParticles;
-            i++
-        ) {
+        for (let i = this._lastUsedParticle; i < this.params.numParticles; i++) {
             if (this._particles[i].lifetime <= 0) {
                 this._lastUsedParticle = i;
                 return i;
@@ -187,18 +175,9 @@ export class ParticleSystem {
             "position",
             new THREE.Float32BufferAttribute(positions, 3)
         );
-        this._points.geometry.setAttribute(
-            "size",
-            new THREE.Float32BufferAttribute(sizes, 1)
-        );
-        this._points.geometry.setAttribute(
-            "angle",
-            new THREE.Float32BufferAttribute(angles, 1)
-        );
-        this._points.geometry.setAttribute(
-            "colour",
-            new THREE.Float32BufferAttribute(colours, 4)
-        );
+        this._points.geometry.setAttribute("size", new THREE.Float32BufferAttribute(sizes, 1));
+        this._points.geometry.setAttribute("angle", new THREE.Float32BufferAttribute(angles, 1));
+        this._points.geometry.setAttribute("colour", new THREE.Float32BufferAttribute(colours, 4));
         this._points.geometry.attributes.position.needsUpdate = true;
         this._points.geometry.attributes.size.needsUpdate = true;
         this._points.geometry.attributes.colour.needsUpdate = true;
@@ -256,9 +235,7 @@ export class ParticleSystem {
 
     update(dt, camera) {
         this._points.material.uniforms.pointMultiplier.value =
-            (window.innerHeight /
-                (2.0 * Math.tan((0.5 * 60.0 * Math.PI) / 180.0))) *
-            camera.zoom;
+            (window.innerHeight / (2.0 * Math.tan((0.5 * 60.0 * Math.PI) / 180.0))) * camera.zoom;
 
         this._createParticles(dt);
         this._updateParticles(dt);

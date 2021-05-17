@@ -6,13 +6,11 @@ export class SimpleModel extends Component {
         super(gameObject);
 
         params = params || {};
-        const rotation =
-            params.rotation || new THREE.Vector3(0, Math.PI / 2, 0);
         const position = params.position || new THREE.Vector3();
         const scale = params.scale || new THREE.Vector3(0.1, 0.1, 0.1);
+        const rotation = params.rotation || new THREE.Vector3(0, Math.PI / 2, 0);
 
         this.model = gltf.scene.clone();
-
         this.model.position.copy(position);
         this.model.rotateX(rotation.x);
         this.model.rotateY(rotation.y);
