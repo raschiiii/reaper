@@ -137,7 +137,7 @@ export class Chunk {
                 _RESOLUTION
             ),
             new THREE.MeshStandardMaterial({
-                color: color1,
+                color: color3,
                 wireframe: false,
                 side: THREE.DoubleSide,
                 flatShading: true,

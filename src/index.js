@@ -119,6 +119,9 @@ let assets = {
         house_1: {
             url: "assets/objects/House_1.glb",
         },
+        pickup_wreck: {
+            url: "assets/objects/Pickup_wreck.glb",
+        },
     },
     textures: {
         heightmap: {

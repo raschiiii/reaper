@@ -1,14 +1,14 @@
 import * as THREE from "three";
 import { Component } from "../engine/component.js";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 export class SimpleModel extends Component {
     constructor(gameObject, gltf, params) {
         super(gameObject);
 
-        let rotation = params.rotation ? params.rotation : new THREE.Vector3();
-        let position = params.position ? params.position : new THREE.Vector3();
-        let scale = params.scale ? params.scale : new THREE.Vector3(1, 1, 1);
+        params = params || {};
+        let rotation = params.rotation || new THREE.Vector3(0, Math.PI / 2, 0);
+        let position = params.position || new THREE.Vector3();
+        let scale = params.scale || new THREE.Vector3(0.1, 0.1, 0.1);
 
         this.model = gltf.scene.clone();
 
@@ -40,14 +40,21 @@ export class SimpleModel extends Component {
     }
 }
 
+export class WreckModel extends SimpleModel {
+    constructor(gameObject, gltf, params) {
+        super(gameObject, gltf, params);
+        this.model.visible = false;
+        this.gameObject.subscribe("collision", () => {
+            this.model.visible = true;
+        });
+    }
+}
+
 export class PavewayModel extends SimpleModel {
     constructor(gameObject, gltf, params) {
         super(gameObject, gltf, params);
-
         const wings = this.gameObject.transform.getObjectByName("Wings");
         wings.visible = false;
-        // console.log({ wings });
-
         this.gameObject.subscribe("wings", (event) => {
             console.log("fire paveway");
             wings.visible = true;
@@ -59,10 +66,11 @@ export class AirplaneModel extends Component {
     constructor(gameObject, gltf, params) {
         super(gameObject);
 
+        params = params || {};
+        let rotation = params.rotation || new THREE.Vector3(0, Math.PI / 2, 0);
+        let position = params.position || new THREE.Vector3();
+        let scale = params.scale || new THREE.Vector3(0.1, 0.1, 0.1);
         this.sensorCamera = params.sensor;
-        let rotation = params.rotation ? params.rotation : new THREE.Vector3();
-        let position = params.position ? params.position : new THREE.Vector3();
-        let scale = params.scale ? params.scale : new THREE.Vector3(1, 1, 1);
 
         this.model = gltf.scene;
         this.model.position.copy(position);

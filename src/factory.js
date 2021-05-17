@@ -9,6 +9,7 @@ import {
     AirplaneModel,
     SimpleModel,
     PavewayModel,
+    WreckModel,
 } from "./components/model.js";
 import {
     FireControlSystem,
@@ -37,8 +38,6 @@ export class Factory {
 
         obj.addComponent(
             new AirplaneModel(obj, this.assets.gltf.drone.asset, {
-                rotation: new THREE.Vector3(0, Math.PI / 2, 0),
-                scale: new THREE.Vector3(0.1, 0.1, 0.1),
                 sensor: this.sensor,
             })
         );
@@ -55,27 +54,22 @@ export class Factory {
         obj.addComponent(new FireControlSystem(obj));
         obj.addComponent(new AABB(obj));
         obj.addComponent(new Explosive(obj));
-        //obj.addComponent(new SmokeTrailEmitter(obj));
-        //obj.addComponent(new LocalAxis(obj));
         const hardpoints = obj.addComponent(new Hardpoints(obj));
+
         this.createHellfire(obj, hardpoints.h1, 1);
         this.createHellfire(obj, hardpoints.h2, 2);
         this.createHellfire(obj, hardpoints.h3, 3);
         this.createHellfire(obj, hardpoints.h4, 4);
         this.createPaveway(obj, hardpoints.h5, 5);
         this.createPaveway(obj, hardpoints.h6, 6);
+
         return obj;
     }
 
     createHellfire(parent, transform, hardpointId) {
         let obj = new GameObject(transform);
 
-        obj.addComponent(
-            new SimpleModel(obj, this.assets.gltf.hellfire.asset, {
-                rotation: new THREE.Vector3(0, Math.PI / 2, 0),
-                scale: new THREE.Vector3(0.1, 0.1, 0.1),
-            })
-        );
+        obj.addComponent(new SimpleModel(obj, this.assets.gltf.hellfire.asset));
         obj.addComponent(new EventRelay(obj, parent, ["fire"]));
         obj.addComponent(new Explosive(obj));
         obj.addComponent(new MissileControl(obj, hardpointId, "AGM-114"));
@@ -86,12 +80,7 @@ export class Factory {
     createPaveway(parent, transform, hardpointId) {
         let obj = new GameObject(transform);
 
-        obj.addComponent(
-            new PavewayModel(obj, this.assets.gltf.paveway.asset, {
-                rotation: new THREE.Vector3(0, Math.PI / 2, 0),
-                scale: new THREE.Vector3(0.1, 0.1, 0.1),
-            })
-        );
+        obj.addComponent(new PavewayModel(obj, this.assets.gltf.paveway.asset));
         obj.addComponent(new EventRelay(obj, parent, ["fire"]));
         obj.addComponent(new Explosive(obj));
         obj.addComponent(new MissileControl(obj, hardpointId, "GBU-12"));
@@ -103,19 +92,16 @@ export class Factory {
         let obj = new GameObject(this.scene);
         obj.position.copy(pos);
 
+        obj.addComponent(new SimpleModel(obj, this.assets.gltf.pickup.asset));
+
         obj.addComponent(
-            new SimpleModel(obj, this.assets.gltf.pickup.asset, {
-                rotation: new THREE.Vector3(0, Math.PI / 2, 0),
-                scale: new THREE.Vector3(0.1, 0.1, 0.1),
-            })
+            new WreckModel(obj, this.assets.gltf.pickup_wreck.asset)
         );
 
         obj.addComponent(new Label(obj));
         obj.addComponent(new Explosive(obj));
-
         //obj.addComponent(new Box(obj, { castShadow: true }));
         //obj.addComponent(new SmokeEmitter(obj));
-
         const aabb = obj.addComponent(
             new AABB(obj, new THREE.Vector3(2, 2, 2))
         );
