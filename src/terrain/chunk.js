@@ -29,18 +29,24 @@ class LookupTable {
     }
 
     lookup(pos, size) {
-        if (size.x > this._chunkSize && size.x <= this._maxChunkSize) {
-            //console.log(pos, size);
+        if (size.x <= this._maxChunkSize) {
+            if (size.x > this._chunkSize) {
+                console.log("recurse");
 
-            const offset = size.x / 2;
-            const newSize = new THREE.Vector3(size.x / 2, size.y / 2);
-            const p1 = this.lookup(new THREE.Vector2(pos.x + offset, pos.y + offset), newSize);
-            const p2 = this.lookup(new THREE.Vector2(pos.x + offset, pos.y - offset), newSize);
-            const p3 = this.lookup(new THREE.Vector2(pos.x - offset, pos.y + offset), newSize);
-            const p4 = this.lookup(new THREE.Vector2(pos.x - offset, pos.y - offset), newSize);
-            return [...p1, ...p2, ...p3, ...p4];
+                const offset = size.x / 2;
+                const newSize = new THREE.Vector3(size.x / 2, size.y / 2);
+                const p1 = this.lookup(new THREE.Vector2(pos.x + offset, pos.y + offset), newSize);
+                const p2 = this.lookup(new THREE.Vector2(pos.x + offset, pos.y - offset), newSize);
+                const p3 = this.lookup(new THREE.Vector2(pos.x - offset, pos.y + offset), newSize);
+                const p4 = this.lookup(new THREE.Vector2(pos.x - offset, pos.y - offset), newSize);
+
+                return [...p1, ...p2, ...p3, ...p4];
+            } else {
+                //console.log(pos);
+                return this._entry(pos);
+            }
         } else {
-            return this._entry(pos);
+            return [];
         }
     }
 }
@@ -71,7 +77,8 @@ export class Buildings {
         const terrainObjects = lookupTable.lookup(offset, dimensions);
 
         if (terrainObjects.length > 0) {
-            console.log(offset, dimensions, terrainObjects.length);
+            console.log(offset, dimensions.x, terrainObjects.length);
+            console.log(terrainObjects);
 
             //console.log({ locations: terrainObjects });
 
