@@ -79,7 +79,6 @@ export class Factory {
 
     createPaveway(parent, transform, hardpointId) {
         let obj = new GameObject(transform);
-
         obj.addComponent(new PavewayModel(obj, this.assets.gltf.paveway.asset));
         obj.addComponent(new EventRelay(obj, parent, ["fire"]));
         obj.addComponent(new Explosive(obj));
@@ -100,8 +99,6 @@ export class Factory {
 
         obj.addComponent(new Label(obj));
         obj.addComponent(new Explosive(obj));
-        //obj.addComponent(new Box(obj, { castShadow: true }));
-        //obj.addComponent(new SmokeEmitter(obj));
         const aabb = obj.addComponent(
             new AABB(obj, new THREE.Vector3(2, 2, 2))
         );
