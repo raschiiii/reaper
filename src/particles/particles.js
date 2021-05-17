@@ -252,7 +252,6 @@ export class SmokeTrail extends BasicSmoke {
                 numParticles: 1000,
                 particleLifetime: 20,
                 particlesPerSecond: 50,
-                //texture: "assets/textures/hexagon.png",
                 textureAsset: HEXAGON,
                 blending: THREE.AdditiveBlending,
                 alphaDegrading: 1.0,
