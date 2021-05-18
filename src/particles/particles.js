@@ -94,7 +94,6 @@ export class Explosion extends ParticleSystem {
 
 export class Spark extends ParticleSystem {
     constructor(parent) {
-        1;
         super(parent, {
             numParticles: 400,
             particleLifetime: 0.75,
