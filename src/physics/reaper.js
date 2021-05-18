@@ -36,6 +36,7 @@ export class Reaper extends FlightmodelODE {
             KeyW: false,
             KeyS: false,
             KeyW: false,
+            KeyV: false,
             ShiftLeft: false,
             CapsLock: false,
         };
@@ -47,10 +48,12 @@ export class Reaper extends FlightmodelODE {
             switch (event.code) {
                 case "KeyA":
                     this.keys.KeyA = true;
+                    this.keys.KeyV = false;
                     break;
 
                 case "KeyD":
                     this.keys.KeyD = true;
+                    this.keys.KeyV = false;
                     break;
 
                 case "KeyW":
@@ -67,6 +70,10 @@ export class Reaper extends FlightmodelODE {
 
                 case "CapsLock":
                     this.throttle -= 10;
+                    break;
+
+                case "KeyV":
+                    this.keys.KeyV = !this.keys.KeyV;
                     break;
             }
         });
@@ -106,8 +113,10 @@ export class Reaper extends FlightmodelODE {
         if (this.keys.KeyA) this.bank += bankSensitivity * dt;
         if (this.keys.KeyD) this.bank -= bankSensitivity * dt;
 
-        const bankReturnFactor = 0.25;
-        this.bank += -this.bank * bankReturnFactor * dt;
+        if (!this.keys.KeyV) {
+            const bankReturnFactor = 0.25;
+            this.bank += -this.bank * bankReturnFactor * dt;
+        }
 
         this.display1.innerText = `alpha: ${this.alpha.toFixed(2)}`;
         this.display2.innerText = `throttle: ${this.throttle.toFixed(2)}`;

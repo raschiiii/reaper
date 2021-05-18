@@ -40,10 +40,7 @@ export class Sensor extends Component {
         this._cameraDummy.position.y -= 0.1;
         this.gameObject.transform.add(this._cameraDummy);
 
-        this._raycaster = new THREE.Raycaster(
-            new THREE.Vector3(),
-            new THREE.Vector3(0, -1, 0)
-        );
+        this._raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, -1, 0));
 
         this.gameObject.subscribe("sensor", (event) => {
             this.enabled = event.enabled;
@@ -52,21 +49,22 @@ export class Sensor extends Component {
         this.gameObject.subscribe("pointermove", (event) => {
             if (!this.enabled) return;
             if (down) {
-                this._sensorRotation.y -=
-                    (event.movementX * 0.01) / this._camera.zoom;
-                this._sensorRotation.x -=
-                    (event.movementY * 0.01) / this._camera.zoom;
+                this._sensorRotation.y -= (event.movementX * 0.01) / this._camera.zoom;
+                this._sensorRotation.x -= (event.movementY * 0.01) / this._camera.zoom;
             }
         });
 
         this.gameObject.subscribe("pointerdown", (event) => {
             if (!this.enabled) return;
             down = true;
+            this._track = false;
         });
 
         this.gameObject.subscribe("pointerup", (event) => {
             if (!this.enabled) return;
             down = false;
+
+            this._laserTrack();
         });
 
         this.gameObject.subscribe("wheel", (event) => {
@@ -123,9 +121,7 @@ export class Sensor extends Component {
             THREE.MathUtils.radToDeg(this._sensorRotation.x - rotation.z)
         );
 
-        const yawOffset = Math.floor(
-            THREE.MathUtils.radToDeg(this._sensorRotation.y - rotation.y)
-        );
+        const yawOffset = Math.floor(THREE.MathUtils.radToDeg(this._sensorRotation.y - rotation.y));
 
         this._elem.pitch.innerText = `${pitchOffset}`;
         this._elem.yaw.innerText = `${(yawOffset + 90) % 360}`;
@@ -157,10 +153,7 @@ export class Sensor extends Component {
 
         this._raycaster.set(this._camera.position, dir);
 
-        const intersects = this._raycaster.intersectObjects(
-            this.gameObject.root.children,
-            true
-        );
+        const intersects = this._raycaster.intersectObjects(this.gameObject.root.children, true);
 
         if (intersects.length > 0) {
             point.copy(intersects[0].point);
