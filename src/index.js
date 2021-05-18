@@ -78,7 +78,7 @@ sensorRenderer.addPass(new RenderPass(scene, sensor));
 
 // Stats
 const stats = new Stats();
-// document.body.appendChild(stats.dom);
+document.body.appendChild(stats.dom);
 
 // Lights
 const sun = new THREE.DirectionalLight(0xffffff, 3);

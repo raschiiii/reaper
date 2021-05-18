@@ -37,6 +37,7 @@ span {
 
 #sensor {
     display: none;
+    text-shadow: 0 0 3px black;
 }
 
 #text {
