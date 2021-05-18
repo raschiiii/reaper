@@ -31,18 +31,14 @@ class LookupTable {
     lookup(pos, size) {
         if (size.x <= this._maxChunkSize) {
             if (size.x > this._chunkSize) {
-                console.log("recurse");
-
-                const offset = size.x / 2;
+                const offset = size.x / 4;
                 const newSize = new THREE.Vector3(size.x / 2, size.y / 2);
                 const p1 = this.lookup(new THREE.Vector2(pos.x + offset, pos.y + offset), newSize);
                 const p2 = this.lookup(new THREE.Vector2(pos.x + offset, pos.y - offset), newSize);
                 const p3 = this.lookup(new THREE.Vector2(pos.x - offset, pos.y + offset), newSize);
                 const p4 = this.lookup(new THREE.Vector2(pos.x - offset, pos.y - offset), newSize);
-
                 return [...p1, ...p2, ...p3, ...p4];
             } else {
-                //console.log(pos);
                 return this._entry(pos);
             }
         } else {
@@ -52,7 +48,7 @@ class LookupTable {
 }
 
 const lookupTable = new LookupTable();
-const radius = 60;
+const radius = 100;
 for (let i = 0; i < 50; i++) {
     lookupTable.insert({
         pos: new THREE.Vector2(
@@ -61,6 +57,21 @@ for (let i = 0; i < 50; i++) {
         ),
     });
 }
+
+/*
+lookupTable.insert({
+    pos: new THREE.Vector2(10, 10),
+});
+lookupTable.insert({
+    pos: new THREE.Vector2(10, -10),
+});
+lookupTable.insert({
+    pos: new THREE.Vector2(-10, 10),
+});
+lookupTable.insert({
+    pos: new THREE.Vector2(-10, -10),
+});
+*/
 
 export class Buildings {
     constructor(root, offset, dimensions, heightmap, key) {
@@ -72,16 +83,9 @@ export class Buildings {
             );
         }
 
-        //console.log(dimensions.x);
-
         const terrainObjects = lookupTable.lookup(offset, dimensions);
 
         if (terrainObjects.length > 0) {
-            console.log(offset, dimensions.x, terrainObjects.length);
-            console.log(terrainObjects);
-
-            //console.log({ locations: terrainObjects });
-
             this._buildings = new THREE.Group();
 
             for (const obj of terrainObjects) {
@@ -143,7 +147,7 @@ export class Chunk {
         this._plane = new THREE.Mesh(
             new THREE.PlaneGeometry(dimensions.x, dimensions.y, _RESOLUTION, _RESOLUTION),
             new THREE.MeshStandardMaterial({
-                color: color1,
+                color: color3,
                 wireframe: false,
                 side: THREE.DoubleSide,
                 flatShading: true,
