@@ -290,17 +290,10 @@ function animate(now) {
                     }
                 }
 
-                const terrainHeight = heightmap.getHeight(
-                    gameObject.position.x,
-                    gameObject.position.z
-                );
+                const terrainHeight = heightmap.getHeight(gameObject.position.x, gameObject.position.z);
 
                 if (gameObject.position.y < terrainHeight) {
-                    impactPoint = new THREE.Vector3(
-                        gameObject.position.x,
-                        terrainHeight,
-                        gameObject.position.z
-                    );
+                    impactPoint = new THREE.Vector3(gameObject.position.x, terrainHeight, gameObject.position.z);
 
                     gameObject.publish("collision", {}); // TODO calculate depth
 

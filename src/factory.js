@@ -9,14 +9,15 @@ import { AirplaneModel, SimpleModel, PavewayModel, WreckModel } from "./componen
 import { FireControlSystem, Hardpoints, Sensor } from "./components/aircraft.js";
 import { Label, MissileControl } from "./components/weapon.js";
 import { Terrain } from "./terrain/terrain.js";
+import { SmokeEmitter } from "./particles/particle-emitter.js";
 
 export class Factory {
     constructor(assets, scene, camera, grid, sensor, listener) {
-        this.assets = assets;
+        this.grid = grid;
         this.scene = scene;
         this.camera = camera;
         this.sensor = sensor;
-        this.grid = grid;
+        this.assets = assets;
         this.listener = listener;
     }
 
@@ -81,15 +82,12 @@ export class Factory {
     createPickup(pos) {
         let obj = new GameObject(this.scene);
         obj.position.copy(pos);
-
         obj.addComponent(new SimpleModel(obj, this.assets.gltf.pickup.asset));
-
         obj.addComponent(new WreckModel(obj, this.assets.gltf.pickup_wreck.asset));
-
+        obj.addComponent(new SmokeEmitter(obj));
         obj.addComponent(new Label(obj));
         obj.addComponent(new Explosive(obj));
         const aabb = obj.addComponent(new AABB(obj, new THREE.Vector3(2, 2, 2)));
-
         this.grid.insert(aabb);
         window.game.objects.add(obj);
         return obj;

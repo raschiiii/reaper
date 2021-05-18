@@ -116,9 +116,7 @@ export class Sensor extends Component {
         const velocity = this.gameObject.velocity;
         const rotation = this.gameObject.rotation;
 
-        const pitchOffset = Math.floor(
-            THREE.MathUtils.radToDeg(this._sensorRotation.x - rotation.z)
-        );
+        const pitchOffset = Math.floor(THREE.MathUtils.radToDeg(this._sensorRotation.x - rotation.z));
 
         const yawOffset = Math.floor(THREE.MathUtils.radToDeg(this._sensorRotation.y - rotation.y));
 

@@ -51,10 +51,7 @@ const lookupTable = new LookupTable();
 const radius = 100;
 for (let i = 0; i < 50; i++) {
     lookupTable.insert({
-        pos: new THREE.Vector2(
-            radius * Math.random() - radius / 2,
-            radius * Math.random() - radius / 2
-        ),
+        pos: new THREE.Vector2(radius * Math.random() - radius / 2, radius * Math.random() - radius / 2),
     });
 }
 
@@ -133,11 +130,7 @@ export class Chunk {
         const color1 = new THREE.Color(Math.random(), Math.random(), Math.random());
 
         const color2 = new THREE.Color();
-        color2.lerpColors(
-            new THREE.Color(0x523415),
-            new THREE.Color(0x745c43),
-            dimensions.x / (65536 / 2)
-        );
+        color2.lerpColors(new THREE.Color(0x523415), new THREE.Color(0x745c43), dimensions.x / (65536 / 2));
 
         const color3 = new THREE.Color(0x523415);
 

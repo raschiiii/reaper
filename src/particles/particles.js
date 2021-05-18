@@ -32,12 +32,7 @@ export class Explosion extends ParticleSystem {
         (async () => {
             const audioLoader = new THREE.AudioLoader();
             const buffer = await new Promise((resolve, reject) => {
-                audioLoader.load(
-                    "assets/audio/explosion.mp3",
-                    (data) => resolve(data),
-                    null,
-                    reject
-                );
+                audioLoader.load("assets/audio/explosion.mp3", (data) => resolve(data), null, reject);
             });
             this.sound = new THREE.PositionalAudio(listener);
             this.sound.setBuffer(buffer);
@@ -150,12 +145,9 @@ export class BasicSmoke extends ParticleSystem {
     _createParticle(unused) {
         const particle = this._particles[unused];
 
-        particle.position.x =
-            this._source.x + this.params.spread * Math.random() - this.params.spread / 2;
-        particle.position.y =
-            this._source.y + this.params.spread * Math.random() - this.params.spread / 2;
-        particle.position.z =
-            this._source.z + this.params.spread * Math.random() - this.params.spread / 2;
+        particle.position.x = this._source.x + this.params.spread * Math.random() - this.params.spread / 2;
+        particle.position.y = this._source.y + this.params.spread * Math.random() - this.params.spread / 2;
+        particle.position.z = this._source.z + this.params.spread * Math.random() - this.params.spread / 2;
 
         particle.velocity.copy(this.params.velocity);
         particle.lifetime = this.params.particleLifetime;
@@ -173,24 +165,17 @@ export class BasicSmoke extends ParticleSystem {
                 particle.lifetime -= dt;
 
                 if (particle.lifetime > 0) {
-                    particle.position.x += particle.velocity.x * dt;
-                    particle.position.y += particle.velocity.y * dt;
-                    particle.position.z += particle.velocity.z * dt;
-
+                    const wind = 1 + (1 - particle.lifetime / this.params.particleLifetime) * 5;
                     if (this._gravity) particle.velocity.y -= 9.81 * dt;
-
+                    particle.position.x += particle.velocity.x * dt * wind;
+                    particle.position.y += particle.velocity.y * dt;
+                    particle.position.z += particle.velocity.z * dt * wind;
                     particle.size += this.params.scaleValue * dt;
                     particle.alpha -= this.params.alphaDegrading * dt;
                     particle.rotation += dt * this.params.rotationValue;
-
                     particle.lerpValue += (1.0 / this.params.colorTransition) * dt;
                     particle.lerpValue = Math.min(particle.lerpValue, 1.0);
-
-                    particle.color.lerpColors(
-                        this.params.startColor,
-                        this.params.endColor,
-                        particle.lerpValue
-                    );
+                    particle.color.lerpColors(this.params.startColor, this.params.endColor, particle.lerpValue);
                 } else {
                     particle.position.copy(this._cache);
                     particle.alpha = 0;
@@ -220,7 +205,7 @@ export class Smoke extends BasicSmoke {
                 startColor: new THREE.Color("orange"),
                 endColor: new THREE.Color(0x2c2c2c),
                 spread: 0,
-                velocity: new THREE.Vector3(0.0, 1.2, 0.0),
+                velocity: new THREE.Vector3(0.2, 1, 0.2),
             },
             source
         );
@@ -278,12 +263,7 @@ export class Explosion2 extends BasicSmoke {
         (async () => {
             const audioLoader = new THREE.AudioLoader();
             const buffer = await new Promise((resolve, reject) => {
-                audioLoader.load(
-                    "assets/audio/explosion.mp3",
-                    (data) => resolve(data),
-                    null,
-                    reject
-                );
+                audioLoader.load("assets/audio/explosion.mp3", (data) => resolve(data), null, reject);
             });
 
             this.sound = new THREE.PositionalAudio(listener);
