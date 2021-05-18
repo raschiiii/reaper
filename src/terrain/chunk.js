@@ -75,52 +75,49 @@ lookupTable.insert({
 
 export class Buildings {
     constructor(root, offset, dimensions, heightmap, key) {
-        function randomPos() {
-            return new THREE.Vector3(
-                offset.x + (dimensions.x * Math.random() - dimensions.x / 2),
-                heightmap.get(offset.x, offset.y),
-                offset.y + (dimensions.y * Math.random() - dimensions.y / 2)
-            );
-        }
-
         const terrainObjects = lookupTable.lookup(offset, dimensions);
 
         if (terrainObjects.length > 0) {
-            this._buildings = new THREE.Group();
+            this._transform = new THREE.Group();
 
             for (const obj of terrainObjects) {
                 const pos = obj.pos;
-                const cube = new THREE.Mesh(
-                    new THREE.BoxGeometry(
-                        THREE.MathUtils.randInt(1, 3),
-                        THREE.MathUtils.randInt(1, 5),
-                        THREE.MathUtils.randInt(1, 3)
-                    ),
-                    new THREE.MeshStandardMaterial({
-                        color: 0x857f76,
-                    })
-                );
-
-                cube.castShadow = true;
-                cube.position.set(pos.x, heightmap.get(pos.x, pos.y), pos.y);
-                cube.rotateY(Math.random());
-                this._buildings.add(cube);
+                const terrainObject = this.createBuilding();
+                terrainObject.position.set(pos.x, heightmap.get(pos.x, pos.y), pos.y);
+                terrainObject.rotateY(Math.random());
+                this._transform.add(terrainObject);
             }
 
-            root.add(this._buildings);
+            root.add(this._transform);
         }
     }
 
-    destroy() {
-        if (this._buildings) {
-            const parent = this._buildings.parent;
+    createBuilding() {
+        const cube = new THREE.Mesh(
+            new THREE.BoxGeometry(
+                THREE.MathUtils.randInt(1, 3),
+                THREE.MathUtils.randInt(1, 5),
+                THREE.MathUtils.randInt(1, 3)
+            ),
+            new THREE.MeshStandardMaterial({
+                color: 0x857f76,
+            })
+        );
 
-            this._buildings.traverse(function (child) {
+        cube.castShadow = true;
+        return cube;
+    }
+
+    destroy() {
+        if (this._transform) {
+            const parent = this._transform.parent;
+
+            this._transform.traverse(function (child) {
                 if (child.geometry) child.geometry.dispose();
                 if (child.material) child.material.dispose();
             });
 
-            parent.remove(this._buildings);
+            parent.remove(this._transform);
         }
     }
 }
