@@ -101,9 +101,8 @@ export class Sensor extends Component {
         this._camera.rotation.copy(this._sensorRotation);
         this._camera.position.copy(sensorPosition);
 
-        const point = this._raycast();
-
-        this._camera.focusPoint = point;
+        //1this._camera.focusPoint = this._raycast();
+        this._camera.focusPoint = this._target || this._raycast();
 
         this._updateDisplay();
 

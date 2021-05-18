@@ -144,7 +144,7 @@ export class Chunk {
         this._plane = new THREE.Mesh(
             new THREE.PlaneGeometry(dimensions.x, dimensions.y, _RESOLUTION, _RESOLUTION),
             new THREE.MeshStandardMaterial({
-                color: color3,
+                color: color1,
                 wireframe: false,
                 side: THREE.DoubleSide,
                 flatShading: true,
