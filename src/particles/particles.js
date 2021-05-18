@@ -103,8 +103,9 @@ export class Spark extends ParticleSystem {
             alphaDegrading: 0.05,
             scaleValue: 0,
             particlesPerImpact: 30,
+            gravity: true,
         });
-        this._gravity = true;
+        //        this._gravity = true;
     }
 
     impact(pos) {
@@ -143,11 +144,9 @@ export class BasicSmoke extends ParticleSystem {
 
     _createParticle(unused) {
         const particle = this._particles[unused];
-
         particle.position.x = this._source.x + this.params.spread * Math.random() - this.params.spread / 2;
         particle.position.y = this._source.y + this.params.spread * Math.random() - this.params.spread / 2;
         particle.position.z = this._source.z + this.params.spread * Math.random() - this.params.spread / 2;
-
         particle.velocity.copy(this.params.velocity);
         particle.lifetime = this.params.particleLifetime * THREE.MathUtils.randFloat(0.75, 1.0);
         particle.size = this.params.startSize;
@@ -204,7 +203,7 @@ export class Smoke extends BasicSmoke {
                 startColor: new THREE.Color("orange"),
                 endColor: new THREE.Color(0x2c2c2c),
                 spread: 0,
-                velocity: new THREE.Vector3(0.2, 0.7, 0.2),
+                velocity: new THREE.Vector3(0.1, 0.7, 0.1),
             },
             source
         );

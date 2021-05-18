@@ -78,7 +78,7 @@ sensorRenderer.addPass(new RenderPass(scene, sensor));
 
 // Stats
 const stats = new Stats();
-document.body.appendChild(stats.dom);
+//document.body.appendChild(stats.dom);
 
 // Lights
 const sun = new THREE.DirectionalLight(0xffffff, 3);
@@ -87,7 +87,7 @@ const map_size = Math.pow(2, 16);
 sun.shadow.mapSize.width = map_size;
 sun.shadow.mapSize.height = map_size;
 sun.shadow.camera.near = 1;
-sun.shadow.camera.far = 10000;
+sun.shadow.camera.far = 5000;
 const val = 100;
 sun.shadow.camera.left = -val;
 sun.shadow.camera.bottom = -val;

@@ -75,16 +75,22 @@ function createDataTexture() {
 
 export class ParticleSystem {
     constructor(parent, params) {
-        this.params = params;
+        this.params = params || {};
+
+        this.params.particleLifetime = this.params.particleLifetime || 2;
+        this.params.numParticles = this.params.numParticles || 1000;
+        this.params.particlesPerSecond = this.params.particlesPerSecond || 10;
 
         this._lastUsedParticle = 0;
         this._elapsed = 0;
         this._gravity = false;
         this._duration = 1.0 / params.particlesPerSecond;
         this._cache = new THREE.Vector3(0, 0, 0);
-        this.active = true;
         this._particles = [];
         this._zoom = 1;
+        this._gravity = params.gravity || false;
+
+        this.active = true;
 
         for (let i = 0; i < this.params.numParticles; i++) {
             this._particles.push({
@@ -108,9 +114,7 @@ export class ParticleSystem {
                 value: texture, // TODO update this
             },
             pointMultiplier: {
-                value:
-                    (window.innerHeight / (2.0 * Math.tan((0.5 * 60.0 * Math.PI) / 180.0))) *
-                    this._zoom,
+                value: (window.innerHeight / (2.0 * Math.tan((0.5 * 60.0 * Math.PI) / 180.0))) * this._zoom,
             },
         };
 
@@ -171,10 +175,7 @@ export class ParticleSystem {
             angles.push(p.rotation);
         }
 
-        this._points.geometry.setAttribute(
-            "position",
-            new THREE.Float32BufferAttribute(positions, 3)
-        );
+        this._points.geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
         this._points.geometry.setAttribute("size", new THREE.Float32BufferAttribute(sizes, 1));
         this._points.geometry.setAttribute("angle", new THREE.Float32BufferAttribute(angles, 1));
         this._points.geometry.setAttribute("colour", new THREE.Float32BufferAttribute(colours, 4));
@@ -223,8 +224,7 @@ export class ParticleSystem {
 
         if (this._elapsed >= this._duration && this.active) {
             let numNewParticles = Math.floor(this._elapsed / this._duration);
-            if (numNewParticles > this.params.particlesPerSecond)
-                numNewParticles = this.params.particlesPerSecond;
+            if (numNewParticles > this.params.particlesPerSecond) numNewParticles = this.params.particlesPerSecond;
 
             for (let i = 0; i < numNewParticles; i++) {
                 this._createParticle(this._findUnusedParticle());
