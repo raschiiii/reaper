@@ -97,7 +97,7 @@ export class Spark extends ParticleSystem {
         1;
         super(parent, {
             numParticles: 400,
-            particleLifetime: 0.5,
+            particleLifetime: 0.75,
             particlesPerSecond: 20,
             textureAsset: RECTANGLE,
             blending: THREE.AdditiveBlending,
@@ -118,10 +118,10 @@ export class Spark extends ParticleSystem {
 
             particle.velocity.set(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
             particle.velocity.normalize();
-            particle.velocity.multiplyScalar(5);
+            particle.velocity.multiplyScalar(7);
 
             particle.lifetime = this.params.particleLifetime;
-            particle.size = 0.05;
+            particle.size = 0.15;
             particle.rotation = 0;
             particle.alpha = 0.5;
             particle.color = new THREE.Color("orange");
@@ -150,7 +150,7 @@ export class BasicSmoke extends ParticleSystem {
         particle.position.z = this._source.z + this.params.spread * Math.random() - this.params.spread / 2;
 
         particle.velocity.copy(this.params.velocity);
-        particle.lifetime = this.params.particleLifetime;
+        particle.lifetime = this.params.particleLifetime * THREE.MathUtils.randFloat(0.75, 1.0);
         particle.size = this.params.startSize;
         particle.color = new THREE.Color();
         particle.alpha = this.params.alphaStartValue;
@@ -165,7 +165,7 @@ export class BasicSmoke extends ParticleSystem {
                 particle.lifetime -= dt;
 
                 if (particle.lifetime > 0) {
-                    const wind = 1 + (1 - particle.lifetime / this.params.particleLifetime) * 5;
+                    const wind = 1 + (1 - particle.lifetime / this.params.particleLifetime) * 3;
                     if (this._gravity) particle.velocity.y -= 9.81 * dt;
                     particle.position.x += particle.velocity.x * dt * wind;
                     particle.position.y += particle.velocity.y * dt;
@@ -192,7 +192,7 @@ export class Smoke extends BasicSmoke {
             {
                 numParticles: 200,
                 particleLifetime: 15,
-                particlesPerSecond: 1,
+                particlesPerSecond: 1.5,
                 //texture: "assets/textures/hexagon.png",
                 textureAsset: HEXAGON,
                 blending: THREE.AdditiveBlending,
@@ -205,7 +205,7 @@ export class Smoke extends BasicSmoke {
                 startColor: new THREE.Color("orange"),
                 endColor: new THREE.Color(0x2c2c2c),
                 spread: 0,
-                velocity: new THREE.Vector3(0.2, 1, 0.2),
+                velocity: new THREE.Vector3(0.2, 0.7, 0.2),
             },
             source
         );
@@ -231,7 +231,7 @@ export class SmokeTrail extends BasicSmoke {
                 startColor: new THREE.Color("orange"),
                 endColor: new THREE.Color(0x2c2c2c),
                 spread: 0.125,
-                velocity: new THREE.Vector3(0.1, 0.3, 0),
+                velocity: new THREE.Vector3(0.1, 0.2, 0),
             },
             source
         );

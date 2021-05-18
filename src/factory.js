@@ -84,7 +84,7 @@ export class Factory {
         obj.position.copy(pos);
         obj.addComponent(new SimpleModel(obj, this.assets.gltf.pickup.asset));
         obj.addComponent(new WreckModel(obj, this.assets.gltf.pickup_wreck.asset));
-        obj.addComponent(new SmokeEmitter(obj));
+        //obj.addComponent(new SmokeEmitter(obj));
         obj.addComponent(new Label(obj));
         obj.addComponent(new Explosive(obj));
         const aabb = obj.addComponent(new AABB(obj, new THREE.Vector3(2, 2, 2)));
