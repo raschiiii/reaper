@@ -257,12 +257,12 @@ function animate(now) {
     then = now;
     if (dt > 0.1 || isNaN(dt)) dt = 0.1;
 
-    // update sun position
     const activeCamera = sensorView ? sensor : camera;
 
-    sun.position.copy(activeCamera.position);
+    // update sun position
+    sun.position.copy(activeCamera.focusPoint || activeCamera.position);
     sun.position.add(new THREE.Vector3(50, 100, 50));
-    sun.target.position.copy(activeCamera.position);
+    sun.target.position.copy(activeCamera.focusPoint || activeCamera.position);
 
     if (!paused) {
         window.game.objects.forEach((gameObject) => {

@@ -53,7 +53,6 @@ export class Terrain extends Component {
         for (const key in this._chunks) {
             this._count--;
             this._chunks[key].chunk.destroy();
-
             if (this._chunks[key].buildings) this._chunks[key].buildings.destroy();
         }
 
