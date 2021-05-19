@@ -3,7 +3,8 @@ import * as THREE from "three";
 import { Component } from "../engine/component";
 import { FixedHeightMap, ImageHeightMap } from "./heightmap";
 import { Quadtree } from "./quadtree";
-import { Buildings, Chunk } from "./chunk";
+import { Chunk } from "./chunk";
+import { TerrainObjects } from "./terrain-objects";
 
 export class Terrain extends Component {
     constructor(gameObject, params) {
@@ -44,20 +45,8 @@ export class Terrain extends Component {
             }
 
             newChunks[key] = {
-                chunk: new Chunk(
-                    this.root,
-                    child.center,
-                    child.size,
-                    this._heightmap,
-                    key
-                ),
-                buildings: new Buildings(
-                    this.root,
-                    child.center,
-                    child.size,
-                    this._heightmap,
-                    key
-                ),
+                chunk: new Chunk(this.root, child.center, child.size, this._heightmap, key),
+                buildings: new TerrainObjects(this.root, child.center, child.size, this._heightmap, key),
             };
         }
 
@@ -65,8 +54,7 @@ export class Terrain extends Component {
             this._count--;
             this._chunks[key].chunk.destroy();
 
-            if (this._chunks[key].buildings)
-                this._chunks[key].buildings.destroy();
+            if (this._chunks[key].buildings) this._chunks[key].buildings.destroy();
         }
 
         this._chunks = newChunks;
