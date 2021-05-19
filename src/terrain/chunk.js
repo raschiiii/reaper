@@ -5,30 +5,63 @@ const TEXTURE = new THREE.TextureLoader().load("assets/textures/red.png");
 TEXTURE.minFilter = THREE.NearestFilter;
 TEXTURE.magFilter = THREE.NearestFilter;
 
+const load = function (key) {
+    return new THREE.TextureLoader().load(`assets/textures/terrain/tile_${key}.png`);
+};
+
+const TEXTURES = {
+    "256_-256": load("256_-256"),
+    "-256_-256": load("-256_-256"),
+    "256_256": load("256_256"),
+    "-256_256": load("-256_256"),
+};
+
 export class Chunk {
     constructor(root, offset, dimensions, heightmap, key) {
-        console.log(key);
-
-        //const t = dimensions.x / (_RESOLUTION - 2);
-        //dimensions.x += 2 * t;
-        //dimensions.y += 2 * t;
+        //console.log(key);
+        /*
+        const t = dimensions.x / (_RESOLUTION - 2);
+        dimensions.x += 2 * t;
+        dimensions.y += 2 * t;
+        */
 
         // just for debugging
         const color1 = new THREE.Color(Math.random(), Math.random(), Math.random());
         const color2 = new THREE.Color();
         color2.lerpColors(new THREE.Color(0x523415), new THREE.Color(0x745c43), dimensions.x / (65536 / 2));
-        const color3 = new THREE.Color(0x523415);
+        const color3 = new THREE.Color(0x87683b);
 
-        this._plane = new THREE.Mesh(
-            new THREE.PlaneGeometry(dimensions.x, dimensions.y, _RESOLUTION, _RESOLUTION),
-            new THREE.MeshStandardMaterial({
-                color: color1,
-                //map: TEXTURE,
+        let material;
+
+        if (TEXTURES[key]) {
+            console.log("found");
+            material = new THREE.MeshStandardMaterial({
+                map: TEXTURES[key],
                 wireframe: false,
                 side: THREE.DoubleSide,
                 flatShading: true,
-            })
-        );
+            });
+        } else {
+            material = new THREE.MeshStandardMaterial({
+                color: color3,
+                wireframe: false,
+                side: THREE.DoubleSide,
+                flatShading: true,
+            });
+        }
+
+        /*
+        material = new THREE.MeshStandardMaterial({
+            color: color3,
+            wireframe: false,
+            side: THREE.DoubleSide,
+            flatShading: true,
+        });
+        */
+
+        const geometry = new THREE.PlaneGeometry(dimensions.x, dimensions.y, _RESOLUTION, _RESOLUTION);
+
+        this._plane = new THREE.Mesh(geometry, material);
 
         this.buildChunk(heightmap, offset);
         //this.buildSkirts();

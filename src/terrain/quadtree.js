@@ -4,9 +4,7 @@ class Node extends THREE.Box2 {
     children = [];
     constructor(min, max) {
         super(min, max);
-        //console.log("Node", this.center, this.size);
-
-        this.key = `${this.center.x}/${this.center.y}`;
+        this.key = `${this.center.x}_${this.center.y}`;
     }
 
     get size() {
@@ -20,10 +18,7 @@ class Node extends THREE.Box2 {
 
 export class Quadtree {
     constructor(size, minNodeSize) {
-        this._root = new Node(
-            new THREE.Vector2(-size, -size),
-            new THREE.Vector2(size, size)
-        );
+        this._root = new Node(new THREE.Vector2(-size, -size), new THREE.Vector2(size, size));
         this._minNodeSize = minNodeSize;
     }
 
@@ -51,16 +46,10 @@ export class Quadtree {
         const bl = new Node(node.min, middle);
 
         // bottom right
-        const br = new Node(
-            new THREE.Vector2(middle.x, node.min.y),
-            new THREE.Vector2(node.max.x, middle.y)
-        );
+        const br = new Node(new THREE.Vector2(middle.x, node.min.y), new THREE.Vector2(node.max.x, middle.y));
 
         // top left
-        const tl = new Node(
-            new THREE.Vector2(node.min.x, middle.y),
-            new THREE.Vector2(middle.x, node.max.y)
-        );
+        const tl = new Node(new THREE.Vector2(node.min.x, middle.y), new THREE.Vector2(middle.x, node.max.y));
 
         // top right
         const tr = new Node(middle, node.max);
