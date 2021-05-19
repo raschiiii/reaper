@@ -19,7 +19,7 @@ export class ImageHeightMap {
     }
 
     get(x, y) {
-        const getPixel = (x, y) => {
+        const pixel = (x, y) => {
             const position = (x + this._data.width * y) * 4;
             const data = this._data.data;
             return data[position] / 255.0;
@@ -42,10 +42,10 @@ export class ImageHeightMap {
         const y2 = THREE.MathUtils.clamp(y1 + 1, 0, h);
         const xp = xf * w - x1;
         const yp = yf * h - y1;
-        const p11 = getPixel(x1, y1);
-        const p21 = getPixel(x2, y1);
-        const p12 = getPixel(x1, y2);
-        const p22 = getPixel(x2, y2);
+        const p11 = pixel(x1, y1);
+        const p21 = pixel(x2, y1);
+        const p12 = pixel(x1, y2);
+        const p22 = pixel(x2, y2);
         const px1 = THREE.MathUtils.lerp(p11, p21, xp);
         const px2 = THREE.MathUtils.lerp(p12, p22, xp);
         return THREE.MathUtils.lerp(px1, px2, yp) * 500;

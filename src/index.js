@@ -13,7 +13,7 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 
 import { AABB } from "./collision/collision.js";
 import { Factory } from "./factory.js";
-import { HashGrid } from "./collision/hashgrid.js";
+import { SpatialHashGrid } from "./collision/hashgrid.js";
 import { Explosion2, Spark } from "./particles/particles.js";
 import { ViewManager } from "./view-manager.js";
 import { Terrain } from "./terrain/terrain.js";
@@ -173,7 +173,7 @@ async function init() {
 
     window.game = new Game();
 
-    grid = new HashGrid(2);
+    grid = new SpatialHashGrid(2);
     factory = new Factory(assets, scene, camera, grid, sensor, listener);
     viewManager = new ViewManager(camera);
     explosions = new Explosion2(scene, listener);

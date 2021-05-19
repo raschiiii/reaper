@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-export class HashGrid {
+export class SpatialHashGrid {
     constructor(size) {
         this.size = size;
         this.space = new Map();
@@ -71,9 +71,7 @@ export class HashGrid {
         let tmp = "";
 
         for (let i = 0; i <= Math.ceil(step); i++) {
-            let key = `${Math.floor(x / this.size)},${Math.floor(
-                y / this.size
-            )},${Math.floor(z / this.size)}`;
+            let key = `${Math.floor(x / this.size)},${Math.floor(y / this.size)},${Math.floor(z / this.size)}`;
 
             if (this.space.has(key)) {
                 for (let item of this.space.get(key)) {
