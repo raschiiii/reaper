@@ -36,6 +36,7 @@ export class Chunk {
         if (TEXTURES[key]) {
             console.log("found");
             material = new THREE.MeshStandardMaterial({
+                color: color3,
                 map: TEXTURES[key],
                 wireframe: false,
                 side: THREE.DoubleSide,
