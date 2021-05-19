@@ -13,8 +13,8 @@ export class Terrain extends Component {
         this.root = new THREE.Object3D();
         this.gameObject.transform.add(this.root);
 
-        //this._heightmap = new FixedHeightMap();
-        this._heightmap = new ImageHeightMap(params.heightmap);
+        this._heightmap = new FixedHeightMap();
+        //this._heightmap = new ImageHeightMap(params.heightmap);
 
         this._chunks = {};
         /*

@@ -1,12 +1,17 @@
 import * as THREE from "three";
 
 const _RESOLUTION = 10;
+const TEXTURE = new THREE.TextureLoader().load("assets/textures/red.png");
+TEXTURE.minFilter = THREE.NearestFilter;
+TEXTURE.magFilter = THREE.NearestFilter;
 
 export class Chunk {
     constructor(root, offset, dimensions, heightmap, key) {
-        const t = dimensions.x / (_RESOLUTION - 2);
-        dimensions.x += 2 * t;
-        dimensions.y += 2 * t;
+        console.log(key);
+
+        //const t = dimensions.x / (_RESOLUTION - 2);
+        //dimensions.x += 2 * t;
+        //dimensions.y += 2 * t;
 
         // just for debugging
         const color1 = new THREE.Color(Math.random(), Math.random(), Math.random());
@@ -17,7 +22,8 @@ export class Chunk {
         this._plane = new THREE.Mesh(
             new THREE.PlaneGeometry(dimensions.x, dimensions.y, _RESOLUTION, _RESOLUTION),
             new THREE.MeshStandardMaterial({
-                color: color3,
+                color: color1,
+                //map: TEXTURE,
                 wireframe: false,
                 side: THREE.DoubleSide,
                 flatShading: true,
@@ -25,7 +31,7 @@ export class Chunk {
         );
 
         this.buildChunk(heightmap, offset);
-        this.buildSkirts();
+        //this.buildSkirts();
 
         this._plane.position.set(offset.x, 0, offset.y);
         this._plane.rotation.x = Math.PI * -0.5;
@@ -50,7 +56,7 @@ export class Chunk {
         let vertices = this._plane.geometry.attributes.position.array;
 
         function setHeight(x, z) {
-            vertices[(x + z * (_RESOLUTION + 1)) * 3 + 2] -= 10;
+            vertices[(x + z * (_RESOLUTION + 1)) * 3 + 2] -= 30;
         }
 
         for (let i = 0; i <= _RESOLUTION; i++) setHeight(0, i);
