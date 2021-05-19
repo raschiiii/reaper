@@ -12,8 +12,8 @@ import { Terrain } from "./terrain/terrain.js";
 import { SmokeEmitter } from "./particles/particle-emitter.js";
 
 export class Factory {
-    constructor(assets, scene, camera, grid, sensor, listener) {
-        this.grid = grid;
+    constructor(assets, scene, camera, sensor, listener) {
+        this.grid = window.game.colliders;
         this.scene = scene;
         this.camera = camera;
         this.sensor = sensor;
@@ -82,6 +82,7 @@ export class Factory {
     createPickup(pos) {
         let obj = new GameObject(this.scene);
         obj.position.copy(pos);
+        obj.transform.rotateY(Math.random());
         obj.addComponent(new SimpleModel(obj, this.assets.gltf.pickup.asset));
         obj.addComponent(new WreckModel(obj, this.assets.gltf.pickup_wreck.asset));
         //obj.addComponent(new SmokeEmitter(obj));

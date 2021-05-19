@@ -4,17 +4,14 @@ const _RESOLUTION = 10;
 
 export class Chunk {
     constructor(root, offset, dimensions, heightmap, key) {
-        //console.log({offset});
         const t = dimensions.x / (_RESOLUTION - 2);
         dimensions.x += 2 * t;
         dimensions.y += 2 * t;
 
         // just for debugging
         const color1 = new THREE.Color(Math.random(), Math.random(), Math.random());
-
         const color2 = new THREE.Color();
         color2.lerpColors(new THREE.Color(0x523415), new THREE.Color(0x745c43), dimensions.x / (65536 / 2));
-
         const color3 = new THREE.Color(0x523415);
 
         this._plane = new THREE.Mesh(

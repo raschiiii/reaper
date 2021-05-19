@@ -1,7 +1,7 @@
 import * as THREE from "three";
 
 export class SpatialHashGrid {
-    constructor(size) {
+    constructor(size = 2) {
         this.size = size;
         this.space = new Map();
         this._hash = new THREE.Vector3(0, 0, 0);

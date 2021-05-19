@@ -143,7 +143,7 @@ let assets = {
 
 let paused = false,
     sensorView = false;
-let grid, aircraft, terrain, heightmap;
+let aircraft, terrain, heightmap;
 let viewManager, factory, explosions, spark, focusCenter;
 
 async function init() {
@@ -172,9 +172,7 @@ async function init() {
     await Promise.all(promises);
 
     window.game = new Game();
-
-    grid = new SpatialHashGrid(2);
-    factory = new Factory(assets, scene, camera, grid, sensor, listener);
+    factory = new Factory(assets, scene, camera, sensor, listener);
     viewManager = new ViewManager(camera);
     explosions = new Explosion2(scene, listener);
     spark = new Spark(scene);
@@ -185,9 +183,13 @@ async function init() {
     heightmap = terrain.getComponent(Terrain);
 
     // create enemies
-    factory.createPickup(heightmap.placeAt(500, 300));
-    factory.createPickup(heightmap.placeAt(300, 100));
-    factory.createPickup(heightmap.placeAt(0, 0));
+    factory.createPickup(heightmap.placeAt(12, -30));
+    factory.createPickup(heightmap.placeAt(-10, 5));
+    factory.createPickup(heightmap.placeAt(2, 1));
+    factory.createPickup(heightmap.placeAt(19, 5));
+    factory.createPickup(heightmap.placeAt(-23, -20));
+    factory.createPickup(heightmap.placeAt(12, -4));
+    factory.createPickup(heightmap.placeAt(-29, 31));
 
     window.game.objects._addQueued();
     viewManager._init();
@@ -272,7 +274,7 @@ function animate(now) {
             if (aabb) {
                 let impactPoint = null;
 
-                for (let oAabb of grid.possible_aabb_collisions(aabb)) {
+                for (let oAabb of window.game.colliders.possible_aabb_collisions(aabb)) {
                     if (oAabb != gameObject) {
                         let depth = aabb.collide2(oAabb);
                         if (depth != null) {

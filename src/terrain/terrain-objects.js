@@ -90,7 +90,7 @@ export class TerrainObjects {
     }
 
     createBuilding() {
-        const cube = new THREE.Mesh(
+        const obj = new THREE.Mesh(
             new THREE.BoxGeometry(
                 THREE.MathUtils.randInt(1, 3),
                 THREE.MathUtils.randInt(1, 5),
@@ -101,8 +101,8 @@ export class TerrainObjects {
             })
         );
 
-        cube.castShadow = true;
-        return cube;
+        obj.castShadow = true;
+        return obj;
     }
 
     destroy() {
