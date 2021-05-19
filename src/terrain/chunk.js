@@ -67,8 +67,8 @@ export class Chunk {
         this._plane = new THREE.Mesh(geometry, material);
 
         this.buildChunk(heightmap, offset);
-        this.fixUVs();
         this.buildSkirts();
+        //this.fixUVs();
 
         this._plane.position.set(offset.x, 0, offset.y);
         this._plane.rotation.x = Math.PI * -0.5;
@@ -112,7 +112,18 @@ export class Chunk {
 
     fixUVs() {
         let uvs = this._plane.geometry.attributes.uv.array;
-        const geometry = new THREE.PlaneGeometry(this.oldDim.x, this.oldDim.y, _RESOLUTION - 2, _RESOLUTION - 2);
+        //const geometry = new THREE.PlaneGeometry(this.oldDim.x, this.oldDim.y, _RESOLUTION - 2, _RESOLUTION - 2);
+        //const tmp = geometry.attributes.uv.array;
+
+        /*
+        for (let x = 1; x < _RESOLUTION; x++) {
+            for (let y = 1; y < _RESOLUTION; y++) {
+                uvs[(x + y * (_RESOLUTION + 1)) * 2] = tmp[(x - 1 + (y - 1) * (_RESOLUTION + 1)) * 2];
+                uvs[(x + y * (_RESOLUTION + 1)) * 2 + 1] = tmp[(x - 1 + (y - 1) * (_RESOLUTION + 1)) * 2];
+            }
+        }
+        */
+
         this._plane.geometry.attributes.uv.needsUpdate = true;
     }
 
