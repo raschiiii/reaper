@@ -18,17 +18,19 @@ const TEXTURES = {
 
 export class Chunk {
     constructor(root, offset, dimensions, heightmap, key) {
-        //console.log(key);
-        /*
+        this.oldDim = dimensions.clone();
+
         const t = dimensions.x / (_RESOLUTION - 2);
         dimensions.x += 2 * t;
         dimensions.y += 2 * t;
-        */
 
         // just for debugging
         const color1 = new THREE.Color(Math.random(), Math.random(), Math.random());
-        const color2 = new THREE.Color();
-        color2.lerpColors(new THREE.Color(0x523415), new THREE.Color(0x745c43), dimensions.x / (65536 / 2));
+        const color2 = new THREE.Color().lerpColors(
+            new THREE.Color(0x523415),
+            new THREE.Color(0x745c43),
+            dimensions.x / (65536 / 2)
+        );
         const color3 = new THREE.Color(0x87683b);
 
         let material;
@@ -65,7 +67,8 @@ export class Chunk {
         this._plane = new THREE.Mesh(geometry, material);
 
         this.buildChunk(heightmap, offset);
-        //this.buildSkirts();
+        this.fixUVs();
+        this.buildSkirts();
 
         this._plane.position.set(offset.x, 0, offset.y);
         this._plane.rotation.x = Math.PI * -0.5;
@@ -105,6 +108,12 @@ export class Chunk {
         for (let i = 0; i < normals.length; i = i + 3) {}
         this._plane.geometry.attributes.normal.needsUpdate = true;
         */
+    }
+
+    fixUVs() {
+        let uvs = this._plane.geometry.attributes.uv.array;
+        const geometry = new THREE.PlaneGeometry(this.oldDim.x, this.oldDim.y, _RESOLUTION - 2, _RESOLUTION - 2);
+        this._plane.geometry.attributes.uv.needsUpdate = true;
     }
 
     destroy() {
