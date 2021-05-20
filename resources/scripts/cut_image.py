@@ -7,8 +7,7 @@ path = "img"
 
 def divide(x, y, size):
     filename = f"{path}/tile_{x}_{y}.png"
-
-    print(f"x={x}, y={y}, size={size}, {filename}")
+    #print(f"x={x}, y={y}, size={size}, {filename}")
 
     if (size > 512):
         offset = size // 4
@@ -43,7 +42,7 @@ def divide(x, y, size):
 
 
 if __name__ == '__main__':
-    size = 2**12
+    size = 2**10
     print(size)
     os.system(f'copy .\\tile_0_0.png {path}\\')
     divide(0, 0, size)
