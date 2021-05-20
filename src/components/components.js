@@ -55,12 +55,23 @@ export class Sound extends Component {
         this.sound.setRefDistance(20);
         this.gameObject.transform.add(this.sound);
 
-        if (params.autoplay) this.sound.play();
+        let play = false;
+
+        const checkbox = document.querySelector("#sound");
+        checkbox.addEventListener("change", () => {
+            play = !play;
+
+            if (play) {
+                this.sound.play();
+            } else {
+                this.sound.pause();
+            }
+        });
 
         this.gameObject.subscribe("paused", (event) => {
             if (event.paused) {
                 this.sound.pause();
-            } else {
+            } else if (play) {
                 this.sound.play();
             }
         });

@@ -37,7 +37,6 @@ export class Factory {
             new Sound(obj, this.listener, this.assets.audio.engine.asset, {
                 loop: true,
                 volume: 0.5,
-                autoplay: true,
             })
         );
         //obj.addComponent(new Physics(obj, new SpringODE(obj, 1.0, 1.5, 20, -2.7)));

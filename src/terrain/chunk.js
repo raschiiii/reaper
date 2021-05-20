@@ -62,13 +62,13 @@ export class Chunk {
         });
         */
 
-        const geometry = new THREE.PlaneGeometry(dimensions.x, dimensions.y, SEGMENTS, SEGMENTS);
+        let geometry = new THREE.PlaneGeometry(dimensions.x, dimensions.y, SEGMENTS, SEGMENTS);
 
         this._plane = new THREE.Mesh(geometry, material);
 
         this.buildChunk(heightmap, offset);
         this.buildSkirts();
-        this.fixUVs();
+        this.buildUVs();
 
         this._plane.position.set(offset.x, 0, offset.y);
         this._plane.rotation.x = Math.PI * -0.5;
@@ -102,18 +102,12 @@ export class Chunk {
         for (let i = 0; i <= SEGMENTS; i++) setHeight(i, SEGMENTS);
 
         this._plane.geometry.attributes.position.needsUpdate = true;
-
-        /*
-        let normals = this._plane.geometry.attributes.normal.array;
-        for (let i = 0; i < normals.length; i = i + 3) {}
-        this._plane.geometry.attributes.normal.needsUpdate = true;
-        */
     }
 
-    fixUVs() {
+    buildUVs() {
         let uv = this._plane.geometry.attributes.uv.array;
 
-        function setUV2(x, y, u, v) {
+        function setUV(x, y, u, v) {
             const i = (y * (SEGMENTS + 1) + x) * 2;
             uv[i + 0] = u;
             uv[i + 1] = v;
@@ -124,7 +118,7 @@ export class Chunk {
         for (let x = 1; x < SEGMENTS; x++) {
             let v = 1;
             for (let y = 1; y < SEGMENTS; y++) {
-                setUV2(x, y, u, v);
+                setUV(x, y, u, v);
                 v -= step;
             }
             u += step;
