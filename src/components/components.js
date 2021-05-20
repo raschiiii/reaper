@@ -45,6 +45,7 @@ export class Explosive extends Component {
     }
 }
 
+// add a sound to a gameobject
 export class Sound extends Component {
     constructor(gameObject, listener, buffer, params) {
         super(gameObject);

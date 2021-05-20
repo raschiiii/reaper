@@ -6,14 +6,14 @@ import { Hellfire } from "../physics/hellfire.js";
 import { Component } from "../engine/component.js";
 import { SmokeTrailEmitter } from "../particles/particle-emitter.js";
 
+// a html label that can be attached to any gameobject
 export class Label extends Component {
     constructor(gameObject, text = "HOSTILE") {
         super(gameObject);
 
         this.element = document.createElement("small");
         this.element.className = "label";
-        this.element.style.cssText =
-            "position: absolute; top: 0px; left: 0px; display: none;";
+        this.element.style.cssText = "position: absolute; top: 0px; left: 0px; display: none;";
         this.element.innerText = text;
         document.body.append(this.element);
 
@@ -36,8 +36,7 @@ export class Label extends Component {
 
         const border = 50;
         if (
-            (y > window.innerHeight - border ||
-                x > window.innerWidth - border) &&
+            (y > window.innerHeight - border || x > window.innerWidth - border) &&
             this.element.style.display == "block"
         ) {
             this.element.style.display = "none";
@@ -51,6 +50,7 @@ export class Label extends Component {
     }
 }
 
+// the missile's control system
 export class MissileControl extends Component {
     constructor(gameObject, id, type = "AGM-114") {
         super(gameObject);
@@ -72,31 +72,17 @@ export class MissileControl extends Component {
                 this.gameObject.velocity.copy(e.velocity);
 
                 if (type === "AGM-114") {
-                    this.gameObject.addComponent(
-                        new SmokeTrailEmitter(this.gameObject)
-                    );
-                    this.gameObject.addComponent(
-                        new Physics(
-                            this.gameObject,
-                            new Hellfire(this.gameObject)
-                        )
-                    );
+                    this.gameObject.addComponent(new SmokeTrailEmitter(this.gameObject));
+                    this.gameObject.addComponent(new Physics(this.gameObject, new Hellfire(this.gameObject)));
                 }
 
                 if (type === "GBU-12") {
                     this.gameObject.publish("wings", {});
 
-                    this.gameObject.addComponent(
-                        new Physics(
-                            this.gameObject,
-                            new Paveway(this.gameObject)
-                        )
-                    );
+                    this.gameObject.addComponent(new Physics(this.gameObject, new Paveway(this.gameObject)));
                 }
 
-                this.gameObject.addComponent(
-                    new LaserGuidance(this.gameObject, e.target)
-                );
+                this.gameObject.addComponent(new LaserGuidance(this.gameObject, e.target));
 
                 window.game.objects.add(this.gameObject);
             }
@@ -104,6 +90,7 @@ export class MissileControl extends Component {
     }
 }
 
+// trys to steer the precision guided weapon to it's targets
 export class LaserGuidance extends Component {
     constructor(gameObject, target) {
         super(gameObject);
@@ -113,10 +100,7 @@ export class LaserGuidance extends Component {
 
     // negativ is to far right, positiv to far left
     _yawAngle(velocity, direction) {
-        return (
-            Math.atan2(direction.z, direction.x) -
-            Math.atan2(velocity.z, velocity.x)
-        );
+        return Math.atan2(direction.z, direction.x) - Math.atan2(velocity.z, velocity.x);
     }
 
     // positive means too high, negativ is too low
@@ -125,19 +109,14 @@ export class LaserGuidance extends Component {
         let vh = Math.sqrt(velocity.x * velocity.x + velocity.z * velocity.z);
         let pitchV = Math.atan(velocity.y / vh);
 
-        let dh = Math.sqrt(
-            direction.x * direction.x + direction.z * direction.z
-        );
+        let dh = Math.sqrt(direction.x * direction.x + direction.z * direction.z);
         let pitchD = Math.atan(direction.y / dh);
         return pitchV - pitchD;
     }
 
     update(dt) {
         if (this._target) {
-            this._dirToTarget.subVectors(
-                this._target,
-                this.gameObject.position
-            );
+            this._dirToTarget.subVectors(this._target, this.gameObject.position);
 
             const distance = this._dirToTarget.length();
 

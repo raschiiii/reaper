@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { Component } from "../engine/component.js";
 
+// camera that has a point it is focused on
 export class SensorCamera extends THREE.PerspectiveCamera {
     constructor(fov = 50, aspect = 1, near = 0.1, far = 2000) {
         super(fov, aspect, near, far);
@@ -8,6 +9,7 @@ export class SensorCamera extends THREE.PerspectiveCamera {
     }
 }
 
+// the drone's sensor
 export class Sensor extends Component {
     constructor(gameObject, camera) {
         super(gameObject);
@@ -176,6 +178,7 @@ export class Sensor extends Component {
     }
 }
 
+// hardpoints where weapons are attached to
 export class Hardpoints extends Component {
     constructor(gameObject) {
         super(gameObject);
@@ -209,6 +212,7 @@ export class Hardpoints extends Component {
     }
 }
 
+// the drone's  fire control system
 export class FireControlSystem extends Component {
     constructor(gameObject) {
         super(gameObject);
