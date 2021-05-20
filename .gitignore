@@ -1,9 +1,11 @@
 .vs/
 dist/
+sandbox/
 node_modules/
 resources/books/
 resources/reference/
 resources/screenshots/
+resources/scripts/img/
 
 server.py
 SOCIALMEDIA.md

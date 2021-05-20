@@ -1,6 +1,8 @@
 import cv2
+import os
 
-path = "../../assets/textures/terrain"
+#path = "../../assets/textures/terrain"
+path = "img"
 
 
 def divide(x, y, size):
@@ -14,10 +16,10 @@ def divide(x, y, size):
 
         img = cv2.imread(filename)
 
-        height = img.shape[0]//2
-        width = img.shape[1]//2
-        tiles = [img[x:x+height, y:y+width]
-                 for x in range(0, img.shape[0], height) for y in range(0, img.shape[1], width)]
+        h = img.shape[0]//2
+        w = img.shape[1]//2
+        tiles = [img[x:x+h, y:y+w]
+                 for x in range(0, img.shape[0], h) for y in range(0, img.shape[1], w)]
 
         xn = x + offset
         yn = y + offset
@@ -41,4 +43,7 @@ def divide(x, y, size):
 
 
 if __name__ == '__main__':
-    divide(0, 0, 2**10)
+    size = 2**12
+    print(size)
+    os.system(f'copy .\\tile_0_0.png {path}\\')
+    divide(0, 0, size)

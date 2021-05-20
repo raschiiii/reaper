@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-const _RESOLUTION = 10;
+const SEGMENTS = 10;
 const TEXTURE = new THREE.TextureLoader().load("assets/textures/red.png");
 TEXTURE.minFilter = THREE.NearestFilter;
 TEXTURE.magFilter = THREE.NearestFilter;
@@ -20,7 +20,7 @@ export class Chunk {
     constructor(root, offset, dimensions, heightmap, key) {
         this.oldDim = dimensions.clone();
 
-        const t = dimensions.x / (_RESOLUTION - 2);
+        const t = dimensions.x / (SEGMENTS - 2);
         dimensions.x += 2 * t;
         dimensions.y += 2 * t;
 
@@ -62,13 +62,13 @@ export class Chunk {
         });
         */
 
-        const geometry = new THREE.PlaneGeometry(dimensions.x, dimensions.y, _RESOLUTION, _RESOLUTION);
+        const geometry = new THREE.PlaneGeometry(dimensions.x, dimensions.y, SEGMENTS, SEGMENTS);
 
         this._plane = new THREE.Mesh(geometry, material);
 
         this.buildChunk(heightmap, offset);
         this.buildSkirts();
-        //this.fixUVs();
+        this.fixUVs();
 
         this._plane.position.set(offset.x, 0, offset.y);
         this._plane.rotation.x = Math.PI * -0.5;
@@ -93,13 +93,13 @@ export class Chunk {
         let vertices = this._plane.geometry.attributes.position.array;
 
         function setHeight(x, z) {
-            vertices[(x + z * (_RESOLUTION + 1)) * 3 + 2] -= 30;
+            vertices[(x + z * (SEGMENTS + 1)) * 3 + 2] -= 30;
         }
 
-        for (let i = 0; i <= _RESOLUTION; i++) setHeight(0, i);
-        for (let i = 0; i <= _RESOLUTION; i++) setHeight(_RESOLUTION, i);
-        for (let i = 0; i <= _RESOLUTION; i++) setHeight(i, 0);
-        for (let i = 0; i <= _RESOLUTION; i++) setHeight(i, _RESOLUTION);
+        for (let i = 0; i <= SEGMENTS; i++) setHeight(0, i);
+        for (let i = 0; i <= SEGMENTS; i++) setHeight(SEGMENTS, i);
+        for (let i = 0; i <= SEGMENTS; i++) setHeight(i, 0);
+        for (let i = 0; i <= SEGMENTS; i++) setHeight(i, SEGMENTS);
 
         this._plane.geometry.attributes.position.needsUpdate = true;
 
@@ -111,18 +111,24 @@ export class Chunk {
     }
 
     fixUVs() {
-        let uvs = this._plane.geometry.attributes.uv.array;
-        //const geometry = new THREE.PlaneGeometry(this.oldDim.x, this.oldDim.y, _RESOLUTION - 2, _RESOLUTION - 2);
-        //const tmp = geometry.attributes.uv.array;
+        let uv = this._plane.geometry.attributes.uv.array;
 
-        /*
-        for (let x = 1; x < _RESOLUTION; x++) {
-            for (let y = 1; y < _RESOLUTION; y++) {
-                uvs[(x + y * (_RESOLUTION + 1)) * 2] = tmp[(x - 1 + (y - 1) * (_RESOLUTION + 1)) * 2];
-                uvs[(x + y * (_RESOLUTION + 1)) * 2 + 1] = tmp[(x - 1 + (y - 1) * (_RESOLUTION + 1)) * 2];
-            }
+        function setUV2(x, y, u, v) {
+            const i = (y * (SEGMENTS + 1) + x) * 2;
+            uv[i + 0] = u;
+            uv[i + 1] = v;
         }
-        */
+
+        let u = 0;
+        const step = 1 / (SEGMENTS - 2);
+        for (let x = 1; x < SEGMENTS; x++) {
+            let v = 1;
+            for (let y = 1; y < SEGMENTS; y++) {
+                setUV2(x, y, u, v);
+                v -= step;
+            }
+            u += step;
+        }
 
         this._plane.geometry.attributes.uv.needsUpdate = true;
     }
